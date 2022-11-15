@@ -46,3 +46,13 @@ model Post {
 
     @@map("posts")
 }
+
+model Keyword {
+    id                         Int               @id @default(autoincrement())
+    name                       String
+    status                     Int?     @default(0)
+    createdAt                  DateTime          @default(now())
+    updatedAt                  DateTime          @updatedAt
+
+    @@map("keywords")
+}
