@@ -77,6 +77,7 @@ import {
   IoBarcodeOutline,
   IoRocket,
   IoCloseCircle,
+  IoArrowUp,
 } from 'react-icons/io5';
 import { device } from '../components/shared/DevicesBreakpoints';
 import { FaTelegram, FaFacebookSquare } from 'react-icons/fa';
@@ -238,6 +239,9 @@ export const FilterIcon = styled(IoFunnelOutline)<IIconProps>`
   ${defaultIconStyle}
 `;
 export const FavoriteIcon = styled(IoHeartOutline)<IIconProps>`
+  ${defaultIconStyle}
+`;
+export const ArrowUpIcon = styled(IoArrowUp)<IIconProps>`
   ${defaultIconStyle}
 `;
 export const FavoriteFilledIcon = styled(IoHeart)<IIconProps>`

@@ -47,11 +47,15 @@ a {
     --blue-700: #00135e;
     --blue-800: #2a4365;
 
-    --text-l: 18px;
-    --text-s: 16px;
+    --text-lg: 24px;
+    --text-md: 18px;
+    --text-sm: 16px;
+    --text-xs: 14px;
+
     --heading-l: 48px;
     --heading-s: 36px;
 
+    --gap-xl: 45px;
     --gap-lg: 35px;
     --gap-md: 25px;
     --gap-sm: 15px;
@@ -60,7 +64,16 @@ a {
 
 @media (max-width: 1050px) {
   :root {
+    --text-lg: 20px;
     --text-l: 16px;
     --text-s: 14px;
+  }
+}
+
+@media (max-width: 550px) {
+  :root {
+    --text-lg: 18px;
+    --text-l: 14px;
+    --text-s: 12px;
   }
 }

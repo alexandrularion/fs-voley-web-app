@@ -1,33 +1,33 @@
 export const navigationUrls = [
   {
-    title: 'ACASA',
+    title: 'Acasă',
     url: '/',
   },
   {
-    title: 'CALENDAR MECIURI',
+    title: 'Calendar Meciuri',
     url: '/matches',
   },
   {
-    title: 'NOUTATI',
+    title: 'Noutăți',
     url: '/blog',
   },
   {
-    title: 'ECHIPA',
+    title: 'Echipă',
     url: '/team',
   },
   {
-    title: 'SPONSORI',
+    title: 'Sponsori',
     url: '/sponsors',
   },
   {
-    title: 'VOLEI JUVENIL',
+    title: 'Volei Juvenil',
     url: '/juvenile-voleyball',
   },
 ];
 
 export const authUrls = {
   signIn: {
-    title: 'AUTENTIFICARE',
+    title: 'Autentificare',
     url: '/sign-in',
   },
 };

@@ -25,14 +25,23 @@ const Navigation = () => {
             <Link key={key} {...{ href: url }}>
               <Flex {...{ alignItems: 'center', gap: 'var(--gap-xs)', className: 'n-link-container' }}>
                 {(pathname.localeCompare(url) === 0 || (index !== 0 && pathname.includes(url))) && (
-                  <Box {...{ w: '10px', h: '10px', borderRadius: '50px', bg: 'var(--blue-600)', transition: '0.2s all ease-in-out' }} />
+                  <Box
+                    {...{
+                      w: '10px',
+                      h: '10px',
+                      borderRadius: '50px',
+                      bg: pathname.localeCompare(url) === 0 || (index !== 0 && pathname.includes(url)) ? 'var(--blue-400)' : 'var(--blue-600)',
+                      transition: '0.2s all ease-in-out',
+                    }}
+                  />
                 )}
                 <Text
                   {...{
-                    color: 'var(--blue-600)',
+                    color: pathname.localeCompare(url) === 0 || (index !== 0 && pathname.includes(url)) ? 'var(--blue-400)' : 'var(--blue-600)',
                     fontWeight: pathname.localeCompare(url) === 0 || (index !== 0 && pathname.includes(url)) ? 'bold' : 'normal',
                     fontSize: 'var(--text-l)',
                     transition: '0.2s all ease-in-out',
+                    textTransform: 'uppercase',
                   }}
                 >
                   {title}
@@ -68,6 +77,7 @@ const Navigation = () => {
                           fontWeight: pathname.includes(urls[urls.length - 2].url) ? 'bold' : 'normal',
                           _hover: { color: 'var(--blue-400)' },
                           transition: '0.2s all ease-in-out',
+                          textTransform: 'uppercase',
                         }}
                       >
                         {urls[urls.length - 2].title}
@@ -85,6 +95,7 @@ const Navigation = () => {
                           fontWeight: pathname.includes(urls[urls.length - 1].url) ? 'bold' : 'normal',
                           _hover: { color: 'var(--blue-400)' },
                           transition: '0.2s all ease-in-out',
+                          textTransform: 'uppercase',
                         }}
                       >
                         {urls[urls.length - 1].title}
@@ -98,7 +109,7 @@ const Navigation = () => {
             <Link {...{ href: authUrls.signIn.url }}>
               <Flex {...{ alignItems: 'center', gap: 'var(--gap-xs)', className: 'n-link-container' }}>
                 {pathname.includes(authUrls.signIn.url) && <Box {...{ w: '10px', h: '10px', borderRadius: '50px', bg: 'var(--blue-600)', transition: '0.2s all ease-in-out' }} />}
-                <Text {...{ color: 'var(--blue-600)', fontSize: 'var(--text-l)', transition: '0.2s all ease-in-out' }}>{authUrls.signIn.title}</Text>
+                <Text {...{ color: 'var(--blue-600)', fontSize: 'var(--text-l)', transition: '0.2s all ease-in-out', textTransform: 'uppercase' }}>{authUrls.signIn.title}</Text>
               </Flex>
             </Link>
           </Flex>
@@ -119,6 +130,7 @@ const Navigation = () => {
                         fontWeight: pathname.localeCompare(url) === 0 || (index !== 0 && pathname.includes(url)) ? 'bold' : 'normal',
                         fontSize: 'var(--text-s)',
                         transition: '0.2s all ease-in-out',
+                        textTransform: 'uppercase',
                       }}
                     >
                       {title}
@@ -143,7 +155,6 @@ const Container = styled.section`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
     width: 1300px;
     padding: 20px 0;
 
@@ -190,6 +201,9 @@ const Container = styled.section`
 
     @media ${device.smallLaptop}, ${device.tablet} {
       width: 90vw;
+    }
+    @media ${device.mobile} {
+      width: 85vw;
     }
   }
 `;
