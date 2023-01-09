@@ -1,4 +1,4 @@
-import Navigation from '../components/shared/Navigation';
+import Navigation from '../../components/shared/Navigation';
 
 export default function Home() {
   return (

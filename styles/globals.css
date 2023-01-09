@@ -2,8 +2,7 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: 'Play', sans-serif;
 }
 
 a {
@@ -22,5 +21,46 @@ a {
   body {
     color: white;
     background: black;
+  }
+}
+
+:root {
+    --black-color: #1c1c1b;
+    --white-color: #fff;
+    --green-color: #38A169;
+    --red-color: #B72F04;
+    --grey-alpha-50: #fafafa;
+    --grey-alpha-100: #ededed;
+    --grey-alpha-200: #eaeaea;
+    --grey-alpha-300: #d6d6d6;
+    --grey-alpha-400: #c2c2c2;
+    --grey-alpha-500: #a3a3a3;
+    --grey-alpha-600: #858585;
+    --grey-alpha-700: #5c5c5c;
+    --grey-alpha-800: #333333;
+    --blue-100: #becbff;
+    --blue-200: #88a0ff;
+    --blue-300: #5678ff;
+    --blue-400: #0033ff;
+    --blue-500: #0604b7;
+    --blue-600: #0022ac;
+    --blue-700: #00135e;
+    --blue-800: #2a4365;
+
+    --text-l: 18px;
+    --text-s: 16px;
+    --heading-l: 48px;
+    --heading-s: 36px;
+
+    --gap-lg: 35px;
+    --gap-md: 25px;
+    --gap-sm: 15px;
+    --gap-xs: 10px;
+}
+
+@media (max-width: 1050px) {
+  :root {
+    --text-l: 16px;
+    --text-s: 14px;
   }
 }
