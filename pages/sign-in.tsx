@@ -1,11 +1,10 @@
-import Footer from '../components/shared/Footer';
-import Navigation from '../components/shared/Navigation';
+import SignIn from '../components/authentication/SignIn';
+import Layout from '../components/shared/Layout';
 
 export default function Home() {
   return (
-    <div>
-      <Navigation />
-      <Footer />
-    </div>
+    <Layout>
+      <SignIn />
+    </Layout>
   );
 }

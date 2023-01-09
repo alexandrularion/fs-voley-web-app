@@ -2,7 +2,6 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: 'Play', sans-serif;
 }
 
 a {
@@ -12,16 +11,12 @@ a {
 
 * {
   box-sizing: border-box;
+  font-family: 'Play', sans-serif !important;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
-    color: white;
-    background: black;
-  }
+input:-webkit-autofill { 
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: var(--grey-alpha-50) !important;
 }
 
 :root {
@@ -52,14 +47,18 @@ a {
     --text-sm: 16px;
     --text-xs: 14px;
 
-    --heading-l: 48px;
-    --heading-s: 36px;
+    --heading-md: 48px;
+    --heading-sm: 36px;
+    --heading-xs: 28px;
 
     --gap-xl: 45px;
     --gap-lg: 35px;
     --gap-md: 25px;
     --gap-sm: 15px;
-    --gap-xs: 10px;
+    --gap-xs: 5px;
+    --z-index-1: 100;
+    --z-index-2: 110;
+    --z-index-3: 120;
 }
 
 @media (max-width: 1050px) {
@@ -72,6 +71,11 @@ a {
 
 @media (max-width: 550px) {
   :root {
+
+    --heading-md: 30px;
+    --heading-sm: 22px;
+    --heading-xs: 18px;
+
     --text-lg: 18px;
     --text-l: 14px;
     --text-s: 12px;

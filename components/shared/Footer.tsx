@@ -92,7 +92,7 @@ const Footer = () => {
           </Text>
         </Flex>
         <Box {...{ placeSelf: 'start end', className: 'f-back-to-top-btn' }}>
-          <Link {...{ href: '#hero' }}>
+          <Link {...{ href: '#nav' }}>
             <Flex {...{ as: 'button', bg: 'var(--blue-600)', w: '52px', h: '52px', alignItems: 'center', justifyContent: 'center' }}>
               <ArrowUpIcon {...{ color: 'var(--white-color)', size: '24px' }} />
             </Flex>

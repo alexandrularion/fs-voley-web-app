@@ -3,3 +3,7 @@ export type IUrl = {
   url: string;
   key?: string;
 };
+
+export interface ILayout {
+  children: any;
+}

@@ -1,0 +1,151 @@
+import { Button, Flex, FormControl, Heading, Input, InputGroup, InputLeftElement, InputRightElement, Text } from '@chakra-ui/react';
+import styled from 'styled-components';
+import Background from '../../assets/Background.png';
+import { authData } from '../../constants/Auth';
+import { useState } from 'react';
+import { EmailIcon, PasswordFillIcon } from '../../styles/Icons';
+import { EmailValidation, PasswordValidation } from '../shared/Validations';
+import { Form, Field } from 'react-final-form';
+import { device } from '../shared/DevicesBreakpoints';
+import { LayoutContainer } from '../shared/Layout';
+
+const SignIn = () => {
+  const { title, subTitle } = authData;
+  const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const onSignInHandler = (values: { email: string; password: string }) => {
+    console.log(values);
+    setIsLoading(true);
+    //TO-DO
+    // Add Sign In Request
+  };
+
+  return (
+    <Container {...{ src: Background.src }}>
+      <LayoutContainer {...{ className: 'si-layout-container' }}>
+        <Flex {...{ position: 'relative', zIndex: 'var(--z-index-1)', flexDirection: 'column', alignItems: 'center', gap: 'var(--gap-xs)' }}>
+          <Heading {...{ color: 'var(--grey-alpha-100)', fontSize: 'var(--heading-md)' }}>{title}</Heading>
+          <Text {...{ color: 'var(--grey-alpha-300)', fontSize: 'var(--text-sm)', textAlign: 'center' }}>{subTitle}</Text>
+        </Flex>
+        <Form
+          {...{
+            onSubmit: (values) => onSignInHandler(values as { email: string; password: string }),
+            render: ({ handleSubmit, pristine }) => (
+              <FormControl
+                {...{
+                  position: 'relative',
+                  zIndex: 'var(--z-index-1)',
+                  w: '500px',
+                  className: 'si-form-container',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 'var(--gap-xl)',
+                  as: 'form',
+                  onSubmit: handleSubmit,
+                }}
+              >
+                <Flex {...{ flexDirection: 'column', gap: 'var(--gap-md)' }}>
+                  <Field
+                    {...{
+                      name: 'email',
+                      validate: (value: string) => EmailValidation(value),
+                      render: ({ input, meta }) => (
+                        <Flex {...{ flexDirection: 'column', gap: 'var(--gap-xs)' }}>
+                          <InputGroup>
+                            <InputLeftElement>
+                              <EmailIcon {...{ color: 'var(--grey-alpha-50)' }} />
+                            </InputLeftElement>
+                            <Input
+                              {...{
+                                isInvalid: meta.touched && meta.error,
+                                type: 'text',
+                                placeholder: 'Email: Introduceti email-ul dvs.',
+                                _placeholder: { color: 'var(--grey-alpha-300)' },
+                                outline: 'none',
+                                _focus: { borderColor: 'var(--grey-alpha-50)' },
+                                color: 'var(--grey-alpha-50)',
+                                ...input,
+                              }}
+                            />
+                          </InputGroup>
+                          {meta.touched && meta.error && <Text {...{ color: 'var(--grey-alpha-50)', fontSize: 'var(--text-xs)' }}>{meta.error}</Text>}
+                        </Flex>
+                      ),
+                    }}
+                  />
+                  <Field
+                    {...{
+                      name: 'password',
+                      validate: (value: string) => PasswordValidation(value),
+                      render: ({ input, meta }) => (
+                        <Flex {...{ flexDirection: 'column', gap: 'var(--gap-xs)' }}>
+                          <InputGroup>
+                            <InputLeftElement>
+                              <PasswordFillIcon {...{ color: 'var(--grey-alpha-50)' }} />
+                            </InputLeftElement>
+                            <Input
+                              {...{
+                                isInvalid: meta.touched && meta.error,
+                                type: isPasswordVisible ? 'text' : 'password',
+                                placeholder: 'Parola: Introduceti parola dvs.',
+                                _placeholder: { color: 'var(--grey-alpha-300)' },
+                                outline: 'none',
+                                _focus: { borderColor: 'var(--grey-alpha-50)' },
+                                color: 'var(--grey-alpha-50)',
+                                ...input,
+                              }}
+                            />
+                            <InputRightElement {...{ width: '4.5rem' }}>
+                              <Button {...{ h: '1.75rem', size: 'sm', onClick: () => setIsPasswordVisible(!isPasswordVisible) }}>{isPasswordVisible ? 'Hide' : 'Show'}</Button>
+                            </InputRightElement>
+                          </InputGroup>
+                          {meta.touched && meta.error && <Text {...{ color: 'var(--grey-alpha-50)', fontSize: 'var(--text-xs)' }}>{meta.error}</Text>}
+                        </Flex>
+                      ),
+                    }}
+                  />
+                </Flex>
+                <Button {...{ type: 'submit', isLoading, disabled: pristine || isLoading }}>{'Autentifica-te'}</Button>
+              </FormControl>
+            ),
+          }}
+        />
+      </LayoutContainer>
+    </Container>
+  );
+};
+export default SignIn;
+
+const Container = styled.section<{ src: string }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: url(${({ src }) => src});
+  background-size: cover;
+  width: 100%;
+  min-height: 600px;
+  position: relative;
+
+  &::after {
+    top: 0;
+    left: 0;
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(1.57deg, rgba(6, 4, 183, 0.9) 1.32%, rgba(56, 54, 218, 0.9) 57.87%, rgba(108, 106, 255, 0.9) 96.57%);
+    z-index: 0;
+  }
+
+  .si-layout-container {
+    flex-direction: column;
+    gap: var(--gap-xl);
+  }
+
+  @media ${device.mobile} {
+    .si-form-container {
+      width: 100%;
+    }
+  }
+`;

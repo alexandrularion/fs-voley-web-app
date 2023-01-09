@@ -6,7 +6,7 @@ import { authUrls, navigationUrls } from '../../constants/Navigation';
 import { IUrl } from './Interfaces';
 import Link from 'next/link';
 import { nanoid } from 'nanoid';
-import { Box, Button, Flex, IconButton, Menu, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, IconButton, Menu, Text } from '@chakra-ui/react';
 import { MenuButton, MenuItem, MenuList } from '@chakra-ui/menu';
 import { ArrowDownIcon, MenuIcon } from '../../styles/Icons';
 import { useRouter } from 'next/router';
@@ -17,9 +17,12 @@ const Navigation = () => {
   const { pathname } = useRouter();
 
   return (
-    <Container>
+    <Container {...{ id: 'nav' }}>
       <div {...{ className: 'n-container' }}>
-        <Image src={Logo} alt={'C.S.M Suceava'} />
+        <Flex {...{ alignItems: 'center', gap: 'var(--gap-xs)' }}>
+          <Image src={Logo} alt={'C.S.M Suceava'} />
+          <Heading {...{ fontSize: 'var(--heading-xs)', color: 'var(--blue-600)' }}>{'C.S.M Suceava'}</Heading>
+        </Flex>
         <div {...{ className: 'n-urls-container' }}>
           {urls.slice(0, urls.length - 2).map(({ title, url, key }, index) => (
             <Link key={key} {...{ href: url }}>
@@ -66,7 +69,7 @@ const Navigation = () => {
               >
                 ALTELE
               </MenuButton>
-              <MenuList {...{ borderColor: 'var(--grey-alpha-100)', borderRadius: '0', padding: '0' }}>
+              <MenuList {...{ borderColor: 'var(--grey-alpha-100)', padding: '0' }}>
                 <MenuItem>
                   <Link {...{ href: urls[urls.length - 2].url }}>
                     <Flex {...{ alignItems: 'center', gap: 'var(--gap-xs)', className: 'n-link-container' }}>
@@ -115,8 +118,8 @@ const Navigation = () => {
           </Flex>
         </div>
         <Menu>
-          <MenuButton {...{ as: IconButton, ['aria-label']: 'Options', icon: <MenuIcon />, variant: 'outline', className: 'n-mobile-container' }} />
-          <MenuList {...{ padding: '0', borderRadius: '0' }}>
+          <MenuButton {...{ as: IconButton, ['aria-label']: 'Options', icon: <MenuIcon size={'24px'} />, variant: 'outline', className: 'n-mobile-container' }} />
+          <MenuList {...{ padding: '0' }}>
             {urls.map(({ title, url, key }, index) => (
               <Link key={key} {...{ href: url }}>
                 <MenuItem>
@@ -139,6 +142,14 @@ const Navigation = () => {
                 </MenuItem>
               </Link>
             ))}
+            <Link {...{ href: authUrls.signIn.url }}>
+              <MenuItem>
+                <Flex {...{ alignItems: 'center', gap: 'var(--gap-xs)', className: 'n-link-container' }}>
+                  {pathname.includes(authUrls.signIn.url) && <Box {...{ w: '10px', h: '10px', borderRadius: '50px', bg: 'var(--blue-600)', transition: '0.2s all ease-in-out' }} />}
+                  <Text {...{ color: 'var(--blue-600)', fontSize: 'var(--text-l)', transition: '0.2s all ease-in-out', textTransform: 'uppercase' }}>{authUrls.signIn.title}</Text>
+                </Flex>
+              </MenuItem>
+            </Link>
           </MenuList>
         </Menu>
       </div>
@@ -150,6 +161,8 @@ export default Navigation;
 const Container = styled.section`
   display: flex;
   justify-content: center;
+  position: relative;
+  z-index: var(--z-index-2);
 
   .n-container {
     display: flex;
