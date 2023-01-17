@@ -1,10 +1,13 @@
+import { NextPage } from 'next';
 import SignIn from '../components/authentication/SignIn';
 import Layout from '../components/shared/Layout';
 
-export default function Home() {
+const SignInPage: NextPage = () => {
   return (
     <Layout>
       <SignIn />
     </Layout>
   );
-}
+};
+
+export default SignInPage;

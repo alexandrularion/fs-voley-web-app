@@ -1,11 +1,69 @@
-import Footer from '../../components/shared/Footer';
-import Navigation from '../../components/shared/Navigation';
+import { useEffect, useState } from 'react';
+import Layout from '../../components/shared/Layout';
+import { TSearchTeam, TTeamPlayer } from '../../components/team/Interfaces';
+import TeamHeader from '../../components/team/TeamHeader';
+import TeamList from '../../components/team/TeamList';
 
 export default function Home() {
+  const [tab, setTab] = useState<number>(0);
+  const [search, setSearch] = useState<TSearchTeam>({});
+  const players: TTeamPlayer[] = [
+    {
+      name: 'Pop',
+      surName: 'Darius',
+      shirtNumber: 2,
+      position: 'Centru',
+      image: 'https://i.imgur.com/4wP4XIX.png',
+    },
+    {
+      name: 'Pop',
+      surName: 'Darius',
+      shirtNumber: 2,
+      position: 'Centru',
+      image: 'https://i.imgur.com/4wP4XIX.png',
+    },
+    {
+      name: 'Pop',
+      surName: 'Darius',
+      shirtNumber: 2,
+      position: 'Centru',
+      image: 'https://i.imgur.com/4wP4XIX.png',
+    },
+    {
+      name: 'Pop',
+      surName: 'Darius',
+      shirtNumber: 2,
+      position: 'Centru',
+      image: 'https://i.imgur.com/4wP4XIX.png',
+    },
+    {
+      name: 'Pop',
+      surName: 'Darius',
+      shirtNumber: 2,
+      position: 'Centru',
+      image: 'https://i.imgur.com/4wP4XIX.png',
+    },
+    {
+      name: 'Pop',
+      surName: 'Darius',
+      shirtNumber: 2,
+      position: 'Centru',
+      image: 'https://i.imgur.com/4wP4XIX.png',
+    },
+  ];
+
+  useEffect(() => {
+    console.log(tab);
+  }, [tab]);
+
+  useEffect(() => {
+    console.log(search);
+  }, [search]);
+
   return (
-    <div>
-      <Navigation />
-      <Footer />
-    </div>
+    <Layout {...{ bgColor: 'var(--blue-600)' }}>
+      <TeamHeader {...{ tab, setTab, setSearch }} />
+      <TeamList {...{ players }} />
+    </Layout>
   );
 }
