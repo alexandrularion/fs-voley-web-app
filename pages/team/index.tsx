@@ -5,7 +5,6 @@ import TeamHeader from '../../components/team/TeamHeader';
 import TeamList from '../../components/team/TeamList';
 
 export default function Home() {
-  const [tab, setTab] = useState<number>(0);
   const [search, setSearch] = useState<TSearchTeam>({});
   const players: TTeamPlayer[] = [
     {
@@ -53,16 +52,12 @@ export default function Home() {
   ];
 
   useEffect(() => {
-    console.log(tab);
-  }, [tab]);
-
-  useEffect(() => {
     console.log(search);
   }, [search]);
 
   return (
     <Layout {...{ bgColor: 'var(--blue-600)' }}>
-      <TeamHeader {...{ tab, setTab, setSearch }} />
+      <TeamHeader {...{ setSearch }} />
       <TeamList {...{ players }} />
     </Layout>
   );

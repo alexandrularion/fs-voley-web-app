@@ -10,15 +10,15 @@ import { Box, Flex, Heading, Input, InputGroup, InputLeftElement, Select } from 
 import { SearchIcon } from '../../styles/Icons';
 import { debounce } from '../../utils';
 
-const TeamHeader: React.FC<ITeamHeader> = ({ setTab, tab, setSearch }) => {
+const TeamHeader: React.FC<ITeamHeader> = ({ setSearch }) => {
   const [query, setQuery] = useState<string>();
   const [option, setOption] = useState<string>();
 
   const tabs: ITab[] = useMemo(
     () =>
       [
-        { tabId: 0, title: 'Jucatori' },
-        { tabId: 1, title: 'Antrenori' },
+        { tabId: 0, title: 'Jucatori', href: '/team' },
+        { tabId: 1, title: 'Antrenori', href: '/team/coaches' },
       ].map((obj) => ({ ...obj, key: nanoid() })),
     []
   );
@@ -53,7 +53,7 @@ const TeamHeader: React.FC<ITeamHeader> = ({ setTab, tab, setSearch }) => {
     <Container {...{ src: Background.src }}>
       <LayoutContainer {...{ className: 'sh-layout-container' }}>
         <Heading {...{ color: 'var(--grey-alpha-50)', fontSize: 'var(--heading-md)' }}>{'Echipa'}</Heading>
-        <Tabs {...{ tab, setTab, tabs }} />
+        <Tabs {...{ tabs }} />
         <Flex {...{ gap: '20px' }}>
           <InputGroup>
             <InputLeftElement>

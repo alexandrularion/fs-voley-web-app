@@ -9,9 +9,9 @@ export interface ILayout {
   bgColor?: string;
 }
 
-export type ITab = { tabId: number; title: string; key?: string };
+export type ITab = { tabId: number; title: string; key?: string; href?: string };
 export interface ITabs {
-  setTab: React.Dispatch<React.SetStateAction<number>>;
-  tab: number;
+  setTab?: React.Dispatch<React.SetStateAction<number>>;
+  tab?: number;
   tabs: ITab[];
 }

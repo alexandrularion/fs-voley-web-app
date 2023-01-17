@@ -16,8 +16,6 @@ export type TTeamPlayer = {
 export type TSearchTeam = { query?: string; option?: string };
 
 export interface ITeamHeader {
-  setTab: React.Dispatch<React.SetStateAction<number>>;
-  tab: number;
   setSearch: React.Dispatch<React.SetStateAction<TSearchTeam>>;
 }
 
