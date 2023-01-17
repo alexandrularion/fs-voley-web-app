@@ -63,7 +63,8 @@ model Sponsor {
     title                      String
     url                        String
     website                    String
-    period                     String
+    date_start                 String
+    date_end                   String
     image_url                  String
     status                     Int?     @default(0)
     createdAt                  DateTime          @default(now())

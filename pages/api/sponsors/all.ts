@@ -6,7 +6,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     if (req.method == 'GET') {
       const sponsors = await prisma.sponsor.findMany();
-      // return basic user details and token
+
       return res.status(200).json(sponsors);
     } else {
       res.status(405).json({ message: 'Method Not Allowed' });
