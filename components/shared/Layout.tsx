@@ -4,22 +4,28 @@ import Footer from './Footer';
 import { ILayout } from './Interfaces';
 import Navigation from './Navigation';
 
-const Layout: React.FC<ILayout> = ({ children }) => {
+const Layout: React.FC<ILayout> = ({ children, bgColor = 'var(--white-color)' }) => {
   return (
-    <>
+    <Container {...{ bgColor }}>
       <Navigation />
       {children}
       <Footer />
-    </>
+    </Container>
   );
 };
 export default Layout;
+
+const Container = styled.main<{ bgColor?: string }>`
+  background-color: ${({ bgColor }) => bgColor};
+`;
 
 export const LayoutContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   width: 1300px;
+  position: relative;
+  z-index: var(--z-index-2);
 
   @media ${device.smallLaptop}, ${device.tablet} {
     width: 90vw;

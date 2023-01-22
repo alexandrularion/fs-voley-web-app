@@ -163,6 +163,7 @@ const Container = styled.section`
   justify-content: center;
   position: relative;
   z-index: var(--z-index-2);
+  background-color: var(--white-color);
 
   .n-container {
     display: flex;

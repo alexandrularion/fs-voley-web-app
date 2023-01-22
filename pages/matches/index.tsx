@@ -1,11 +1,19 @@
-import Footer from '../../components/shared/Footer';
-import Navigation from '../../components/shared/Navigation';
+import { useEffect, useState } from 'react';
+import { TSearchMatches } from '../../components/matches/Interfaces';
+import MatchesHeader from '../../components/matches/MatchesHeader';
+import Layout from '../../components/shared/Layout';
 
-export default function Home() {
+const FutureMatchesPage = () => {
+  const [search, setSearch] = useState<TSearchMatches>({});
+
+  useEffect(() => {
+    console.log(search);
+  }, [search]);
+
   return (
-    <div>
-      <Navigation />
-      <Footer />
-    </div>
+    <Layout>
+      <MatchesHeader {...{ setSearch }} />
+    </Layout>
   );
-}
+};
+export default FutureMatchesPage;

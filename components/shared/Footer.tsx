@@ -108,6 +108,7 @@ const Container = styled.section`
   display: flex;
   justify-content: center;
   width: 100%;
+  background-color: var(--white-color);
 
   .f-container {
     display: grid;
