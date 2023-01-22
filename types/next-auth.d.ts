@@ -1,6 +1,5 @@
-import { StaticImageData } from './image';
-
-export type TUserRole = 0 | 1 | 2;
+export type TUserRole = 0 | 1; // 0 - Administrator / 1 - Content Creator
+export type TUserStatus = 0 | 1; // 0 - inactive / 1- active
 interface IUser {}
 
 declare module 'next-auth' {
@@ -13,44 +12,30 @@ declare module 'next-auth' {
       email: string;
       role: TUserRole;
       name: string;
-      image: string | StaticImageData;
-      address: string;
+      status: TUserStatus;
       accessToken: string;
-      isEnrolled: boolean;
-      isEmailVerified: boolean;
-      providerId: string;
-      enrolledAt: string;
+      createAt: string;
       updatedAt: string;
     };
   }
   interface Session {
-    user: {
-      id: number;
-      accessToken: string;
-      email: string;
-      role: TUserRole;
-      name: string;
-      image: string | StaticImageData;
-      address: string;
-      isEnrolled: boolean;
-      isEmailVerified: boolean;
-      providerId: string;
-      enrolledAt: string;
-      updatedAt: string;
-    };
+    id: number;
+    email: string;
+    role: TUserRole;
+    name: string;
+    status: TUserStatus;
+    accessToken: string;
+    createAt: string;
+    updatedAt: string;
   }
   interface User {
     id: number;
     email: string;
     role: TUserRole;
     name: string;
-    image: string | StaticImageData;
+    status: TUserStatus;
     accessToken: string;
-    address: string;
-    isEnrolled: boolean;
-    isEmailVerified: boolean;
-    providerId: string;
-    enrolledAt: string;
+    createAt: string;
     updatedAt: string;
   }
   interface JWT {

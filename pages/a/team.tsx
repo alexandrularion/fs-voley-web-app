@@ -6,7 +6,7 @@ import { TSearchTeam, TTeamPlayer } from '../../components/team/Interfaces';
 import TeamHeader from '../../components/team/TeamHeader';
 import TeamList from '../../components/team/TeamList';
 
-const CoachesPage = () => {
+export default function Home() {
   const [search, setSearch] = useState<TSearchTeam>({});
   const players: TTeamPlayer[] = [
     {
@@ -63,9 +63,7 @@ const CoachesPage = () => {
       <TeamList {...{ players }} />
     </Layout>
   );
-};
-
-export default CoachesPage;
+}
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx);

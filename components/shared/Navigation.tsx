@@ -2,19 +2,23 @@ import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import Logo from '../../assets/Logo.png';
 import Image from 'next/image';
-import { authUrls, navigationUrls } from '../../constants/Navigation';
+import { authRoutes, navigationRoutes, userRoutes, adminRoutes } from '../../constants/Navigation';
 import { IUrl } from './Interfaces';
 import Link from 'next/link';
 import { nanoid } from 'nanoid';
-import { Box, Button, Flex, Heading, IconButton, Menu, Text } from '@chakra-ui/react';
-import { MenuButton, MenuItem, MenuList } from '@chakra-ui/menu';
+import { Avatar, Box, Button, Flex, Heading, IconButton, Menu, Text } from '@chakra-ui/react';
+import { MenuButton, MenuDivider, MenuGroup, MenuItem, MenuList } from '@chakra-ui/menu';
 import { ArrowDownIcon, MenuIcon } from '../../styles/Icons';
 import { useRouter } from 'next/router';
 import { device } from './DevicesBreakpoints';
+import { signOut, useSession } from 'next-auth/react';
+import { getRoleNameByRoleId } from '../../utils';
 
 const Navigation = () => {
-  const urls: IUrl[] = useMemo(() => navigationUrls.map((link) => ({ ...link, key: nanoid() })), []);
+  const urls: IUrl[] = useMemo(() => Object.values(navigationRoutes).map((link) => ({ ...link, key: nanoid() })), []);
+  const menuRoutes: IUrl[] = useMemo(() => Object.values(adminRoutes).map((link) => ({ ...link, key: nanoid() })), []);
   const { pathname } = useRouter();
+  const { data, status } = useSession();
 
   return (
     <Container {...{ id: 'nav' }}>
@@ -73,11 +77,13 @@ const Navigation = () => {
                 <MenuItem>
                   <Link {...{ href: urls[urls.length - 2].url }}>
                     <Flex {...{ alignItems: 'center', gap: 'var(--gap-xs)', className: 'n-link-container' }}>
-                      {pathname.includes(urls[urls.length - 2].url) && <Box {...{ w: '10px', h: '10px', borderRadius: '50px', bg: 'var(--blue-600)', transition: '0.2s all ease-in-out' }} />}
+                      {pathname.localeCompare(urls[urls.length - 2].url) === 0 && (
+                        <Box {...{ w: '10px', h: '10px', borderRadius: '50px', bg: 'var(--blue-600)', transition: '0.2s all ease-in-out' }} />
+                      )}
                       <Text
                         {...{
                           color: 'var(--blue-600)',
-                          fontWeight: pathname.includes(urls[urls.length - 2].url) ? 'bold' : 'normal',
+                          fontWeight: pathname.localeCompare(urls[urls.length - 2].url) === 0 ? 'bold' : 'normal',
                           _hover: { color: 'var(--blue-400)' },
                           transition: '0.2s all ease-in-out',
                           textTransform: 'uppercase',
@@ -108,13 +114,109 @@ const Navigation = () => {
                 </MenuItem>
               </MenuList>
             </Menu>
-            <Box {...{ borderLeft: '2px solid var(--blue-600)', h: '30px', borderRadius: '5px' }} />
-            <Link {...{ href: authUrls.signIn.url }}>
-              <Flex {...{ alignItems: 'center', gap: 'var(--gap-xs)', className: 'n-link-container' }}>
-                {pathname.includes(authUrls.signIn.url) && <Box {...{ w: '10px', h: '10px', borderRadius: '50px', bg: 'var(--blue-600)', transition: '0.2s all ease-in-out' }} />}
-                <Text {...{ color: 'var(--blue-600)', fontSize: 'var(--text-l)', transition: '0.2s all ease-in-out', textTransform: 'uppercase' }}>{authUrls.signIn.title}</Text>
-              </Flex>
-            </Link>
+            <Box {...{ borderLeft: '2px solid var(--blue-600)', h: '30px', borderRadius: '5px', m: '0 15px' }} />
+            {status === 'authenticated' ? (
+              <Menu>
+                <MenuButton
+                  {...{
+                    as: Button,
+                    rightIcon: <ArrowDownIcon {...{ color: 'var(--blue-600)' }} />,
+                    bg: 'none',
+                    _hover: { background: 'none' },
+                    _active: { background: 'none' },
+                    textColor: 'var(--blue-600)',
+                    fontSize: 'var(--text-l)',
+                    fontWeight: pathname.includes(urls[urls.length - 2].url) || pathname.includes(urls[urls.length - 1].url) ? 'bold' : 'normal',
+                    padding: 0,
+                  }}
+                >
+                  <Flex {...{ alignItems: 'center', gap: 'var(--gap-sm)' }}>
+                    <Avatar {...{ name: data?.name || 'Alex', size: 'md', mb: '3px' }} />
+                    <Flex {...{ flexDirection: 'column', alignItems: 'flex-start' }}>
+                      <Text {...{ fontWeight: 'bold', color: 'var(--blue-500)' }}>{data?.name}</Text>
+                      <Text {...{ fontSize: 'var(--text-xs)', color: 'var(--grey-alpha-600)', fontWeight: '400' }}>{getRoleNameByRoleId(data?.role)}</Text>
+                    </Flex>
+                  </Flex>
+                </MenuButton>
+                <MenuList {...{ borderColor: 'var(--grey-alpha-100)', padding: '0' }}>
+                  <MenuGroup title="Gestionare">
+                    {menuRoutes?.map(({ key, title, url }) => (
+                      <MenuItem key={key}>
+                        <Link {...{ href: url }}>
+                          <Flex {...{ alignItems: 'center', gap: 'var(--gap-xs)', className: 'n-link-container' }}>
+                            {pathname.localeCompare(url) === 0 && (
+                              <Box
+                                {...{
+                                  w: '10px',
+                                  h: '10px',
+                                  borderRadius: '50px',
+                                  bg: pathname.localeCompare(url) === 0 ? 'var(--blue-400)' : 'var(--grey-alpha-700)',
+                                  transition: '0.2s all ease-in-out',
+                                }}
+                              />
+                            )}
+                            <Text
+                              {...{
+                                color: pathname.localeCompare(url) === 0 ? 'var(--blue-400)' : 'var(--grey-alpha-700)',
+                                fontWeight: pathname.localeCompare(url) === 0 ? 'bold' : 'normal',
+                                _hover: { color: 'var(--blue-400)' },
+                                transition: '0.2s all ease-in-out',
+                              }}
+                            >
+                              {title}
+                            </Text>
+                          </Flex>
+                        </Link>
+                      </MenuItem>
+                    ))}
+                  </MenuGroup>
+                  <MenuDivider />
+                  <MenuGroup title="Cont">
+                    <MenuItem>
+                      <Link {...{ href: userRoutes.settings.url }}>
+                        <Flex {...{ alignItems: 'center', gap: 'var(--gap-xs)', className: 'n-link-container' }}>
+                          {pathname.includes(userRoutes.settings.url) && <Box {...{ w: '10px', h: '10px', borderRadius: '50px', bg: 'var(--blue-600)', transition: '0.2s all ease-in-out' }} />}
+                          <Text
+                            {...{
+                              color: pathname.includes(userRoutes.settings.url) ? 'var(--blue-600)' : 'var(--grey-alpha-700)',
+                              fontWeight: pathname.includes(userRoutes.settings.url) ? 'bold' : 'normal',
+                              _hover: { color: 'var(--blue-400)' },
+                              transition: '0.2s all ease-in-out',
+                            }}
+                          >
+                            {userRoutes.settings.title}
+                          </Text>
+                        </Flex>
+                      </Link>
+                    </MenuItem>
+                    <MenuItem {...{ onClick: () => signOut() }}>
+                      <Flex {...{ alignItems: 'center', gap: 'var(--gap-xs)' }}>
+                        <Text
+                          {...{
+                            color: 'var(--red-color)',
+                            _hover: {
+                              color: '#ff0000',
+                            },
+                            transition: '0.2s all ease-in-out',
+                          }}
+                        >
+                          {'Iesiți din cont'}
+                        </Text>
+                      </Flex>
+                    </MenuItem>
+                  </MenuGroup>
+                </MenuList>
+              </Menu>
+            ) : status === 'unauthenticated' ? (
+              <Link {...{ href: authRoutes.signIn.url }}>
+                <Flex {...{ alignItems: 'center', gap: 'var(--gap-xs)', className: 'n-link-container' }}>
+                  {pathname.includes(authRoutes.signIn.url) && <Box {...{ w: '10px', h: '10px', borderRadius: '50px', bg: 'var(--blue-600)', transition: '0.2s all ease-in-out' }} />}
+                  <Text {...{ color: 'var(--blue-600)', fontSize: 'var(--text-l)', transition: '0.2s all ease-in-out', textTransform: 'uppercase' }}>{authRoutes.signIn.title}</Text>
+                </Flex>
+              </Link>
+            ) : (
+              <></>
+            )}
           </Flex>
         </div>
         <Menu>
@@ -142,11 +244,11 @@ const Navigation = () => {
                 </MenuItem>
               </Link>
             ))}
-            <Link {...{ href: authUrls.signIn.url }}>
+            <Link {...{ href: authRoutes.signIn.url }}>
               <MenuItem>
                 <Flex {...{ alignItems: 'center', gap: 'var(--gap-xs)', className: 'n-link-container' }}>
-                  {pathname.includes(authUrls.signIn.url) && <Box {...{ w: '10px', h: '10px', borderRadius: '50px', bg: 'var(--blue-600)', transition: '0.2s all ease-in-out' }} />}
-                  <Text {...{ color: 'var(--blue-600)', fontSize: 'var(--text-l)', transition: '0.2s all ease-in-out', textTransform: 'uppercase' }}>{authUrls.signIn.title}</Text>
+                  {pathname.includes(authRoutes.signIn.url) && <Box {...{ w: '10px', h: '10px', borderRadius: '50px', bg: 'var(--blue-600)', transition: '0.2s all ease-in-out' }} />}
+                  <Text {...{ color: 'var(--blue-600)', fontSize: 'var(--text-l)', transition: '0.2s all ease-in-out', textTransform: 'uppercase' }}>{authRoutes.signIn.title}</Text>
                 </Flex>
               </MenuItem>
             </Link>

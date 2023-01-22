@@ -1,3 +1,5 @@
+import { GetServerSidePropsContext } from 'next';
+import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import Layout from '../../components/shared/Layout';
 import { TSearchTeam, TTeamPlayer } from '../../components/team/Interfaces';
@@ -62,3 +64,12 @@ export default function Home() {
     </Layout>
   );
 }
+
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getSession(ctx);
+  return {
+    props: {
+      session,
+    },
+  };
+};

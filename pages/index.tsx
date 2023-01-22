@@ -1,11 +1,21 @@
-import Footer from '../components/shared/Footer';
-import Navigation from '../components/shared/Navigation';
+import { GetServerSidePropsContext } from 'next';
+import { getSession } from 'next-auth/react';
+import Layout, { LayoutContainer } from '../components/shared/Layout';
 
-export default function Home() {
+const HomePage = () => {
   return (
-    <div>
-      <Navigation />
-      <Footer />
-    </div>
+    <Layout>
+      <LayoutContainer></LayoutContainer>
+    </Layout>
   );
-}
+};
+export default HomePage;
+
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getSession(ctx);
+  return {
+    props: {
+      session,
+    },
+  };
+};

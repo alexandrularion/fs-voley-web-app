@@ -1,17 +1,15 @@
-import { GetServerSidePropsContext, NextPage } from 'next';
+import { GetServerSidePropsContext } from 'next';
 import { getSession } from 'next-auth/react';
-import SignIn from '../components/authentication/SignIn';
-import Layout from '../components/shared/Layout';
+import Layout, { LayoutContainer } from '../components/shared/Layout';
 
-const SignInPage: NextPage = () => {
+const HistoryPage = () => {
   return (
     <Layout>
-      <SignIn />
+      <LayoutContainer></LayoutContainer>
     </Layout>
   );
 };
-
-export default SignInPage;
+export default HistoryPage;
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx);

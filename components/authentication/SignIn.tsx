@@ -8,17 +8,32 @@ import { EmailValidation, PasswordValidation } from '../shared/Validations';
 import { Form, Field } from 'react-final-form';
 import { device } from '../shared/DevicesBreakpoints';
 import { LayoutContainer } from '../shared/Layout';
+import { signIn, SignInResponse } from 'next-auth/react';
+import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
+import { userRoutes } from '../../constants/Navigation';
 
 const SignIn = () => {
   const { title, subTitle } = authData;
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { push } = useRouter();
 
-  const onSignInHandler = (values: { email: string; password: string }) => {
-    console.log(values);
+  const { settings } = userRoutes;
+
+  const onSignInHandler = async ({ email, password }: { email: string; password: string }) => {
     setIsLoading(true);
-    //TO-DO
-    // Add Sign In Request
+    try {
+      const res: SignInResponse | undefined = await signIn('credentials', { email, password, redirect: false });
+      if (res?.status !== 200) {
+        toast('Email-ul sau parola sunt incorecte.', { hideProgressBar: true, autoClose: 5000, type: 'error', position: 'bottom-right' });
+      } else {
+        push(settings.url);
+      }
+    } catch (error: any) {
+      toast('Ne pare rau! A aparut o eroare la server.', { hideProgressBar: true, autoClose: 5000, type: 'error', position: 'bottom-right' });
+    }
+    setIsLoading(false);
   };
 
   return (

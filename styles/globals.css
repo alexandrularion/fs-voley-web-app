@@ -53,8 +53,8 @@ input:-webkit-autofill {
 
     --gap-xl: 45px;
     --gap-lg: 35px;
-    --gap-md: 25px;
-    --gap-sm: 15px;
+    --gap-md: 20px;
+    --gap-sm: 10px;
     --gap-xs: 5px;
     --z-index-1: 100;
     --z-index-2: 110;

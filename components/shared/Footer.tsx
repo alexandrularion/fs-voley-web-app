@@ -9,12 +9,12 @@ import { useMemo } from 'react';
 import { nanoid } from 'nanoid';
 import { IUrl } from './Interfaces';
 import Link from 'next/link';
-import { navigationUrls } from '../../constants/Navigation';
+import { navigationRoutes } from '../../constants/Navigation';
 import { useRouter } from 'next/router';
 import { ArrowUpIcon } from '../../styles/Icons';
 
 const Footer = () => {
-  const urls: IUrl[] = useMemo(() => navigationUrls.map((link) => ({ ...link, key: nanoid() })), []);
+  const urls: IUrl[] = useMemo(() => Object.values(navigationRoutes).map((link) => ({ ...link, key: nanoid() })), []);
   const socialMediaUrls: IUrl[] = useMemo(() => footerSocialMediaData.map((link) => ({ ...link, key: nanoid() })), []);
   const { pathname } = useRouter();
   const { address, email, telephone, rightsMessage } = footerData;

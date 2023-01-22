@@ -1,8 +1,9 @@
-import { GetStaticProps, NextPage } from 'next';
+import { GetServerSidePropsContext, NextPage } from 'next';
 import Layout from '../../components/shared/Layout';
 import { SponsorsHeader, SponsorsList } from '../../components/sponsors';
 import { TSponsor } from '../../components/sponsors/Interfaces';
 import { useState, useEffect } from 'react';
+import { getSession } from 'next-auth/react';
 
 const SponsorsPage: NextPage = () => {
   const [tab, setTab] = useState<number>(0);
@@ -64,10 +65,11 @@ const SponsorsPage: NextPage = () => {
 };
 export default SponsorsPage;
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getSession(ctx);
   return {
     props: {
-      a: 1,
+      session,
     },
   };
 };
