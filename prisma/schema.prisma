@@ -24,6 +24,34 @@ model User {
   @@map("users")
 }
 
+// Antrenori (fara vizualizare de antrenor)
+model Trainers{
+  id                         Int            @id @default(autoincrement())
+  first_name                 String
+  last_name                  String
+  description                String?
+  image                      String?        @db.LongText
+  nationality                String?
+
+  @@map("trainers")
+}
+
+model Player {
+  id                         Int            @id @default(autoincrement())
+  first_name                 String
+  last_name                  String
+  description                String?
+  role                       Int?           @default(0)
+  height                     Float
+  position                   String?
+  birthday                   DateTime
+  nationality                String?
+  image                      String?        @db.LongText
+  @@map("players")
+}
+
+// timeline
+
 model File {
     id                         Int               @id @default(autoincrement())
     image_url                  String
@@ -58,6 +86,7 @@ model Keyword {
     @@map("keywords")
 }
 
+/// create
 model Sponsor {
     id                         Int               @id @default(autoincrement())
     title                      String
@@ -73,3 +102,8 @@ model Sponsor {
     @@map("sponsors")
 }
 
+
+// o entittate editie, cand adaugi un jucator trebuei sa poti sa il atribui la o anumita editie.
+//editie: id , titlu (2023-20224).
+
+// O alta entitate care se numeste (echipa) voley type ex(juniori, middle, seniori)
