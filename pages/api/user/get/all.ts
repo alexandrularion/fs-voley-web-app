@@ -1,6 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../../lib/prisma';
+import { getSession } from 'next-auth/react';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -9,10 +10,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       return res.status(200).json(users);
     } else {
-      res.status(405).json({ message: 'Method Not Allowed' });
+      return res.status(405).json({ message: 'Method Not Allowed' });
     }
   } catch (e) {
     console.log(e);
-    res.status(404).json({ message: e });
+    return res.status(404).json({ message: e });
   }
 }

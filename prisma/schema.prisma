@@ -13,7 +13,9 @@ datasource db {
 model User {
   id                         Int               @id @default(autoincrement())
   email                      String            @unique
-  name                       String
+  name                       String?
+  first_name                 String?
+  last_name                  String?
   password                   String?
   status                     Int?     @default(0)
   role                       Int?     @default(0)

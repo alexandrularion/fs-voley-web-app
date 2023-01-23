@@ -1,9 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../../lib/prisma';
+import { getSession } from 'next-auth/react';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     if (req.method == 'DELETE') {
+      const session = await getSession({ req });
+      if (session == null) {
+        return res.status(401).json({ message: 'Unauthorized' });
+      }
       const { id } = req.query;
       try {
         await prisma.sponsor.delete({
