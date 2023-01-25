@@ -1,22 +1,18 @@
+// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../../lib/prisma';
-import { getSession } from 'next-auth/react';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
-    if (req.method == 'DELETE') {
-      const session = await getSession({ req });
-      if (session == null) {
-        return res.status(401).json({ message: 'Unauthorized' });
-      }
+    if (req.method == 'GET') {
       const { id } = req.query;
       try {
-        await prisma.user.delete({
+        const user = await prisma.player.findFirst({
           where: { id: Number(id) },
         });
-        return res.status(200).json({ message: 'This user has been deleted!' });
+        return res.status(200).json(user);
       } catch (e) {
-        return res.status(404).json({ message: 'This user cannot be accessed or does not exist.' });
+        return res.status(404).json({ message: 'This player cannot be accessed or does not exist.' });
       }
     } else {
       return res.status(405).json({ message: 'Method Not Allowed' });

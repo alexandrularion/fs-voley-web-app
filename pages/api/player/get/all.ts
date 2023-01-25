@@ -6,14 +6,16 @@ import { getSession } from 'next-auth/react';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     if (req.method == 'GET') {
-      const users = await prisma.user.findMany();
+      const session = await getSession();
+      console.log(session);
+      const sponsors = await prisma.player.findMany();
 
-      return res.status(200).json(users);
+      return res.status(200).json(sponsors);
     } else {
-      return res.status(405).json({ message: 'Method Not Allowed' });
+      res.status(405).json({ message: 'Method Not Allowed' });
     }
   } catch (e) {
     console.log(e);
-    return res.status(404).json({ message: e });
+    res.status(404).json({ message: e });
   }
 }

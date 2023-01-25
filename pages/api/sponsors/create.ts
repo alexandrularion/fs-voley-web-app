@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import prisma from '../../../../lib/prisma';
+import prisma from '../../../lib/prisma';
 import { getSession } from 'next-auth/react';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -9,21 +9,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (session == null) {
         return res.status(401).json({ message: 'Unauthorized' });
       }
-      const { id } = req.query;
-      const { name, email } = req.body;
-      await prisma.user.update({
-        where: { id: Number(id) },
+
+      const { title, website, date_start, date_end, image_url } = req.body;
+      const sponsor = await prisma.sponsor.create({
         data: {
-          name: name,
-          email: email,
+          title: title,
+          website: website,
+          date_start: date_start,
+          date_end: date_end,
+          image_url: image_url,
         },
       });
-      return res.status(200).json({ message: 'The user was updated!' });
+
+      return res.status(200).json(sponsor);
     } else {
-      res.status(405).json({ message: 'Method Not Allowed' });
+      return res.status(405).json({ message: 'Method Not Allowed' });
     }
   } catch (e) {
     console.log(e);
-    res.status(404).json({ message: e });
+    return res.status(404).json({ message: e });
   }
 }

@@ -10,15 +10,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(401).json({ message: 'Unauthorized' });
       }
       const { id } = req.query;
-      const { name, email } = req.body;
-      await prisma.user.update({
+      const { first_name, last_name, description, role, height, position, birthday, nationality, image } = req.body;
+      await prisma.player.update({
         where: { id: Number(id) },
         data: {
-          name: name,
-          email: email,
+          first_name: first_name,
+          last_name: last_name,
+          description: description,
+          role: role,
+          height: height,
+          position: position,
+          birthday: birthday,
+          nationality: nationality,
+          image: image,
         },
       });
-      return res.status(200).json({ message: 'The user was updated!' });
+      return res.status(200).json({ message: 'The player was updated!' });
     } else {
       res.status(405).json({ message: 'Method Not Allowed' });
     }
