@@ -31,6 +31,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   } catch (e) {
     console.log(e);
-    res.status(404).json({ message: e });
+    res.status(500).json({ message: e });
   }
 }
