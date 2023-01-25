@@ -95,7 +95,7 @@ model Sponsor {
     website                    String
     date_start                 String
     date_end                   String
-    image_url                  String
+    image_url                  String?        @db.LongText
     status                     Int?     @default(0)
     createdAt                  DateTime          @default(now())
     updatedAt                  DateTime          @updatedAt
