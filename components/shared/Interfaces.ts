@@ -1,4 +1,6 @@
+import { FormApi } from 'final-form';
 import { Column } from 'react-table';
+import { TBESponsor } from '../sponsors/Interfaces';
 
 export type IUrl = {
   title: string;
@@ -25,4 +27,25 @@ export interface ICommonTable {
   columns: Column<object>[];
   data: object[];
   filter?: TTableFilter;
+}
+
+export interface IModal {
+  title: string;
+  isOpen: boolean;
+  onClose: () => void;
+}
+export interface IDeleteModal extends IModal {
+  onDeleteBtnClick: () => void;
+  description: string;
+}
+
+export interface IEmptyState {
+  title?: string;
+  description?: string;
+}
+
+export interface IFormModal extends IModal {
+  onSubmitHandler: (values: object, form: FormApi) => void;
+  initialValues?: TBESponsor | any;
+  isLoading?: boolean;
 }

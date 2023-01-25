@@ -29,3 +29,32 @@ export const getRoleNameByRoleId = (roleId: TUserRole) => {
     }
   }
 };
+
+/**
+ * Converts an url, such as base64 to file
+ * @param base64Url string
+ * @param fileName string
+ * @param type string
+ * @return boolean
+ */
+export const convertBase64URLToFile = async (base64Url: string, fileName: string, type: string) => {
+  const res = await fetch(base64Url);
+  const blob: Blob = await res.blob();
+  return new File([blob], fileName, { type });
+};
+
+/**
+ *
+ * @param file File
+ */
+export const convertFileToBase64URL = (file: File, callback: (result: string) => void) => {
+  const reader = new FileReader();
+
+  reader.onloadend = () => {
+    if (reader.result) {
+      const b64Link: string = reader.result as string;
+      callback(b64Link);
+    }
+  };
+  reader.readAsDataURL(file);
+};

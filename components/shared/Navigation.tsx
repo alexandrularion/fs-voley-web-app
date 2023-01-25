@@ -140,11 +140,11 @@ const Navigation = () => {
                     </Flex>
                   </Flex>
                 </MenuButton>
-                <MenuList {...{ borderColor: 'var(--grey-alpha-100)', padding: '0' }}>
+                <MenuList {...{ borderColor: 'var(--grey-alpha-100)', padding: '0', position: 'relative', zIndex: '200' }}>
                   <MenuGroup title="Gestionare">
                     {menuRoutes?.map(({ key, title, url }) => (
-                      <MenuItem key={key}>
-                        <Link {...{ href: url }}>
+                      <Link key={key} {...{ href: url }}>
+                        <MenuItem>
                           <Flex {...{ alignItems: 'center', gap: 'var(--gap-xs)', className: 'n-link-container' }}>
                             {pathname.localeCompare(url) === 0 && (
                               <Box
@@ -168,8 +168,8 @@ const Navigation = () => {
                               {title}
                             </Text>
                           </Flex>
-                        </Link>
-                      </MenuItem>
+                        </MenuItem>
+                      </Link>
                     ))}
                   </MenuGroup>
                   <MenuDivider />
@@ -266,7 +266,7 @@ const Container = styled.section`
   display: flex;
   justify-content: center;
   position: relative;
-  z-index: var(--z-index-2);
+  z-index: var(--z-index-6);
   background-color: var(--white-color);
 
   .n-container {

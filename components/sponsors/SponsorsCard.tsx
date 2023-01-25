@@ -2,13 +2,9 @@ import { Flex, Heading, Text } from '@chakra-ui/react';
 import Link from 'next/link';
 import styled from 'styled-components';
 import { ISponsorsCard } from './Interfaces';
-import { useMemo } from 'react';
 import Image from 'next/image';
 
 const SponsorsCard: React.FC<ISponsorsCard> = ({ title, logo, site, startDate, endDate }) => {
-  const startDateFormated: string = useMemo(() => new Date(startDate).toLocaleDateString(undefined, { year: 'numeric' }), [startDate]);
-  const endDateFormated: string = useMemo(() => endDate ? new Date(endDate).toLocaleDateString(undefined, { year: 'numeric' }) : 'Prezent', [endDate]);
-
   return (
     <Container>
       <Flex {...{ background: 'var(--grey-alpha-50)', padding: '50px 25px', alignItems: 'center', justifyContent: 'center' }}>
@@ -19,7 +15,7 @@ const SponsorsCard: React.FC<ISponsorsCard> = ({ title, logo, site, startDate, e
         <Link {...{ href: `https://${site}` }}>
           <Text {...{ fontSize: 'var(--text-lg)', color: 'var(--blue-700)' }}>{site}</Text>
         </Link>
-        <Text {...{ fontSize: 'var(--text-md)', color: 'var(--blue-700)' }}>{`${startDateFormated} - ${endDateFormated}`}</Text>
+        <Text {...{ fontSize: 'var(--text-md)', color: 'var(--blue-700)' }}>{`${startDate} - ${endDate || 'Prezent'}`}</Text>
       </Flex>
     </Container>
   );

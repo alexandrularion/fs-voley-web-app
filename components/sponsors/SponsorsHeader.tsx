@@ -11,6 +11,7 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/dist/client/link';
 import { adminRoutes } from '../../constants/Navigation';
 import { getRoleNameByRoleId } from '../../utils';
+import SponsorsCUModal from './SponsorsCUModal';
 
 const SponsorsHeader: React.FC<ISponsorsHeader> = ({ isUsedInAdminPage = false }) => {
   const tabs: ITab[] = useMemo(
@@ -48,6 +49,11 @@ const SponsorsHeader: React.FC<ISponsorsHeader> = ({ isUsedInAdminPage = false }
         <Tabs {...{ tabs }} />
       </LayoutContainer>
       <Box {...{ position: 'absolute', top: '265px', left: 0, w: '20px', h: '170px', zIndex: 'var(--z-index-2)', background: 'var(--blue-500)' }} />
+      {/* {
+        isUsedInAdminPage && <SponsorsCUModal {...{
+          
+        }} />
+      } */}
     </Container>
   );
 };
@@ -61,6 +67,7 @@ const Container = styled.section<{ src: string; isUsedInAdminPage: boolean }>`
   min-height: 350px;
   background-size: cover;
   position: relative;
+  z-index: var(--z-index-1);
   padding: 50px;
 
   &::after {

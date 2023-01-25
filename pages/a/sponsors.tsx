@@ -22,14 +22,16 @@ const SponsorsPage: NextPage<ISponsorsPage> = ({ data }) => {
         columnId: 'startDate',
         value: tab.value,
       });
-    } else {
-      setTab({
-        tabId: 0,
-        title: 'Din toti anii',
-        value: 0,
-      });
     }
-  }, [tab, setTab]);
+  }, [tab]);
+
+  useEffect(() => {
+    setTab({
+      tabId: 0,
+      title: 'Din toti anii',
+      value: 0,
+    });
+  }, [setTab]);
 
   return (
     <Layout {...{ bgColor: 'var(--grey-alpha-100)' }}>
@@ -41,13 +43,21 @@ const SponsorsPage: NextPage<ISponsorsPage> = ({ data }) => {
 export default SponsorsPage;
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const session = await getSession(ctx);
-  const { data } = await getAllSponsors();
-
-  return {
-    props: {
-      session,
-      data: data?.map(({ image_url, website, date_start, date_end, title }: any) => ({ logo: image_url, site: website, startdate: date_start, endDate: date_end, title  })),
-    },
-  };
+  try {
+    const session = await getSession(ctx);
+    const { data } = await getAllSponsors();
+    return {
+      props: {
+        session,
+        data: data?.map(({ image_url, website, date_start, date_end, title, id }: any) => ({ id, logo: image_url, site: website, startdate: date_start, endDate: date_end, title })),
+      },
+    };
+  } catch (err) {
+    return {
+      props: {
+        session: {},
+        data: [],
+      },
+    };
+  }
 };
