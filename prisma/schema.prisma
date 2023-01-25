@@ -92,7 +92,6 @@ model Keyword {
 model Sponsor {
     id                         Int               @id @default(autoincrement())
     title                      String
-    url                        String
     website                    String
     date_start                 String
     date_end                   String

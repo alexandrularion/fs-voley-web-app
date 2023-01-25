@@ -10,11 +10,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(401).json({ message: 'Unauthorized' });
       }
 
-      const { title, url, website, date_start, date_end, image_url } = req.body;
+      const { title, website, date_start, date_end, image_url } = req.body;
       const sponsor = await prisma.sponsor.create({
         data: {
           title: title,
-          url: url,
           website: website,
           date_start: date_start,
           date_end: date_end,
