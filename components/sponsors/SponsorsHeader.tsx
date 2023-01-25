@@ -1,17 +1,20 @@
 import styled from 'styled-components';
-import { ISponsorsHeader } from './Interfaces';
+import { ISponsorsHeader, TBESponsor } from './Interfaces';
 import Background from '../../assets/Background.png';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { nanoid } from 'nanoid';
 import { LayoutContainer } from '../shared/Layout';
 import Tabs from '../shared/Tabs';
 import { ITab } from '../shared/Interfaces';
-import { Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Text, useDisclosure } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/dist/client/link';
 import { adminRoutes } from '../../constants/Navigation';
 import { getRoleNameByRoleId } from '../../utils';
 import SponsorsCUModal from './SponsorsCUModal';
+import { createSponsor } from '../../services/Sponsors.service';
+import { toast } from 'react-toastify';
+import { FormApi } from 'final-form';
 
 const SponsorsHeader: React.FC<ISponsorsHeader> = ({ isUsedInAdminPage = false }) => {
   const tabs: ITab[] = useMemo(
@@ -25,7 +28,22 @@ const SponsorsHeader: React.FC<ISponsorsHeader> = ({ isUsedInAdminPage = false }
     []
   );
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { data } = useSession();
+  const cuModal = useDisclosure();
+
+  const onSubmitHandler = async (values: object, form: FormApi) => {
+    setIsLoading(true);
+    try {
+      await createSponsor(values as TBESponsor);
+      toast('Felicitari! Sponsorul a fost adaugat cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
+      form.reset();
+    } catch (err) {
+      toast('Ooops. Ceva nu a mers bine, te rugam incearca din nou.', { hideProgressBar: true, autoClose: 5000, type: 'error', position: 'bottom-right' });
+    }
+
+    setIsLoading(false);
+  };
 
   return (
     <Container {...{ src: Background.src, isUsedInAdminPage }}>
@@ -38,7 +56,7 @@ const SponsorsHeader: React.FC<ISponsorsHeader> = ({ isUsedInAdminPage = false }
         {data?.role === 0 && (
           <Flex {...{ w: '100%', justifyContent: 'space-between', alignItems: 'center', gap: 'var(--gap-md)' }}>
             <Heading {...{ color: 'var(--grey-alpha-50)', fontSize: 'var(--heading-md)' }}>{'Sponsori'}</Heading>
-            {isUsedInAdminPage && <Button {...{ variant: 'outline', colorScheme: 'whiteAlpha', color: 'var(--white-color)' }}>{'Adauga un sponsor'}</Button>}
+            {isUsedInAdminPage && <Button {...{ variant: 'outline', colorScheme: 'whiteAlpha', color: 'var(--white-color)', onClick: () => cuModal.onOpen() }}>{'Adauga un sponsor'}</Button>}
             {!isUsedInAdminPage && (
               <Link {...{ href: adminRoutes.sponsors.url }}>
                 <Button {...{ variant: 'solid', colorScheme: 'whiteAlpha', color: 'var(--black-color)', background: 'var(--white-color)' }}>{'Gestioneaza sponsori'}</Button>
@@ -49,11 +67,17 @@ const SponsorsHeader: React.FC<ISponsorsHeader> = ({ isUsedInAdminPage = false }
         <Tabs {...{ tabs }} />
       </LayoutContainer>
       <Box {...{ position: 'absolute', top: '265px', left: 0, w: '20px', h: '170px', zIndex: 'var(--z-index-2)', background: 'var(--blue-500)' }} />
-      {/* {
-        isUsedInAdminPage && <SponsorsCUModal {...{
-          
-        }} />
-      } */}
+      {isUsedInAdminPage && (
+        <SponsorsCUModal
+          {...{
+            isOpen: cuModal.isOpen,
+            onClose: cuModal.onClose,
+            title: 'Adauga sponsor',
+            onSubmitHandler,
+            isLoading,
+          }}
+        />
+      )}
     </Container>
   );
 };

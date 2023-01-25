@@ -25,7 +25,7 @@ const SponsorsTable: React.FC<ISponsorsList> = ({ data, filter }) => {
   const onSubmitHandler = async (values: object, form: FormApi) => {
     setIsLoading(true);
     try {
-      await createSponsor(values as TBESponsor);
+      await createSponsor({ date_end: null, ...values } as TBESponsor);
       toast('Felicitari! Sponsorul a fost adaugat cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
       form.reset();
     } catch (err) {

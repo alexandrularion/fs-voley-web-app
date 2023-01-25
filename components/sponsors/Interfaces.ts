@@ -15,7 +15,7 @@ export type TBESponsor = {
   title: string;
   image_url: string;
   date_start: string;
-  date_end: string;
+  date_end: string | null;
   website: string;
 };
 
