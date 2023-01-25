@@ -1,65 +1,26 @@
 import { GetServerSidePropsContext, NextPage } from 'next';
 import Layout from '../../components/shared/Layout';
 import { SponsorsHeader, SponsorsList } from '../../components/sponsors';
-import { TSponsor } from '../../components/sponsors/Interfaces';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { getSession } from 'next-auth/react';
+import { useTab } from '../../context/ContextTab';
+import { getAllSponsors } from '../../services/Sponsors.service';
+import { ISponsorsPage } from '../a/sponsors';
 
-const SponsorsPage: NextPage = () => {
-  const [tab, setTab] = useState<number>(0);
-
-  const sponsors: TSponsor[] = [
-    {
-      logo: 'https://assist-software.net/sites/all/themes/assist/logo-lightblue.svg',
-      title: 'Assist Software',
-      site: 'assist-software.net',
-      startDate: new Date().toString(),
-      endDate: new Date().toString(),
-    },
-    {
-      logo: 'https://assist-software.net/sites/all/themes/assist/logo-lightblue.svg',
-      title: 'Assist Software',
-      site: 'assist-software.net',
-      startDate: new Date().toString(),
-      endDate: new Date().toString(),
-    },
-    {
-      logo: 'https://assist-software.net/sites/all/themes/assist/logo-lightblue.svg',
-      title: 'Assist Software',
-      site: 'assist-software.net',
-      startDate: new Date().toString(),
-      endDate: new Date().toString(),
-    },
-    {
-      logo: 'https://assist-software.net/sites/all/themes/assist/logo-lightblue.svg',
-      title: 'Assist Software',
-      site: 'assist-software.net',
-      startDate: new Date().toString(),
-      endDate: new Date().toString(),
-    },
-    {
-      logo: 'https://assist-software.net/sites/all/themes/assist/logo-lightblue.svg',
-      title: 'Assist Software',
-      site: 'assist-software.net',
-      startDate: new Date().toString(),
-      endDate: new Date().toString(),
-    },
-    {
-      logo: 'https://assist-software.net/sites/all/themes/assist/logo-lightblue.svg',
-      title: 'Assist Software',
-      site: 'assist-software.net',
-      startDate: new Date().toString(),
-      endDate: new Date().toString(),
-    },
-  ];
+const SponsorsPage: NextPage<ISponsorsPage> = ({ data }) => {
+  const { tab, setTab } = useTab();
 
   useEffect(() => {
-    console.log(tab);
-  }, [tab]);
+    if (tab) {
+      console.log(tab);
+    } else {
+      setTab({ tabId: 0, title: 'Din toti anii', value: 0 });
+    }
+  }, [tab, setTab]);
   return (
     <Layout>
-      <SponsorsHeader {...{ setTab, tab }} />
-      <SponsorsList {...{ sponsors }} />
+      <SponsorsHeader />
+      <SponsorsList {...{ data }} />
     </Layout>
   );
 };
@@ -67,9 +28,14 @@ export default SponsorsPage;
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx);
+  const { data } = await getAllSponsors();
+
+  console.log(data);
+
   return {
     props: {
       session,
+      data: data?.map(({ image_url, website, date_start, date_end, title }: any) => ({ logo: image_url, site: website, startdate: date_start, endDate: date_end, title  })),
     },
   };
 };

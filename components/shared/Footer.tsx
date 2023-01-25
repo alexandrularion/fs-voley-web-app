@@ -37,21 +37,21 @@ const Footer = () => {
               {urls.map(({ title, url, key }, index) => (
                 <Link key={key} {...{ href: url }}>
                   <Flex {...{ alignItems: 'center', gap: 'var(--gap-xs)', className: 'n-link-container' }}>
-                    {(pathname.localeCompare(url) === 0 || (index !== 0 && pathname.includes(url))) && (
+                    {(pathname.localeCompare(url) === 0 || (index !== 0 && pathname.localeCompare(url) === 0)) && (
                       <Box
                         {...{
                           w: '7px',
                           h: '7px',
                           borderRadius: '50px',
-                          bg: pathname.localeCompare(url) === 0 || (index !== 0 && pathname.includes(url)) ? 'var(--blue-400)' : 'var(--grey-alpha-800)',
+                          bg: pathname.localeCompare(url) === 0 || (index !== 0 && pathname.localeCompare(url) === 0) ? 'var(--blue-400)' : 'var(--grey-alpha-800)',
                           transition: '0.2s all ease-in-out',
                         }}
                       />
                     )}
                     <Text
                       {...{
-                        color: pathname.localeCompare(url) === 0 || (index !== 0 && pathname.includes(url)) ? 'var(--blue-400)' : 'var(--grey-alpha-800)',
-                        fontWeight: pathname.localeCompare(url) === 0 || (index !== 0 && pathname.includes(url)) ? 'bold' : 'normal',
+                        color: pathname.localeCompare(url) === 0 || (index !== 0 && pathname.localeCompare(url) === 0) ? 'var(--blue-400)' : 'var(--grey-alpha-800)',
+                        fontWeight: pathname.localeCompare(url) === 0 || (index !== 0 && pathname.localeCompare(url) === 0) ? 'bold' : 'normal',
                         fontSize: 'var(--text-xs)',
                         transition: '0.2s all ease-in-out',
                       }}

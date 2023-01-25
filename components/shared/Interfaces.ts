@@ -1,3 +1,5 @@
+import { Column } from 'react-table';
+
 export type IUrl = {
   title: string;
   url: string;
@@ -9,9 +11,18 @@ export interface ILayout {
   bgColor?: string;
 }
 
-export type ITab = { tabId: number; title: string; key?: string; href?: string };
+export type ITab = { tabId: number; title: string; key?: string; href?: string; value: number | string };
 export interface ITabs {
-  setTab?: React.Dispatch<React.SetStateAction<number>>;
-  tab?: number;
   tabs: ITab[];
+}
+
+export type TTableFilter = {
+  columnId: string;
+  value: number | string;
+};
+
+export interface ICommonTable {
+  columns: Column<object>[];
+  data: object[];
+  filter?: TTableFilter;
 }

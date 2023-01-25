@@ -1,3 +1,5 @@
+import { TTableFilter } from '../shared/Interfaces';
+
 export type TSponsor = {
   logo: string;
   title: string;
@@ -10,10 +12,10 @@ export type TSponsor = {
 export interface ISponsorsCard extends TSponsor {}
 
 export interface ISponsorsHeader {
-  setTab: React.Dispatch<React.SetStateAction<number>>;
-  tab: number;
+  isUsedInAdminPage?: boolean;
 }
 
 export interface ISponsorsList {
-  sponsors: TSponsor[];
+  data: TSponsor[];
+  filter?: TTableFilter;
 }
