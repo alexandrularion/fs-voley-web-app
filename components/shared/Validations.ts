@@ -102,7 +102,7 @@ export const CustomValidation = (value: string | undefined, required: string, mi
   } else if (max) {
     return value && value.length <= max ? undefined : `${required} has more over ${max} max charachters.`;
   } else {
-    return value ? undefined : `${required} is required.`;
+    return value ? undefined : `${required} este necesar pentru a continua.`;
   }
 };
 

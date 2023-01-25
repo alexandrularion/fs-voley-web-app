@@ -37,6 +37,7 @@ const SponsorsHeader: React.FC<ISponsorsHeader> = ({ isUsedInAdminPage = false }
     try {
       await createSponsor(values as TBESponsor);
       toast('Felicitari! Sponsorul a fost adaugat cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
+      cuModal.onClose();
       form.reset();
     } catch (err) {
       toast('Ooops. Ceva nu a mers bine, te rugam incearca din nou.', { hideProgressBar: true, autoClose: 5000, type: 'error', position: 'bottom-right' });

@@ -12,4 +12,12 @@ const deleteSponsor = (sponsordId: number) => {
 const createSponsor = (sponsor: TBESponsor) => {
   return axiosConfigJSON.post('/sponsors/create', JSON.stringify(sponsor));
 };
-export { getAllSponsors, deleteSponsor, createSponsor };
+
+const updateSponsor = (sponsordId: number, sponsor: TBESponsor) => {
+  return axiosConfigJSON.put(`/sponsors/update/${sponsordId}`, JSON.stringify(sponsor));
+};
+
+export const sponsorsKeys = {
+  getAllSponsorsKey: '/sponsors/all',
+};
+export { getAllSponsors, deleteSponsor, createSponsor, updateSponsor };

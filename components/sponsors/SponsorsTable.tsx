@@ -9,14 +9,13 @@ import CommonTable from '../shared/Table';
 import { Box, Flex, useDisclosure } from '@chakra-ui/react';
 import { PenIcon, TrashIcon } from '../../styles/Icons';
 import DeleteModal from '../shared/DeleteModal';
-import { deleteSponsor } from '../../services/Sponsors.service';
+import { deleteSponsor, updateSponsor } from '../../services/Sponsors.service';
 import SponsorsCUModal from './SponsorsCUModal';
 import { toast } from 'react-toastify';
-import { createSponsor } from '../../services/Sponsors.service';
 import { FormApi } from 'final-form';
 
 const SponsorsTable: React.FC<ISponsorsList> = ({ data, filter }) => {
-  const memoizedData: TSponsor[] = useMemo(() => data.map((obj) => ({ ...obj, key: nanoid() })), [data]);
+  const [memoizedData] = useState<TSponsor[]>(data.map((obj) => ({ ...obj, key: nanoid() })));
   const deleteModal = useDisclosure();
   const cuModal = useDisclosure();
   const [sponsor, setSponsor] = useState<TSponsor>();
@@ -25,13 +24,25 @@ const SponsorsTable: React.FC<ISponsorsList> = ({ data, filter }) => {
   const onSubmitHandler = async (values: object, form: FormApi) => {
     setIsLoading(true);
     try {
-      await createSponsor({ date_end: null, ...values } as TBESponsor);
-      toast('Felicitari! Sponsorul a fost adaugat cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
+      await updateSponsor(sponsor?.id!, { date_end: '0', ...values } as TBESponsor);
+      toast('Felicitari! Sponsorul a fost actualizat cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
+      cuModal.onClose();
       form.reset();
-    } catch (err) {
-      toast('Ooops. Ceva nu a mers bine, te rugam incearca din nou.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
+    } catch (e) {
+      toast('Ooops. Ceva nu a mers bine, te rugam incearca din nou.', { hideProgressBar: true, autoClose: 5000, type: 'error', position: 'bottom-right' });
     }
+    setIsLoading(false);
+  };
 
+  const onDeleteHandler = async (sponsorId: number) => {
+    setIsLoading(true);
+    try {
+      await deleteSponsor(sponsorId);
+      toast('Sponsorul a fost sters cu succcess.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
+      deleteModal.onClose();
+    } catch (e) {
+      toast('Ooops. Ceva nu a mers bine, te rugam incearca din nou.', { hideProgressBar: true, autoClose: 5000, type: 'error', position: 'bottom-right' });
+    }
     setIsLoading(false);
   };
 
@@ -81,17 +92,15 @@ const SponsorsTable: React.FC<ISponsorsList> = ({ data, filter }) => {
                 {...{
                   size: '22px',
                   color: 'var(--grey-alpha-600)',
-                  onClick: async () => {
-                    await Promise.resolve(
-                      setSponsor({
-                        id: original.id,
-                        title: original.title,
-                        logo: original.logo,
-                        startDate: original.startDate,
-                        endDate: original.endDate,
-                        site: original.site,
-                      })
-                    );
+                  onClick: () => {
+                    setSponsor({
+                      id: original.id,
+                      title: original.title,
+                      logo: original.logo,
+                      startDate: original.startDate,
+                      endDate: original.endDate,
+                      site: original.site,
+                    });
                     cuModal.onOpen();
                   },
                 }}
@@ -102,17 +111,15 @@ const SponsorsTable: React.FC<ISponsorsList> = ({ data, filter }) => {
                 {...{
                   size: '22px',
                   color: 'var(--red-color)',
-                  onClick: async () => {
-                    await Promise.resolve(
-                      setSponsor({
-                        id: original.id,
-                        title: original.title,
-                        logo: original.logo,
-                        startDate: original.startDate,
-                        endDate: original.endDate,
-                        site: original.site,
-                      })
-                    );
+                  onClick: () => {
+                    setSponsor({
+                      id: original.id,
+                      title: original.title,
+                      logo: original.logo,
+                      startDate: original.startDate,
+                      endDate: original.endDate,
+                      site: original.site,
+                    });
                     deleteModal.onOpen();
                   },
                 }}
@@ -136,9 +143,9 @@ const SponsorsTable: React.FC<ISponsorsList> = ({ data, filter }) => {
           onClose: deleteModal.onClose,
           title: `Sterge sponsor - ${sponsor?.title}`,
           description: `Este sigur ca vrei sa stergi sponsorul ${sponsor?.title}? Toate datele asociate sponsorului vor fi sterse definitiv.`,
-          onDeleteBtnClick: async () => {
-            await deleteSponsor(sponsor?.id!);
-          },
+          isLoading,
+          onDeleteHandler,
+          entityId: sponsor?.id!,
         }}
       />
       <SponsorsCUModal
@@ -151,8 +158,8 @@ const SponsorsTable: React.FC<ISponsorsList> = ({ data, filter }) => {
           initialValues: {
             title: sponsor?.title,
             image_url: sponsor?.logo,
-            date_start: Number(sponsor?.startDate),
-            date_end: Number(sponsor?.endDate),
+            date_start: sponsor?.startDate,
+            date_end: sponsor?.endDate,
             website: sponsor?.site,
           },
         }}

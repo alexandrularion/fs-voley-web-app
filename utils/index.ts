@@ -1,3 +1,4 @@
+import { axiosConfigJSON } from '../services/AxiosConfig';
 import { TUserRole } from '../types/next-auth';
 
 /**
@@ -58,3 +59,5 @@ export const convertFileToBase64URL = (file: File, callback: (result: string) =>
   };
   reader.readAsDataURL(file);
 };
+
+export const fetcher = (url: string) => axiosConfigJSON.get(url).then((res) => res.data);

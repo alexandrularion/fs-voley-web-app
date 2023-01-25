@@ -7,7 +7,9 @@ import { getSession } from 'next-auth/react';
 import SponsorsTable from '../../components/sponsors/SponsorsTable';
 import { TTableFilter } from '../../components/shared/Interfaces';
 import { useTab } from '../../context/ContextTab';
-import { getAllSponsors } from '../../services/Sponsors.service';
+import { getAllSponsors, sponsorsKeys } from '../../services/Sponsors.service';
+import { fetcher } from '../../utils';
+import useSWR from 'swr';
 
 export interface ISponsorsPage {
   data: TSponsor[];
@@ -15,6 +17,9 @@ export interface ISponsorsPage {
 const SponsorsPage: NextPage<ISponsorsPage> = ({ data }) => {
   const { tab, setTab } = useTab();
   const [filter, setFilter] = useState<TTableFilter>();
+  const { getAllSponsorsKey } = sponsorsKeys;
+
+  const { data: sponsors } = useSWR(getAllSponsorsKey, fetcher, { fallbackData: data });
 
   useEffect(() => {
     if (tab) {
@@ -36,7 +41,7 @@ const SponsorsPage: NextPage<ISponsorsPage> = ({ data }) => {
   return (
     <Layout {...{ bgColor: 'var(--grey-alpha-100)' }}>
       <SponsorsHeader {...{ isUsedInAdminPage: true }} />
-      <SponsorsTable {...{ data, filter }} />
+      <SponsorsTable {...{ data: sponsors, filter }} />
     </Layout>
   );
 };

@@ -4,19 +4,23 @@ import { SponsorsHeader, SponsorsList } from '../../components/sponsors';
 import { useEffect, useState } from 'react';
 import { getSession } from 'next-auth/react';
 import { useTab } from '../../context/ContextTab';
-import { getAllSponsors } from '../../services/Sponsors.service';
+import { getAllSponsors, sponsorsKeys } from '../../services/Sponsors.service';
 import { ISponsorsPage } from '../a/sponsors';
 import { TSponsor } from '../../components/sponsors/Interfaces';
+import useSWR from 'swr';
+import { fetcher } from '../../utils';
 
 const SponsorsPage: NextPage<ISponsorsPage> = ({ data }) => {
+  const { getAllSponsorsKey } = sponsorsKeys;
   const { tab, setTab } = useTab();
   const [currentData, setCurrentData] = useState<TSponsor[]>(data);
+  const { data: sponsors } = useSWR(getAllSponsorsKey, fetcher, { fallbackData: data });
 
   useEffect(() => {
     if (tab && tab.value !== 0) {
-      setCurrentData(currentData.filter(({ startDate }) => new Date(startDate).getFullYear() === tab.value));
+      setCurrentData(sponsors.filter(({ startDate }: TSponsor) => new Date(startDate).getFullYear() === tab.value));
     } else {
-      setCurrentData(data);
+      setCurrentData(sponsors);
     }
     /* eslint-disable-next-line */
   }, [tab]);

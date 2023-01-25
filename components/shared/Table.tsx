@@ -1,6 +1,5 @@
 import { useFilters, usePagination, useTable } from 'react-table';
 import { Table, Thead, Tbody, Tr, Th, Td, TableContainer, Flex, Select, Button, Text } from '@chakra-ui/react';
-import { nanoid } from 'nanoid';
 import { ICommonTable } from './Interfaces';
 import { useEffect } from 'react';
 
@@ -40,12 +39,11 @@ const CommonTable: React.FC<ICommonTable> = ({ columns, data, filter }) => {
     <TableContainer {...{ width: '100%', background: 'var(--white-color)', borderRadius: '15px' }}>
       <Table {...{ variant: 'simple', size: 'lg', w: '100%', ...getTableProps() }}>
         <Thead>
-          {headerGroups.map((headerGroup: any) => (
-            <Tr key={nanoid()} {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column: any) => (
-                <Th key={nanoid()} {...column.getHeaderProps()}>
+          {headerGroups.map((headerGroup: any, index: number) => (
+            <Tr key={`${index}_headerGroups`} {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column: any, indexHeader: number) => (
+                <Th key={`${indexHeader}_headerGroup`} {...column.getHeaderProps()}>
                   {column.render('Header')}
-                  <span>{column.isSorted ? (column.isSortedDesc ? ' 🔽' : ' 🔼') : ''}</span>
                 </Th>
               ))}
             </Tr>
@@ -53,13 +51,13 @@ const CommonTable: React.FC<ICommonTable> = ({ columns, data, filter }) => {
         </Thead>
         <Tbody {...getTableBodyProps()}>
           {rows?.length > 0 ? (
-            rows.map((row) => {
+            rows.map((row, index: number) => {
               prepareRow(row);
               return (
-                <Tr {...row.getRowProps()} key={nanoid()}>
-                  {row.cells.map((cell) => {
+                <Tr {...row.getRowProps()} key={`${index}_row`}>
+                  {row.cells.map((cell, indexRow: number) => {
                     return (
-                      <Td {...cell.getCellProps()} key={nanoid()}>
+                      <Td {...cell.getCellProps()} key={`${indexRow}_row_cells`}>
                         {cell.render('Cell')}
                       </Td>
                     );

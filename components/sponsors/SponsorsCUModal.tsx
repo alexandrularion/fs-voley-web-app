@@ -1,12 +1,17 @@
 import { Button, Checkbox, Flex, Input, InputGroup, InputLeftAddon, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from '@chakra-ui/react';
 import { FormApi } from 'final-form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Field, Form } from 'react-final-form';
 import { convertFileToBase64URL } from '../../utils';
 import { IFormModal } from '../shared/Interfaces';
+import { CustomValidation } from '../shared/Validations';
 
 const SponsorsCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLoading, onSubmitHandler, initialValues }) => {
-  const [isNotSponsorshipFinished, setIsNotSponsorshipFinished] = useState<boolean>(false);
+  const [hasEndedSponsorship, setHasEndedSponsorship] = useState<boolean>(false);
+
+  useEffect(() => {
+    setHasEndedSponsorship(Boolean(initialValues?.date_end));
+  }, [initialValues]);
 
   return (
     <Modal {...{ isOpen, onClose, blockScrollOnMount: true, isCentered: true, closeOnOverlayClick: !isLoading }}>
@@ -24,7 +29,8 @@ const SponsorsCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLoadi
                     <Field
                       {...{
                         name: 'image_url',
-                        render: ({ input: { onBlur, onChange, onFocus } }) => (
+                        validate: (value: string) => CustomValidation(value, 'Logo'),
+                        render: ({ input: { onBlur, onChange, onFocus }, meta: { touched, error } }) => (
                           <InputGroup>
                             <InputLeftAddon {...{ children: 'Logo' }} />
                             <Input
@@ -38,6 +44,7 @@ const SponsorsCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLoadi
                                       onChange(result);
                                     });
                                 },
+                                isInvalid: touched && error,
                                 type: 'file',
                                 sx: {
                                   '::file-selector-button': {
@@ -57,13 +64,15 @@ const SponsorsCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLoadi
                     <Field
                       {...{
                         name: 'title',
-                        render: ({ input }) => (
+                        validate: (value: string) => CustomValidation(value, 'Nume'),
+                        render: ({ input, meta: { touched, error } }) => (
                           <InputGroup>
                             <InputLeftAddon {...{ children: 'Nume' }} />
                             <Input
                               {...{
                                 ...input,
                                 type: 'text',
+                                isInvalid: touched && error,
                                 placeholder: 'Introduceti numele companiei',
                               }}
                             />
@@ -74,13 +83,15 @@ const SponsorsCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLoadi
                     <Field
                       {...{
                         name: 'website',
-                        render: ({ input }) => (
+                        validate: (value: string) => CustomValidation(value, 'Site'),
+                        render: ({ input, meta: { touched, error } }) => (
                           <InputGroup>
                             <InputLeftAddon {...{ children: 'Site' }} />
                             <Input
                               {...{
                                 ...input,
                                 type: 'text',
+                                isInvalid: touched && error,
                                 placeholder: 'Introduceti site-ul web',
                               }}
                             />
@@ -88,11 +99,11 @@ const SponsorsCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLoadi
                         ),
                       }}
                     />
-
                     <Field
                       {...{
                         name: 'date_start',
-                        render: ({ input }) => (
+                        validate: (value: string) => CustomValidation(value, 'Sponsor din'),
+                        render: ({ input, meta: { touched, error } }) => (
                           <InputGroup>
                             <InputLeftAddon {...{ children: 'Sponsor din' }} />
                             <Input
@@ -102,6 +113,7 @@ const SponsorsCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLoadi
                                 min: '2000',
                                 max: '2023',
                                 step: '1',
+                                isInvalid: touched && error,
                                 placeholder: 'Introduceti anul',
                               }}
                             />
@@ -111,14 +123,15 @@ const SponsorsCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLoadi
                     />
                     <Checkbox
                       {...{
+                        isChecked: !hasEndedSponsorship,
                         onChange: (e) => {
-                          setIsNotSponsorshipFinished(e.target.checked);
+                          setHasEndedSponsorship(!e.target.checked);
                         },
                       }}
                     >
                       {'Sponsor pana in prezent?'}
                     </Checkbox>
-                    {!isNotSponsorshipFinished && (
+                    {hasEndedSponsorship && (
                       <Field
                         {...{
                           name: 'date_end',
@@ -148,7 +161,7 @@ const SponsorsCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLoadi
         </ModalBody>
         <ModalFooter>
           <Button {...{ onClick: onClose, mr: 3, variant: 'outline', disabled: isLoading }}>Inchide</Button>
-          <Button {...{ variant: 'solid', background: 'var(--blue-600)', color: 'var(--white-color)', colorScheme: 'blue', type: 'submit', form: 'sponsors-cu-modal', disabled: isLoading }}>
+          <Button {...{ variant: 'solid', background: 'var(--blue-600)', color: 'var(--white-color)', colorScheme: 'blue', type: 'submit', form: 'sponsors-cu-modal', disabled: isLoading, isLoading }}>
             {'Salveaza'}
           </Button>
         </ModalFooter>

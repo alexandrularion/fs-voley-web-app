@@ -35,8 +35,10 @@ export interface IModal {
   onClose: () => void;
 }
 export interface IDeleteModal extends IModal {
-  onDeleteBtnClick: () => void;
+  onDeleteHandler: (entityId: number) => void;
   description: string;
+  entityId: number;
+  isLoading?: boolean;
 }
 
 export interface IEmptyState {
