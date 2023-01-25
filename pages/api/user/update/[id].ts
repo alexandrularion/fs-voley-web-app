@@ -10,11 +10,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(401).json({ message: 'Unauthorized' });
       }
       const { id } = req.query;
-      const { name, email } = req.body;
+      const { first_name, last_name, email } = req.body;
       await prisma.user.update({
         where: { id: Number(id) },
         data: {
-          name: name,
+          first_name: first_name,
+          last_name: last_name,
           email: email,
         },
       });
@@ -24,6 +25,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   } catch (e) {
     console.log(e);
-    res.status(404).json({ message: e });
+    res.status(500).json({ message: e });
   }
 }
