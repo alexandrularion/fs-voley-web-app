@@ -13,8 +13,10 @@ declare module 'next-auth' {
       role: TUserRole;
       name: string;
       status: TUserStatus;
+      firstName: string;
+      lastName: string;
       accessToken: string;
-      createAt: string;
+      createdAt: string;
       updatedAt: string;
     };
   }
@@ -23,9 +25,11 @@ declare module 'next-auth' {
     email: string;
     role: TUserRole;
     name: string;
+    firstName: string;
+    lastName: string;
     status: TUserStatus;
     accessToken: string;
-    createAt: string;
+    createdAt: string;
     updatedAt: string;
   }
   interface User {
@@ -33,9 +37,11 @@ declare module 'next-auth' {
     email: string;
     role: TUserRole;
     name: string;
+    firstName: string;
+    lastName: string;
     status: TUserStatus;
     accessToken: string;
-    createAt: string;
+    createdAt: string;
     updatedAt: string;
   }
   interface JWT {

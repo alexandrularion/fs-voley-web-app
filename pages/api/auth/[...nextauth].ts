@@ -39,7 +39,7 @@ const nextAuth = (req: NextApiRequest, res: NextApiResponse) => {
               process.env.JWT_SECRET_TOKEN as string,
               { expiresIn: 60 * 60 * 168 * 4 } // 30 days
             );
-            currentUser = { ...user, accessToken } as User;
+            currentUser = { ...user, firstName: user.first_name, lastName: user.last_name, accessToken } as User;
             return currentUser;
           } catch (error: any) {
             return null;
@@ -88,6 +88,8 @@ const nextAuth = (req: NextApiRequest, res: NextApiResponse) => {
               return {
                 ...user,
                 accessToken,
+                firstName: user.first_name,
+                lastName: user.last_name,
               } as Session;
             }
           } catch (e: any) {

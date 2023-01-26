@@ -1,13 +1,13 @@
 import { GetServerSidePropsContext, NextPage } from 'next';
-import Layout from '../../components/shared/Layout';
-import { SponsorsHeader, SponsorsList } from '../../components/sponsors';
+import Layout from '../components/shared/Layout';
+import { SponsorsHeader, SponsorsList } from '../components/sponsors';
 import { useEffect } from 'react';
 import { getSession } from 'next-auth/react';
-import { useTab } from '../../context/ContextTab';
-import { getAllSponsors } from '../../services/Sponsors.service';
-import { ISponsorsPage } from '../a/sponsors';
-import { TSponsor } from '../../components/sponsors/Interfaces';
-import { useSponsors } from '../../context/ContextSponsors';
+import { useTab } from '../context/ContextTab';
+import { getAllSponsors } from '../services/Sponsors.service';
+import { ISponsorsPage } from './a/sponsors';
+import { TSponsor } from '../components/sponsors/Interfaces';
+import { useSponsors } from '../context/ContextSponsors';
 
 const SponsorsPage: NextPage<ISponsorsPage> = ({ data }) => {
   const { tab, setTab } = useTab();

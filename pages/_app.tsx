@@ -9,7 +9,7 @@ import { AppContextProvider } from '../context/ContextProvider';
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
     <AppContextProvider>
-      <SessionProvider {...{ session }}>
+      <SessionProvider {...{ session, refetchOnWindowFocus: true, refetchInterval: 3000 }}>
         <ChakraProvider>
           <Component {...pageProps} />
           <ToastContainer />

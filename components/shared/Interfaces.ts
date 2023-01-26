@@ -50,3 +50,9 @@ export interface IFormModal extends IModal {
   initialValues?: any;
   isLoading?: boolean;
 }
+
+export type TDisplayData = {
+  title: string;
+  description: string;
+  key: string;
+};

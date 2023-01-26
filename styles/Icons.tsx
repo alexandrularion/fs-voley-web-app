@@ -265,6 +265,9 @@ export const CategoryIcon = styled(IoReorderFour)<IIconProps>`
 export const CheckedIcon = styled(IoCheckmarkCircleOutline)<IIconProps>`
   ${defaultIconStyle}
 `;
+export const CheckedFillllIcon = styled(IoCheckmarkCircle)<IIconProps>`
+  ${defaultIconStyle}
+`;
 export const CheckedFillIcon = styled(IoCheckmarkCircle)<IIconProps>`
   ${defaultIconStyle}
 `;

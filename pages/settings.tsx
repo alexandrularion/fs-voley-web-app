@@ -1,11 +1,12 @@
 import { GetServerSidePropsContext, NextPage } from 'next';
 import { getSession } from 'next-auth/react';
-import Layout, { LayoutContainer } from '../components/shared/Layout';
+import { SettingsContent } from '../components/settings';
+import Layout from '../components/shared/Layout';
 
 const SettingsPage: NextPage = () => {
   return (
     <Layout>
-      <LayoutContainer />
+      <SettingsContent />
     </Layout>
   );
 };
