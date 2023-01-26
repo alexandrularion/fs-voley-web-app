@@ -17,8 +17,8 @@ const TeamHeader: React.FC<ITeamHeader> = ({ setSearch }) => {
   const tabs: ITab[] = useMemo(
     () =>
       [
-        { tabId: 0, title: 'Jucatori', href: '/team' },
-        { tabId: 1, title: 'Antrenori', href: '/team/coaches' },
+        { tabId: 0, title: 'Jucatori', href: '/team', value: 0 },
+        { tabId: 1, title: 'Antrenori', href: '/team/coaches', value: 1 },
       ].map((obj) => ({ ...obj, key: nanoid() })),
     []
   );

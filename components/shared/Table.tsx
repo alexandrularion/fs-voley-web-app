@@ -1,9 +1,11 @@
 import { useFilters, usePagination, useTable } from 'react-table';
 import { Table, Thead, Tbody, Tr, Th, Td, TableContainer, Flex, Select, Button, Text } from '@chakra-ui/react';
 import { ICommonTable } from './Interfaces';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 const CommonTable: React.FC<ICommonTable> = ({ columns, data, filter }) => {
+  const memoizedData = useMemo(() => data, [data]);
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -21,7 +23,7 @@ const CommonTable: React.FC<ICommonTable> = ({ columns, data, filter }) => {
   } = useTable(
     {
       columns,
-      data,
+      data: memoizedData,
       initialState: { pageIndex: 0 },
     },
     useFilters,
@@ -66,7 +68,7 @@ const CommonTable: React.FC<ICommonTable> = ({ columns, data, filter }) => {
               );
             })
           ) : (
-            <Flex {...{ padding: '20px', alignItems: 'center', justifyContent: 'center', width: '100%' }}>{'Nu exista nici o inregistrare.'}</Flex>
+            <Text {...{ padding: '20px', alignItems: 'center', justifyContent: 'center', width: '100%' }}>{'Nu exista nici o inregistrare.'}</Text>
           )}
         </Tbody>
       </Table>

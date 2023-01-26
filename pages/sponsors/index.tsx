@@ -1,29 +1,25 @@
 import { GetServerSidePropsContext, NextPage } from 'next';
 import Layout from '../../components/shared/Layout';
 import { SponsorsHeader, SponsorsList } from '../../components/sponsors';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { getSession } from 'next-auth/react';
 import { useTab } from '../../context/ContextTab';
-import { getAllSponsors, sponsorsKeys } from '../../services/Sponsors.service';
+import { getAllSponsors } from '../../services/Sponsors.service';
 import { ISponsorsPage } from '../a/sponsors';
 import { TSponsor } from '../../components/sponsors/Interfaces';
-import useSWR from 'swr';
-import { fetcher } from '../../utils';
+import { useSponsors } from '../../context/ContextSponsors';
 
 const SponsorsPage: NextPage<ISponsorsPage> = ({ data }) => {
-  const { getAllSponsorsKey } = sponsorsKeys;
   const { tab, setTab } = useTab();
-  const [currentData, setCurrentData] = useState<TSponsor[]>(data);
-  const { data: sponsors } = useSWR(getAllSponsorsKey, fetcher, { fallbackData: data });
+  const { setSponsors } = useSponsors();
 
   useEffect(() => {
     if (tab && tab.value !== 0) {
-      setCurrentData(sponsors.filter(({ startDate }: TSponsor) => new Date(startDate).getFullYear() === tab.value));
+      setSponsors(data.filter(({ startDate }: TSponsor) => Number(startDate) === tab.value));
     } else {
-      setCurrentData(sponsors);
+      setSponsors(data);
     }
-    /* eslint-disable-next-line */
-  }, [tab]);
+  }, [tab, data, setSponsors]);
 
   useEffect(() => {
     setTab({ tabId: 0, title: 'Din toti anii', value: 0 });
@@ -32,7 +28,7 @@ const SponsorsPage: NextPage<ISponsorsPage> = ({ data }) => {
   return (
     <Layout>
       <SponsorsHeader />
-      <SponsorsList {...{ data: currentData }} />
+      <SponsorsList />
     </Layout>
   );
 };

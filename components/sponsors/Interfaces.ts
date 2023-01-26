@@ -15,7 +15,7 @@ export type TBESponsor = {
   title: string;
   image_url: string;
   date_start: string;
-  date_end: string | null;
+  date_end: string;
   website: string;
 };
 
@@ -26,6 +26,5 @@ export interface ISponsorsHeader {
 }
 
 export interface ISponsorsList {
-  data: TSponsor[];
   filter?: TTableFilter;
 }

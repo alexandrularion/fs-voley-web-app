@@ -5,15 +5,18 @@ import { ISponsorsList, TSponsor } from './Interfaces';
 import SponsorsCard from './SponsorsCard';
 import { Box } from '@chakra-ui/react';
 import EmptyState from '../shared/EmptyState';
-import { useState } from 'react';
+import { useMemo } from 'react';
+import { useSponsors } from '../../context/ContextSponsors';
 
-const SponsorsList: React.FC<ISponsorsList> = ({ data }) => {
-  const [memoizedData] = useState<TSponsor[]>(data.map((obj) => ({ ...obj, key: nanoid() })));
+const SponsorsList: React.FC<ISponsorsList> = () => {
+  const { sponsors } = useSponsors();
+  const data: TSponsor[] = useMemo(() => sponsors.map((obj) => ({ ...obj, key: nanoid() })), [sponsors]);
+
   return (
     <Container>
       <LayoutContainer {...{ className: 'sl-layout-container' }}>
         <Box {...{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', w: '100%', gap: 'var(--gap-md)' }}>
-          {memoizedData && memoizedData.length > 0 ? memoizedData.map(({ key, ...obj }) => <SponsorsCard key={key} {...obj} />) : <EmptyState />}
+          {data && data.length > 0 ? data.map(({ key, ...obj }) => <SponsorsCard key={key} {...obj} />) : <EmptyState />}
         </Box>
       </LayoutContainer>
     </Container>

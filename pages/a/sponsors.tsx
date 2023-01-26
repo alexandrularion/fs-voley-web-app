@@ -7,41 +7,35 @@ import { getSession } from 'next-auth/react';
 import SponsorsTable from '../../components/sponsors/SponsorsTable';
 import { TTableFilter } from '../../components/shared/Interfaces';
 import { useTab } from '../../context/ContextTab';
-import { getAllSponsors, sponsorsKeys } from '../../services/Sponsors.service';
-import { fetcher } from '../../utils';
-import useSWR from 'swr';
+import { getAllSponsors } from '../../services/Sponsors.service';
+import { useSponsors } from '../../context/ContextSponsors';
 
 export interface ISponsorsPage {
   data: TSponsor[];
 }
 const SponsorsPage: NextPage<ISponsorsPage> = ({ data }) => {
   const { tab, setTab } = useTab();
+  const { setSponsors } = useSponsors();
   const [filter, setFilter] = useState<TTableFilter>();
-  const { getAllSponsorsKey } = sponsorsKeys;
-
-  const { data: sponsors } = useSWR(getAllSponsorsKey, fetcher, { fallbackData: data });
 
   useEffect(() => {
     if (tab) {
-      setFilter({
-        columnId: 'startDate',
-        value: tab.value,
-      });
+      setFilter({ columnId: 'startDate', value: tab.value });
     }
   }, [tab]);
 
   useEffect(() => {
-    setTab({
-      tabId: 0,
-      title: 'Din toti anii',
-      value: 0,
-    });
+    setTab({ tabId: 0, title: 'Din toti anii', value: 0 });
   }, [setTab]);
+
+  useEffect(() => {
+    setSponsors(data);
+  }, [data, setSponsors]);
 
   return (
     <Layout {...{ bgColor: 'var(--grey-alpha-100)' }}>
       <SponsorsHeader {...{ isUsedInAdminPage: true }} />
-      <SponsorsTable {...{ data: sponsors, filter }} />
+      <SponsorsTable {...{ filter }} />
     </Layout>
   );
 };

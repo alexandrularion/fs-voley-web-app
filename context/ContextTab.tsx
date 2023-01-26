@@ -17,7 +17,7 @@ export const TabProvider: React.FC<ICommonCtx> = ({ children }) => {
 export const useTab = () => {
   const context = useContext(TabContext);
   if (context === undefined) {
-    throw new Error('useRunningMode must be used within a TabProvider');
+    throw new Error('useTab must be used within a TabProvider');
   }
   return context;
 };

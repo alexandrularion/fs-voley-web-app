@@ -14,10 +14,7 @@ const createSponsor = (sponsor: TBESponsor) => {
 };
 
 const updateSponsor = (sponsordId: number, sponsor: TBESponsor) => {
-  return axiosConfigJSON.put(`/sponsors/update/${sponsordId}`, JSON.stringify(sponsor));
+  return axiosConfigJSON.post(`/sponsors/update/${sponsordId}`, JSON.stringify(sponsor));
 };
 
-export const sponsorsKeys = {
-  getAllSponsorsKey: '/sponsors/all',
-};
 export { getAllSponsors, deleteSponsor, createSponsor, updateSponsor };

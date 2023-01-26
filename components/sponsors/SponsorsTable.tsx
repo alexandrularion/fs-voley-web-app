@@ -1,4 +1,3 @@
-import { nanoid } from 'nanoid';
 import styled from 'styled-components';
 import { LayoutContainer } from '../shared/Layout';
 import { ISponsorsList, TBESponsor, TSponsor } from './Interfaces';
@@ -13,18 +12,21 @@ import { deleteSponsor, updateSponsor } from '../../services/Sponsors.service';
 import SponsorsCUModal from './SponsorsCUModal';
 import { toast } from 'react-toastify';
 import { FormApi } from 'final-form';
+import { useSponsors } from '../../context/ContextSponsors';
 
-const SponsorsTable: React.FC<ISponsorsList> = ({ data, filter }) => {
-  const [memoizedData] = useState<TSponsor[]>(data.map((obj) => ({ ...obj, key: nanoid() })));
+const SponsorsTable: React.FC<ISponsorsList> = ({ filter }) => {
+  const { sponsors, setSponsors } = useSponsors();
   const deleteModal = useDisclosure();
   const cuModal = useDisclosure();
   const [sponsor, setSponsor] = useState<TSponsor>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const onSubmitHandler = async (values: object, form: FormApi) => {
+    const { title, logo, endDate, startDate, site } = values as TSponsor;
     setIsLoading(true);
     try {
-      await updateSponsor(sponsor?.id!, { date_end: '0', ...values } as TBESponsor);
+      await updateSponsor(sponsor?.id!, { title, date_end: endDate, date_start: startDate, image_url: logo, website: site } as TBESponsor);
+      setSponsors(sponsors.map(({ id, ...obj }) => (id === sponsor?.id ? { id, title, logo, endDate, startDate, site } : { ...obj, id })));
       toast('Felicitari! Sponsorul a fost actualizat cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
       cuModal.onClose();
       form.reset();
@@ -38,6 +40,7 @@ const SponsorsTable: React.FC<ISponsorsList> = ({ data, filter }) => {
     setIsLoading(true);
     try {
       await deleteSponsor(sponsorId);
+      setSponsors(sponsors.filter(({ id }) => id !== sponsor?.id!));
       toast('Sponsorul a fost sters cu succcess.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
       deleteModal.onClose();
     } catch (e) {
@@ -51,19 +54,19 @@ const SponsorsTable: React.FC<ISponsorsList> = ({ data, filter }) => {
       {
         Header: 'Id',
         accessor: 'id',
-        Cell: ({ row: { original } }: CellValue) => <> {`#${original.id}`}</>,
+        Cell: ({ row: { original } }: CellValue) => <> {original.id ? `#${original.id}` : ''}</>,
       },
       {
         Header: 'Logo',
         accessor: 'logo',
         Cell: ({ row: { original } }: CellValue) => (
-          <div>
+          <Flex>
             <Image {...{ src: original.logo, width: 100, height: 100, alt: 'Logo Companie' }} />
-          </div>
+          </Flex>
         ),
       },
       {
-        Header: 'Title',
+        Header: 'Companie',
         accessor: 'title',
         Cell: ({ row: { original } }: CellValue) => original.title,
       },
@@ -80,53 +83,44 @@ const SponsorsTable: React.FC<ISponsorsList> = ({ data, filter }) => {
       {
         Header: 'Pana in',
         accessor: 'endDate',
-        Cell: ({ row: { original } }: CellValue) => original.endDate || 'Prezent',
+        Cell: ({ row: { original } }: CellValue) => Number(original.endDate) || 'Prezent',
       },
       {
         Header: 'Actiuni',
         accessor: 'actions',
-        Cell: ({ row: { original } }: CellValue) => (
-          <Flex {...{ gap: 'var(--gap-md)' }}>
-            <Box {...{ cursor: 'pointer ' }}>
-              <PenIcon
-                {...{
-                  size: '22px',
-                  color: 'var(--grey-alpha-600)',
-                  onClick: () => {
-                    setSponsor({
-                      id: original.id,
-                      title: original.title,
-                      logo: original.logo,
-                      startDate: original.startDate,
-                      endDate: original.endDate,
-                      site: original.site,
-                    });
-                    cuModal.onOpen();
-                  },
-                }}
-              />
-            </Box>
-            <Box {...{ cursor: 'pointer ' }}>
-              <TrashIcon
-                {...{
-                  size: '22px',
-                  color: 'var(--red-color)',
-                  onClick: () => {
-                    setSponsor({
-                      id: original.id,
-                      title: original.title,
-                      logo: original.logo,
-                      startDate: original.startDate,
-                      endDate: original.endDate,
-                      site: original.site,
-                    });
-                    deleteModal.onOpen();
-                  },
-                }}
-              />
-            </Box>
-          </Flex>
-        ),
+        Cell: ({ row: { original } }: CellValue) =>
+          original?.id && (
+            <Flex {...{ gap: 'var(--gap-md)' }}>
+              <Box {...{ cursor: 'pointer ' }}>
+                <PenIcon
+                  {...{
+                    size: '22px',
+                    color: 'var(--grey-alpha-600)',
+                    onClick: async () => {
+                      setSponsor({
+                        ...original,
+                      });
+                      cuModal.onOpen();
+                    },
+                  }}
+                />
+              </Box>
+              <Box {...{ cursor: 'pointer ' }}>
+                <TrashIcon
+                  {...{
+                    size: '22px',
+                    color: 'var(--red-color)',
+                    onClick: () => {
+                      setSponsor({
+                        ...original,
+                      });
+                      deleteModal.onOpen();
+                    },
+                  }}
+                />
+              </Box>
+            </Flex>
+          ),
       },
     ],
     [deleteModal, cuModal]
@@ -134,9 +128,7 @@ const SponsorsTable: React.FC<ISponsorsList> = ({ data, filter }) => {
 
   return (
     <Container>
-      <LayoutContainer {...{ className: 'sl-layout-container' }}>
-        <CommonTable {...{ columns, data: memoizedData, filter }} />
-      </LayoutContainer>
+      <LayoutContainer {...{ className: 'sl-layout-container' }}>{sponsors && sponsors.length > 0 && <CommonTable {...{ columns, data: sponsors, filter }} />}</LayoutContainer>
       <DeleteModal
         {...{
           isOpen: deleteModal.isOpen,
@@ -156,11 +148,7 @@ const SponsorsTable: React.FC<ISponsorsList> = ({ data, filter }) => {
           onSubmitHandler,
           isLoading,
           initialValues: {
-            title: sponsor?.title,
-            image_url: sponsor?.logo,
-            date_start: sponsor?.startDate,
-            date_end: sponsor?.endDate,
-            website: sponsor?.site,
+            ...sponsor!,
           },
         }}
       />

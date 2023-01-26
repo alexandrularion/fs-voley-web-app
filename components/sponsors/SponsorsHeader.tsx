@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ISponsorsHeader, TBESponsor } from './Interfaces';
+import { ISponsorsHeader, TBESponsor, TSponsor } from './Interfaces';
 import Background from '../../assets/Background.png';
 import { useMemo, useState } from 'react';
 import { nanoid } from 'nanoid';
@@ -15,6 +15,8 @@ import SponsorsCUModal from './SponsorsCUModal';
 import { createSponsor } from '../../services/Sponsors.service';
 import { toast } from 'react-toastify';
 import { FormApi } from 'final-form';
+import { PlusIcon } from '../../styles/Icons';
+import { useSponsors } from '../../context/ContextSponsors';
 
 const SponsorsHeader: React.FC<ISponsorsHeader> = ({ isUsedInAdminPage = false }) => {
   const tabs: ITab[] = useMemo(
@@ -24,18 +26,24 @@ const SponsorsHeader: React.FC<ISponsorsHeader> = ({ isUsedInAdminPage = false }
         { tabId: 1, title: '2023', value: 2023 },
         { tabId: 2, title: '2022', value: 2022 },
         { tabId: 3, title: '2021', value: 2021 },
+        { tabId: 4, title: '2020', value: 2020 },
+        { tabId: 5, title: '2019', value: 2019 },
+        { tabId: 6, title: '2018', value: 2018 },
       ].map((obj) => ({ ...obj, key: nanoid() })),
     []
   );
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { setSponsors, sponsors } = useSponsors();
   const { data } = useSession();
   const cuModal = useDisclosure();
 
   const onSubmitHandler = async (values: object, form: FormApi) => {
+    const { title, logo, endDate, startDate, site } = values as TSponsor;
     setIsLoading(true);
     try {
-      await createSponsor(values as TBESponsor);
+      await createSponsor({ website: site, date_end: endDate, title, image_url: logo, date_start: startDate } as TBESponsor);
+      setSponsors([...sponsors, values as TSponsor]);
       toast('Felicitari! Sponsorul a fost adaugat cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
       cuModal.onClose();
       form.reset();
@@ -57,7 +65,19 @@ const SponsorsHeader: React.FC<ISponsorsHeader> = ({ isUsedInAdminPage = false }
         {data?.role === 0 && (
           <Flex {...{ w: '100%', justifyContent: 'space-between', alignItems: 'center', gap: 'var(--gap-md)' }}>
             <Heading {...{ color: 'var(--grey-alpha-50)', fontSize: 'var(--heading-md)' }}>{'Sponsori'}</Heading>
-            {isUsedInAdminPage && <Button {...{ variant: 'outline', colorScheme: 'whiteAlpha', color: 'var(--white-color)', onClick: () => cuModal.onOpen() }}>{'Adauga un sponsor'}</Button>}
+            {isUsedInAdminPage && (
+              <Button
+                {...{
+                  variant: 'outline',
+                  colorScheme: 'whiteAlpha',
+                  color: 'var(--white-color)',
+                  onClick: () => cuModal.onOpen(),
+                  leftIcon: <PlusIcon {...{ color: 'var(--white-color)', size: '22px' }} />,
+                }}
+              >
+                {'Adauga un sponsor'}
+              </Button>
+            )}
             {!isUsedInAdminPage && (
               <Link {...{ href: adminRoutes.sponsors.url }}>
                 <Button {...{ variant: 'solid', colorScheme: 'whiteAlpha', color: 'var(--black-color)', background: 'var(--white-color)' }}>{'Gestioneaza sponsori'}</Button>

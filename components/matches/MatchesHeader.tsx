@@ -14,9 +14,9 @@ const MatchesHeader: React.FC<IMatchesHeader> = ({ setSearch, areFiltrablesVisib
   const tabs: ITab[] = useMemo(
     () =>
       [
-        { tabId: 0, title: 'Meciuri viitoare', href: '/matches' },
-        { tabId: 1, title: 'Rezultate', href: '/matches/results' },
-        { tabId: 2, title: 'Clasament', href: '/matches/ranking' },
+        { tabId: 0, title: 'Meciuri viitoare', href: '/matches', value: 0 },
+        { tabId: 1, title: 'Rezultate', href: '/matches/results', value: 1 },
+        { tabId: 2, title: 'Clasament', href: '/matches/ranking', value: 2 },
       ].map((obj) => ({ ...obj, key: nanoid() })),
     []
   );

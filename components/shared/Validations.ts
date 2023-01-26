@@ -151,4 +151,5 @@ export const CodeValidation = (value: string) => {
   return (value ? undefined : 'The code is required.') || (ValidateCode(value) ? undefined : 'Your code is not in the correct format.');
 };
 
-export const UrlValidation = (value: string | undefined) => (value ? (ValidateUrl(value) ? undefined : 'Your URL is not in the correct format.') : 'The URL is required.');
+export const UrlValidation = (value: string | undefined) =>
+  value ? (ValidateUrl(value) ? undefined : 'Link-ul website-ul nu este in formatul corect.') : 'Link-ul companiei este necesar pentru a continua.';
