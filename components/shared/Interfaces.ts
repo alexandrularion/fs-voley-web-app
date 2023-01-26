@@ -1,6 +1,5 @@
 import { FormApi } from 'final-form';
 import { Column } from 'react-table';
-import { TSponsor } from '../sponsors/Interfaces';
 
 export type IUrl = {
   title: string;
@@ -48,6 +47,6 @@ export interface IEmptyState {
 
 export interface IFormModal extends IModal {
   onSubmitHandler: (values: object, form: FormApi) => void;
-  initialValues?: TSponsor | undefined;
+  initialValues?: any;
   isLoading?: boolean;
 }

@@ -96,11 +96,11 @@ export const ConfirmPasswordValidation = (firstPassword: string, confirmationPas
  */
 export const CustomValidation = (value: string | undefined, required: string, min?: number, max?: number) => {
   if (min && max) {
-    return value && value.length >= min && value.length <= max ? undefined : `${required} is not in range of ${min} and ${max} characters.`;
+    return value && value.length >= min && value.length <= max ? undefined : `${required} nu este in raza de ${min} si ${max} caractere.`;
   } else if (min) {
-    return value && value.length >= min ? undefined : `${required} doesn't have at least ${min} charachters.`;
+    return value && value.length >= min ? undefined : `${required} nu are cel putin ${min} caractere.`;
   } else if (max) {
-    return value && value.length <= max ? undefined : `${required} has more over ${max} max charachters.`;
+    return value && value.length <= max ? undefined : `${required} are peste ${max} caractere.`;
   } else {
     return value ? undefined : `${required} este necesar pentru a continua.`;
   }

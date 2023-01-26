@@ -22,10 +22,10 @@ export const debounce = (fn: Function, ms = 1000) => {
  */
 export const getRoleNameByRoleId = (roleId: TUserRole) => {
   switch (roleId) {
-    case 0: {
+    case 1: {
       return 'Administrator';
     }
-    case 1: {
+    case 2: {
       return 'Creator de continut';
     }
   }

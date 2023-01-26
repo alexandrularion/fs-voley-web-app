@@ -1,4 +1,4 @@
-export type TUserRole = 0 | 1; // 0 - Administrator / 1 - Content Creator
+export type TUserRole = 1 | 2; // 1 - Administrator / 2 - Content Creator
 export type TUserStatus = 0 | 1; // 0 - inactive / 1- active
 interface IUser {}
 

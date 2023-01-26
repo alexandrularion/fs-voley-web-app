@@ -17,6 +17,7 @@ import { toast } from 'react-toastify';
 import { FormApi } from 'final-form';
 import { PlusIcon } from '../../styles/Icons';
 import { useSponsors } from '../../context/ContextSponsors';
+import { USER_ROLE } from '../../constants/Enums';
 
 const SponsorsHeader: React.FC<ISponsorsHeader> = ({ isUsedInAdminPage = false }) => {
   const tabs: ITab[] = useMemo(
@@ -57,12 +58,12 @@ const SponsorsHeader: React.FC<ISponsorsHeader> = ({ isUsedInAdminPage = false }
   return (
     <Container {...{ src: Background.src, isUsedInAdminPage }}>
       <LayoutContainer {...{ className: 'sh-layout-container' }}>
-        {isUsedInAdminPage && data?.role === 0 ? (
+        {isUsedInAdminPage && data?.role === USER_ROLE.ADMIN ? (
           <Text {...{ color: 'var(--white-color)', fontSize: 'var(--text-sm)' }}>{getRoleNameByRoleId(data?.role)}</Text>
         ) : (
           <Text {...{ color: 'var(--white-color)', fontSize: 'var(--text-sm)' }}>{'C.S.M Suceava'}</Text>
         )}
-        {data?.role === 0 && (
+        {data?.role === USER_ROLE.ADMIN && (
           <Flex {...{ w: '100%', justifyContent: 'space-between', alignItems: 'center', gap: 'var(--gap-md)' }}>
             <Heading {...{ color: 'var(--grey-alpha-50)', fontSize: 'var(--heading-md)' }}>{'Sponsori'}</Heading>
             {isUsedInAdminPage && (
