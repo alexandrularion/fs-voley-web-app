@@ -20,8 +20,8 @@ export async function middleware(req: NextRequest) {
       }
     }
     if (isTryingToAccessAdminRoute) {
-      if (session && session?.user?.role === USER_ROLE.ADMIN) {
-        return NextResponse.next();
+      if (!session && session?.user?.role !== USER_ROLE.ADMIN) {
+        return NextResponse.redirect(new URL(navigationRoutes.home.url, req.url));
       }
     }
     return NextResponse.next();

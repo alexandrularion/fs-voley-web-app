@@ -62,7 +62,7 @@ const ValidateCode = (value: string) => {
  * @returns string error
  */
 export const EmailValidation = (value: string) => {
-  return (value ? undefined : 'The email is required to continue the process.') || (ValidateEmail(value) ? undefined : 'Your email is not in the correct format.');
+  return (value ? undefined : 'Email-ul este necesar pentru a continua.') || (ValidateEmail(value) ? undefined : 'Email-ul nu este in formatul corect.');
 };
 
 /**
@@ -72,8 +72,8 @@ export const EmailValidation = (value: string) => {
  */
 export const PasswordValidation = (value: string) => {
   return (
-    (value ? undefined : 'The password is required.') ||
-    (ValidatePassword(value) ? undefined : 'You should insert a password with minimum 6 charachters, at least one upper & lower case letter and at least one number.')
+    (value ? undefined : 'Parola este necesara.') ||
+    (ValidatePassword(value) ? undefined : 'Ar trebui sa inserezi o parola cu minim 6 caractere, cel putin o litera mica si mare si cel putin un numar.')
   );
 };
 

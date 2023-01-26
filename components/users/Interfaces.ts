@@ -5,7 +5,7 @@ export type TBEUser = {
   first_name: string;
   last_name: string;
   email: string;
-  role: string;
+  role: number;
 };
 
 export type TUser = {
@@ -13,7 +13,7 @@ export type TUser = {
   firstName: string;
   lastName: string;
   email: string;
-  role: string;
+  role: number;
 };
 
 export interface IUsersTable {

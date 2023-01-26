@@ -25,8 +25,8 @@ const UsersTable: React.FC<IUsersTable> = ({ filter }) => {
     const { firstName, lastName, email, role } = values as TUser;
     setIsLoading(true);
     try {
-      await updateUser(user?.id!, { first_name: firstName, last_name: lastName, role, email } as TBEUser);
-      setUsers(users.map(({ id, ...obj }) => (id === user?.id ? { id, firstName, lastName, email, role } : { ...obj, id })));
+      await updateUser(user?.id!, { first_name: firstName, last_name: lastName, role: Number(role), email } as TBEUser);
+      setUsers(users.map(({ id, ...obj }) => (id === user?.id ? { id, firstName, lastName, email, role: Number(role) } : { ...obj, id })));
       toast('Felicitari! Utilizatorul a fost actualizat cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
       cuModal.onClose();
       form.reset();

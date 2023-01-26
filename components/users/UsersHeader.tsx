@@ -22,8 +22,8 @@ const UsersHeader: React.FC = () => {
     () =>
       [
         { tabId: 0, title: 'Toti utilizatorii', value: 0 },
-        { tabId: 1, title: 'Creator de continut', value: 2 },
-        { tabId: 2, title: 'Administrator', value: 1 },
+        { tabId: 1, title: 'Creatori de continut', value: 2 },
+        { tabId: 2, title: 'Administratori', value: 1 },
       ].map((obj) => ({ ...obj, key: nanoid() })),
     []
   );
@@ -37,8 +37,8 @@ const UsersHeader: React.FC = () => {
     const { firstName, lastName, email, role } = values as TUser;
     setIsLoading(true);
     try {
-      await createUser({ first_name: firstName, last_name: lastName, email, role } as TBEUser);
-      setUsers([...users, values as TUser]);
+      await createUser({ first_name: firstName, last_name: lastName, email, role: Number(role) } as TBEUser);
+      setUsers([...users, { ...values, role: Number(role) } as TUser]);
       toast('Felicitari! Utilizatorul a fost adaugat cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
       cuModal.onClose();
       form.reset();

@@ -63,29 +63,32 @@ const SponsorsHeader: React.FC<ISponsorsHeader> = ({ isUsedInAdminPage = false }
         ) : (
           <Text {...{ color: 'var(--white-color)', fontSize: 'var(--text-sm)' }}>{'C.S.M Suceava'}</Text>
         )}
-        {data?.role === USER_ROLE.ADMIN && (
-          <Flex {...{ w: '100%', justifyContent: 'space-between', alignItems: 'center', gap: 'var(--gap-md)' }}>
-            <Heading {...{ color: 'var(--grey-alpha-50)', fontSize: 'var(--heading-md)' }}>{'Sponsori'}</Heading>
-            {isUsedInAdminPage && (
-              <Button
-                {...{
-                  variant: 'outline',
-                  colorScheme: 'whiteAlpha',
-                  color: 'var(--white-color)',
-                  onClick: () => cuModal.onOpen(),
-                  leftIcon: <PlusIcon {...{ color: 'var(--white-color)', size: '22px' }} />,
-                }}
-              >
-                {'Adauga un sponsor'}
-              </Button>
-            )}
-            {!isUsedInAdminPage && (
-              <Link {...{ href: adminRoutes.sponsors.url }}>
-                <Button {...{ variant: 'solid', colorScheme: 'whiteAlpha', color: 'var(--black-color)', background: 'var(--white-color)' }}>{'Gestioneaza sponsori'}</Button>
-              </Link>
-            )}
-          </Flex>
-        )}
+
+        <Flex {...{ w: '100%', justifyContent: 'space-between', alignItems: 'center', gap: 'var(--gap-md)' }}>
+          <Heading {...{ color: 'var(--grey-alpha-50)', fontSize: 'var(--heading-md)' }}>{'Sponsori'}</Heading>
+          {data?.role === USER_ROLE.ADMIN && (
+            <>
+              {isUsedInAdminPage && (
+                <Button
+                  {...{
+                    variant: 'outline',
+                    colorScheme: 'whiteAlpha',
+                    color: 'var(--white-color)',
+                    onClick: () => cuModal.onOpen(),
+                    leftIcon: <PlusIcon {...{ color: 'var(--white-color)', size: '22px' }} />,
+                  }}
+                >
+                  {'Adauga un sponsor'}
+                </Button>
+              )}
+              {!isUsedInAdminPage && (
+                <Link {...{ href: adminRoutes.sponsors.url }}>
+                  <Button {...{ variant: 'solid', colorScheme: 'whiteAlpha', color: 'var(--black-color)', background: 'var(--white-color)' }}>{'Gestioneaza sponsori'}</Button>
+                </Link>
+              )}
+            </>
+          )}
+        </Flex>
         <Tabs {...{ tabs }} />
       </LayoutContainer>
       <Box {...{ position: 'absolute', top: '265px', left: 0, w: '20px', h: '170px', zIndex: 'var(--z-index-2)', background: 'var(--blue-500)' }} />
