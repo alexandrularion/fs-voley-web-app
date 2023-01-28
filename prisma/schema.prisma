@@ -33,7 +33,6 @@ model Trainers{
   last_name                  String
   description                String?
   image                      String?        @db.LongText
-  nationality                String?
 
   @@map("trainers")
 }
@@ -43,7 +42,6 @@ model Player {
   first_name                 String
   last_name                  String
   description                String?
-  role                       Int?           @default(0)
   height                     Float
   position                   String?
   birthday                   DateTime
@@ -53,6 +51,7 @@ model Player {
 }
 
 // timeline
+// prizes
 
 model File {
     id                         Int               @id @default(autoincrement())
@@ -102,9 +101,14 @@ model Sponsor {
 
     @@map("sponsors")
 }
+// categorie
+//: id, title
+// campionat
+//: id, title
+//in history, va trebui sa avem coloanele astea: "image, title, description"
 
 
 // o entittate editie, cand adaugi un jucator trebuei sa poti sa il atribui la o anumita editie.
 //editie: id , titlu (2023-20224).
-
+// campionat
 // O alta entitate care se numeste (echipa) voley type ex(juniori, middle, seniori)
