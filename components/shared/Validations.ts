@@ -62,7 +62,7 @@ const ValidateCode = (value: string) => {
  * @returns string error
  */
 export const EmailValidation = (value: string) => {
-  return (value ? undefined : 'The email is required to continue the process.') || (ValidateEmail(value) ? undefined : 'Your email is not in the correct format.');
+  return (value ? undefined : 'Email-ul este necesar pentru a continua.') || (ValidateEmail(value) ? undefined : 'Email-ul nu este in formatul corect.');
 };
 
 /**
@@ -72,8 +72,8 @@ export const EmailValidation = (value: string) => {
  */
 export const PasswordValidation = (value: string) => {
   return (
-    (value ? undefined : 'The password is required.') ||
-    (ValidatePassword(value) ? undefined : 'You should insert a password with minimum 6 charachters, at least one upper & lower case letter and at least one number.')
+    (value ? undefined : 'Parola este necesara.') ||
+    (ValidatePassword(value) ? undefined : 'Ar trebui sa inserezi o parola cu minim 6 caractere, cel putin o litera mica si mare si cel putin un numar.')
   );
 };
 
@@ -96,13 +96,13 @@ export const ConfirmPasswordValidation = (firstPassword: string, confirmationPas
  */
 export const CustomValidation = (value: string | undefined, required: string, min?: number, max?: number) => {
   if (min && max) {
-    return value && value.length >= min && value.length <= max ? undefined : `${required} is not in range of ${min} and ${max} characters.`;
+    return value && value.length >= min && value.length <= max ? undefined : `${required} nu este in raza de ${min} si ${max} caractere.`;
   } else if (min) {
-    return value && value.length >= min ? undefined : `${required} doesn't have at least ${min} charachters.`;
+    return value && value.length >= min ? undefined : `${required} nu are cel putin ${min} caractere.`;
   } else if (max) {
-    return value && value.length <= max ? undefined : `${required} has more over ${max} max charachters.`;
+    return value && value.length <= max ? undefined : `${required} are peste ${max} caractere.`;
   } else {
-    return value ? undefined : `${required} is required.`;
+    return value ? undefined : `${required} este necesar pentru a continua.`;
   }
 };
 
@@ -151,4 +151,5 @@ export const CodeValidation = (value: string) => {
   return (value ? undefined : 'The code is required.') || (ValidateCode(value) ? undefined : 'Your code is not in the correct format.');
 };
 
-export const UrlValidation = (value: string | undefined) => (value ? (ValidateUrl(value) ? undefined : 'Your URL is not in the correct format.') : 'The URL is required.');
+export const UrlValidation = (value: string | undefined) =>
+  value ? (ValidateUrl(value) ? undefined : 'Link-ul website-ul nu este in formatul corect.') : 'Link-ul companiei este necesar pentru a continua.';

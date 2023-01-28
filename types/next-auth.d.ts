@@ -1,4 +1,4 @@
-export type TUserRole = 0 | 1; // 0 - Administrator / 1 - Content Creator
+export type TUserRole = 1 | 2; // 1 - Administrator / 2 - Content Creator
 export type TUserStatus = 0 | 1; // 0 - inactive / 1- active
 interface IUser {}
 
@@ -13,8 +13,10 @@ declare module 'next-auth' {
       role: TUserRole;
       name: string;
       status: TUserStatus;
+      firstName: string;
+      lastName: string;
       accessToken: string;
-      createAt: string;
+      createdAt: string;
       updatedAt: string;
     };
   }
@@ -23,9 +25,11 @@ declare module 'next-auth' {
     email: string;
     role: TUserRole;
     name: string;
+    firstName: string;
+    lastName: string;
     status: TUserStatus;
     accessToken: string;
-    createAt: string;
+    createdAt: string;
     updatedAt: string;
   }
   interface User {
@@ -33,9 +37,11 @@ declare module 'next-auth' {
     email: string;
     role: TUserRole;
     name: string;
+    firstName: string;
+    lastName: string;
     status: TUserStatus;
     accessToken: string;
-    createAt: string;
+    createdAt: string;
     updatedAt: string;
   }
   interface JWT {

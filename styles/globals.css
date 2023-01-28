@@ -59,6 +59,9 @@ input:-webkit-autofill {
     --z-index-1: 100;
     --z-index-2: 110;
     --z-index-3: 120;
+    --z-index-4: 140;
+    --z-index-5: 160;
+    --z-index-6: 160;
 }
 
 @media (max-width: 1050px) {

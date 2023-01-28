@@ -3,16 +3,30 @@ import styled from 'styled-components';
 import { LayoutContainer } from '../shared/Layout';
 import { ISponsorsList, TSponsor } from './Interfaces';
 import SponsorsCard from './SponsorsCard';
+import { Box } from '@chakra-ui/react';
+import EmptyState from '../shared/EmptyState';
 import { useMemo } from 'react';
+import { useSponsors } from '../../context/ContextSponsors';
 
-const SponsorsList: React.FC<ISponsorsList> = ({ sponsors }) => {
+const SponsorsList: React.FC<ISponsorsList> = () => {
+  const { sponsors } = useSponsors();
   const data: TSponsor[] = useMemo(() => sponsors.map((obj) => ({ ...obj, key: nanoid() })), [sponsors]);
+
   return (
     <Container>
       <LayoutContainer {...{ className: 'sl-layout-container' }}>
-        {data?.map(({ key, ...obj }) => (
-          <SponsorsCard key={key} {...obj} />
-        ))}
+        <Box
+          {...{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3,1fr)',
+            w: '100%',
+            gap: 'var(--gap-md)',
+            bg: data && data.length > 0 ? 'unset' : 'var(--white-color)',
+            h: data && data.length > 0 ? 'unset' : '330px',
+          }}
+        >
+          {data && data.length > 0 ? data.map(({ key, ...obj }) => <SponsorsCard key={key} {...obj} />) : <EmptyState />}
+        </Box>
       </LayoutContainer>
     </Container>
   );
@@ -24,13 +38,13 @@ const Container = styled.section`
   display: flex;
   justify-content: center;
   background: var(--grey-alpha-100);
+  width: 100%;
 
   .sl-layout-container {
-    display: grid;
-    grid-template-columns: repeat(3, auto);
-    grid-template-rows: auto;
     position: relative;
-    top: -120px;
+    z-index: var(--z-index-4);
+    top: -85px;
     gap: var(--gap-lg);
+    min-height: 280px;
   }
 `;

@@ -31,21 +31,21 @@ const Navigation = () => {
           {urls.slice(0, urls.length - 2).map(({ title, url, key }, index) => (
             <Link key={key} {...{ href: url }}>
               <Flex {...{ alignItems: 'center', gap: 'var(--gap-xs)', className: 'n-link-container' }}>
-                {(pathname.localeCompare(url) === 0 || (index !== 0 && pathname.includes(url))) && (
+                {(pathname.localeCompare(url) === 0 || (index !== 0 && pathname.localeCompare(url) === 0)) && (
                   <Box
                     {...{
                       w: '10px',
                       h: '10px',
                       borderRadius: '50px',
-                      bg: pathname.localeCompare(url) === 0 || (index !== 0 && pathname.includes(url)) ? 'var(--blue-400)' : 'var(--blue-600)',
+                      bg: pathname.localeCompare(url) === 0 || (index !== 0 && pathname.localeCompare(url) === 0) ? 'var(--blue-400)' : 'var(--blue-600)',
                       transition: '0.2s all ease-in-out',
                     }}
                   />
                 )}
                 <Text
                   {...{
-                    color: pathname.localeCompare(url) === 0 || (index !== 0 && pathname.includes(url)) ? 'var(--blue-400)' : 'var(--blue-600)',
-                    fontWeight: pathname.localeCompare(url) === 0 || (index !== 0 && pathname.includes(url)) ? 'bold' : 'normal',
+                    color: pathname.localeCompare(url) === 0 || (index !== 0 && pathname.localeCompare(url) === 0) ? 'var(--blue-400)' : 'var(--blue-600)',
+                    fontWeight: pathname.localeCompare(url) === 0 || (index !== 0 && pathname.localeCompare(url) === 0) ? 'bold' : 'normal',
                     fontSize: 'var(--text-l)',
                     transition: '0.2s all ease-in-out',
                     textTransform: 'uppercase',
@@ -67,7 +67,7 @@ const Navigation = () => {
                   _active: { background: 'none' },
                   textColor: 'var(--blue-600)',
                   fontSize: 'var(--text-l)',
-                  fontWeight: pathname.includes(urls[urls.length - 2].url) || pathname.includes(urls[urls.length - 1].url) ? 'bold' : 'normal',
+                  fontWeight: pathname.localeCompare(urls[urls.length - 2].url) === 0 || pathname.localeCompare(urls[urls.length - 1].url) === 0 ? 'bold' : 'normal',
                   padding: 0,
                 }}
               >
@@ -97,11 +97,13 @@ const Navigation = () => {
                 <MenuItem>
                   <Link {...{ href: urls[urls.length - 1].url }}>
                     <Flex {...{ alignItems: 'center', gap: 'var(--gap-xs)', className: 'n-link-container' }}>
-                      {pathname.includes(urls[urls.length - 1].url) && <Box {...{ w: '10px', h: '10px', borderRadius: '50px', bg: 'var(--blue-600)', transition: '0.2s all ease-in-out' }} />}
+                      {pathname.localeCompare(urls[urls.length - 1].url) === 0 && (
+                        <Box {...{ w: '10px', h: '10px', borderRadius: '50px', bg: 'var(--blue-600)', transition: '0.2s all ease-in-out' }} />
+                      )}
                       <Text
                         {...{
                           color: 'var(--blue-600)',
-                          fontWeight: pathname.includes(urls[urls.length - 1].url) ? 'bold' : 'normal',
+                          fontWeight: pathname.localeCompare(urls[urls.length - 1].url) === 0 ? 'bold' : 'normal',
                           _hover: { color: 'var(--blue-400)' },
                           transition: '0.2s all ease-in-out',
                           textTransform: 'uppercase',
@@ -126,7 +128,7 @@ const Navigation = () => {
                     _active: { background: 'none' },
                     textColor: 'var(--blue-600)',
                     fontSize: 'var(--text-l)',
-                    fontWeight: pathname.includes(urls[urls.length - 2].url) || pathname.includes(urls[urls.length - 1].url) ? 'bold' : 'normal',
+                    fontWeight: pathname.localeCompare(urls[urls.length - 2].url) === 0 || pathname.localeCompare(urls[urls.length - 1].url) === 0 ? 'bold' : 'normal',
                     padding: 0,
                   }}
                 >
@@ -138,11 +140,11 @@ const Navigation = () => {
                     </Flex>
                   </Flex>
                 </MenuButton>
-                <MenuList {...{ borderColor: 'var(--grey-alpha-100)', padding: '0' }}>
+                <MenuList {...{ borderColor: 'var(--grey-alpha-100)', padding: '0', position: 'relative', zIndex: '200' }}>
                   <MenuGroup title="Gestionare">
                     {menuRoutes?.map(({ key, title, url }) => (
-                      <MenuItem key={key}>
-                        <Link {...{ href: url }}>
+                      <Link key={key} {...{ href: url }}>
+                        <MenuItem>
                           <Flex {...{ alignItems: 'center', gap: 'var(--gap-xs)', className: 'n-link-container' }}>
                             {pathname.localeCompare(url) === 0 && (
                               <Box
@@ -166,8 +168,8 @@ const Navigation = () => {
                               {title}
                             </Text>
                           </Flex>
-                        </Link>
-                      </MenuItem>
+                        </MenuItem>
+                      </Link>
                     ))}
                   </MenuGroup>
                   <MenuDivider />
@@ -264,7 +266,7 @@ const Container = styled.section`
   display: flex;
   justify-content: center;
   position: relative;
-  z-index: var(--z-index-2);
+  z-index: var(--z-index-6);
   background-color: var(--white-color);
 
   .n-container {

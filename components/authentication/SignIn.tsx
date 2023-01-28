@@ -1,10 +1,10 @@
-import { Button, Flex, FormControl, Heading, Input, InputGroup, InputLeftElement, InputRightElement, Text } from '@chakra-ui/react';
+import { Button, Flex, FormControl, Heading, Input, InputGroup, InputLeftAddon, InputRightElement, Text, Tooltip } from '@chakra-ui/react';
 import styled from 'styled-components';
 import Background from '../../assets/Background.png';
 import { authData } from '../../constants/Auth';
 import { useState } from 'react';
 import { EmailIcon, PasswordFillIcon } from '../../styles/Icons';
-import { EmailValidation, PasswordValidation } from '../shared/Validations';
+import { CustomValidation, EmailValidation } from '../shared/Validations';
 import { Form, Field } from 'react-final-form';
 import { device } from '../shared/DevicesBreakpoints';
 import { LayoutContainer } from '../shared/Layout';
@@ -32,8 +32,8 @@ const SignIn = () => {
       }
     } catch (error: any) {
       toast('Ne pare rau! A aparut o eroare la server.', { hideProgressBar: true, autoClose: 5000, type: 'error', position: 'bottom-right' });
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   return (
@@ -65,15 +65,13 @@ const SignIn = () => {
                     {...{
                       name: 'email',
                       validate: (value: string) => EmailValidation(value),
-                      render: ({ input, meta }) => (
-                        <Flex {...{ flexDirection: 'column', gap: 'var(--gap-xs)' }}>
+                      render: ({ input, meta: { touched, error } }) => (
+                        <Tooltip {...{ label: touched && error ? error : '' }}>
                           <InputGroup>
-                            <InputLeftElement>
-                              <EmailIcon {...{ color: 'var(--grey-alpha-50)' }} />
-                            </InputLeftElement>
+                            <InputLeftAddon {...{ background: 'var(--blue-400)', children: <EmailIcon {...{ color: 'var(--grey-alpha-50)', size: '22px' }} /> }} />
                             <Input
                               {...{
-                                isInvalid: meta.touched && meta.error,
+                                isInvalid: touched && error,
                                 type: 'text',
                                 placeholder: 'Email: Introduceti email-ul dvs.',
                                 _placeholder: { color: 'var(--grey-alpha-300)' },
@@ -84,24 +82,21 @@ const SignIn = () => {
                               }}
                             />
                           </InputGroup>
-                          {meta.touched && meta.error && <Text {...{ color: 'var(--grey-alpha-50)', fontSize: 'var(--text-xs)' }}>{meta.error}</Text>}
-                        </Flex>
+                        </Tooltip>
                       ),
                     }}
                   />
                   <Field
                     {...{
                       name: 'password',
-                      validate: (value: string) => PasswordValidation(value),
-                      render: ({ input, meta }) => (
-                        <Flex {...{ flexDirection: 'column', gap: 'var(--gap-xs)' }}>
+                      validate: (value: string) => CustomValidation(value, 'Parola'),
+                      render: ({ input, meta: { error, touched } }) => (
+                        <Tooltip {...{ label: touched && error ? error : '' }}>
                           <InputGroup>
-                            <InputLeftElement>
-                              <PasswordFillIcon {...{ color: 'var(--grey-alpha-50)' }} />
-                            </InputLeftElement>
+                            <InputLeftAddon {...{ background: 'var(--blue-400)', children: <PasswordFillIcon {...{ color: 'var(--grey-alpha-50)', size: '22px' }} /> }} />
                             <Input
                               {...{
-                                isInvalid: meta.touched && meta.error,
+                                isInvalid: touched && error,
                                 type: isPasswordVisible ? 'text' : 'password',
                                 placeholder: 'Parola: Introduceti parola dvs.',
                                 _placeholder: { color: 'var(--grey-alpha-300)' },
@@ -115,8 +110,7 @@ const SignIn = () => {
                               <Button {...{ h: '1.75rem', size: 'sm', onClick: () => setIsPasswordVisible(!isPasswordVisible) }}>{isPasswordVisible ? 'Hide' : 'Show'}</Button>
                             </InputRightElement>
                           </InputGroup>
-                          {meta.touched && meta.error && <Text {...{ color: 'var(--grey-alpha-50)', fontSize: 'var(--text-xs)' }}>{meta.error}</Text>}
-                        </Flex>
+                        </Tooltip>
                       ),
                     }}
                   />
