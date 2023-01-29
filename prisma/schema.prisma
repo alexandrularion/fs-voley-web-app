@@ -48,6 +48,7 @@ model Player {
   birthday                   DateTime
   nationality                String?
   image                      String?        @db.LongText
+  createdAt                  DateTime           @default(now())
   @@map("players")
 }
 
