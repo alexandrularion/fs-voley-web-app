@@ -16,7 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(401).json({ message: 'Unauthorized' });
       }
       const { id } = req.query;
-      const { first_name, last_name, description, shirtNumber, height, position, birthday, nationality, image,categoryId } = req.body;
+      const { first_name, last_name, description, shirtNumber, height, position, birthday, nationality, image, categoryId } = req.body;
       await prisma.player.update({
         where: { id: Number(id) },
         data: {
@@ -41,11 +41,3 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.status(500).json({ message: e });
   }
 }
-
-export const config = {
-  api: {
-    bodyParser: {
-      sizeLimit: '4mb', // Set desired value here
-    },
-  },
-};
