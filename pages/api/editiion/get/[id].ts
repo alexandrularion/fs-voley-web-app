@@ -7,13 +7,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (req.method == 'GET') {
       const { id } = req.query;
       try {
-        const user = await prisma.player.findFirst({
+        const edition = await prisma.edition.findFirst({
           where: { id: Number(id) },
-          include: { category: true, edition: true },
         });
-        return res.status(200).json(user);
+        return res.status(200).json(edition);
       } catch (e) {
-        return res.status(404).json({ message: 'This player cannot be accessed or does not exist.' });
+        return res.status(404).json({ message: 'This edition cannot be accessed or does not exist.' });
       }
     } else {
       return res.status(405).json({ message: 'Method Not Allowed' });
