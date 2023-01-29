@@ -10,9 +10,10 @@ import { Box, Flex, Heading, Input, InputGroup, InputLeftElement, Select } from 
 import { SearchIcon } from '../../styles/Icons';
 import { debounce } from '../../utils';
 
-const TeamHeader: React.FC<ITeamHeader> = ({ setSearch }) => {
+const TeamHeader: React.FC<ITeamHeader> = ({ setSearch, isUsedOnCoachPage }) => {
   const [query, setQuery] = useState<string>();
-  const [option, setOption] = useState<string>();
+  const [editionId, setEditionId] = useState<string>();
+  const [categoryId, setCategoryId] = useState<string>();
 
   const tabs: ITab[] = useMemo(
     () =>
@@ -22,6 +23,8 @@ const TeamHeader: React.FC<ITeamHeader> = ({ setSearch }) => {
       ].map((obj) => ({ ...obj, key: nanoid() })),
     []
   );
+
+  //this should come from BE
   const options: { id: string; title: string; key?: string }[] = useMemo(
     () =>
       [
@@ -41,13 +44,16 @@ const TeamHeader: React.FC<ITeamHeader> = ({ setSearch }) => {
     []
   );
 
-  const setSearchQuery = useMemo(() => debounce((query: string) => setSearch((prevState) => ({ ...prevState, query: query || '' }))), [setSearch]);
+  const setSearchQuery = useMemo(() => debounce((query: string) => setSearch((prevState) => ({ ...prevState, query: query }))), [setSearch]);
 
   useEffect(() => {
-    option && setSearch((prevState) => ({ ...prevState, option: option || '' }));
-    query && setSearchQuery(query);
-    /* eslint-disable-next-line */
-  }, [query, option]);
+    editionId && setSearch((prevState) => ({ ...prevState, editionId }));
+    categoryId && setSearch((prevState) => ({ ...prevState, categoryId }));
+  }, [editionId, categoryId, setSearch]);
+
+  useEffect(() => {
+    setSearchQuery(query);
+  }, [query, setSearchQuery]);
 
   return (
     <Container {...{ src: Background.src }}>
@@ -62,7 +68,7 @@ const TeamHeader: React.FC<ITeamHeader> = ({ setSearch }) => {
             <Input
               {...{
                 type: 'text',
-                placeholder: 'Cautare: Jucator',
+                placeholder: isUsedOnCoachPage ? 'Cautare: Antrenor' : 'Cautare: Jucator',
                 _placeholder: { color: 'var(--grey-alpha-300)' },
                 outline: 'none',
                 _focus: { borderColor: 'var(--grey-alpha-50)' },
@@ -72,24 +78,46 @@ const TeamHeader: React.FC<ITeamHeader> = ({ setSearch }) => {
               }}
             />
           </InputGroup>
-          <Select
-            {...{
-              type: 'text',
-              placeholder: 'Selecteaza editia',
-              _placeholder: { color: 'var(--grey-alpha-300)' },
-              outline: 'none',
-              _focus: { borderColor: 'var(--grey-alpha-50)' },
-              color: 'var(--grey-alpha-50)',
-              onChange: (e) => setOption(e.target.value),
-              className: 'th-select',
-            }}
-          >
-            {options?.map(({ title, key, id }) => (
-              <option key={key} {...{ value: id }}>
-                {title}
-              </option>
-            ))}
-          </Select>
+          {!isUsedOnCoachPage && (
+            <>
+              <Select
+                {...{
+                  type: 'text',
+                  placeholder: 'Selecteaza editia',
+                  _placeholder: { color: 'var(--grey-alpha-300)' },
+                  outline: 'none',
+                  _focus: { borderColor: 'var(--grey-alpha-50)' },
+                  color: 'var(--grey-alpha-50)',
+                  onChange: (e) => setEditionId(e.target.value),
+                  className: 'th-select',
+                }}
+              >
+                {options?.map(({ title, key, id }) => (
+                  <option key={key} {...{ value: id }}>
+                    {title}
+                  </option>
+                ))}
+              </Select>
+              <Select
+                {...{
+                  type: 'text',
+                  placeholder: 'Selecteaza categoria',
+                  _placeholder: { color: 'var(--grey-alpha-300)' },
+                  outline: 'none',
+                  _focus: { borderColor: 'var(--grey-alpha-50)' },
+                  color: 'var(--grey-alpha-50)',
+                  onChange: (e) => setCategoryId(e.target.value),
+                  className: 'th-select',
+                }}
+              >
+                {options?.map(({ title, key, id }) => (
+                  <option key={key} {...{ value: id }}>
+                    {title}
+                  </option>
+                ))}
+              </Select>
+            </>
+          )}
         </Flex>
       </LayoutContainer>
       <Box {...{ position: 'absolute', top: '310px', left: 0, w: '20px', h: '250px', zIndex: 'var(--z-index-2)', background: 'var(--blue-400)' }} />
@@ -126,6 +154,7 @@ const Container = styled.section<{ src: string }>`
     gap: var(--gap-md);
 
     .th-select {
+      width: max-content;
       option {
         color: var(--black-color);
       }

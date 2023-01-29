@@ -8,50 +8,7 @@ import TeamList from '../../components/team/TeamList';
 
 const CoachesPage = () => {
   const [search, setSearch] = useState<TSearchTeam>({});
-  const players: TTeamPlayer[] = [
-    {
-      name: 'Pop',
-      surName: 'Darius',
-      shirtNumber: 2,
-      position: 'Centru',
-      image: 'https://i.imgur.com/4wP4XIX.png',
-    },
-    {
-      name: 'Pop',
-      surName: 'Darius',
-      shirtNumber: 2,
-      position: 'Centru',
-      image: 'https://i.imgur.com/4wP4XIX.png',
-    },
-    {
-      name: 'Pop',
-      surName: 'Darius',
-      shirtNumber: 2,
-      position: 'Centru',
-      image: 'https://i.imgur.com/4wP4XIX.png',
-    },
-    {
-      name: 'Pop',
-      surName: 'Darius',
-      shirtNumber: 2,
-      position: 'Centru',
-      image: 'https://i.imgur.com/4wP4XIX.png',
-    },
-    {
-      name: 'Pop',
-      surName: 'Darius',
-      shirtNumber: 2,
-      position: 'Centru',
-      image: 'https://i.imgur.com/4wP4XIX.png',
-    },
-    {
-      name: 'Pop',
-      surName: 'Darius',
-      shirtNumber: 2,
-      position: 'Centru',
-      image: 'https://i.imgur.com/4wP4XIX.png',
-    },
-  ];
+  const players: TTeamPlayer[] = [];
 
   useEffect(() => {
     console.log(search);
@@ -59,7 +16,7 @@ const CoachesPage = () => {
 
   return (
     <Layout {...{ bgColor: 'var(--blue-600)' }}>
-      <TeamHeader {...{ setSearch }} />
+      <TeamHeader {...{ setSearch, isUsedOnCoachPage: true }} />
       <TeamList {...{ players }} />
     </Layout>
   );
