@@ -17,7 +17,7 @@ export const TeamPlayersProvider: React.FC<ICommonCtx> = ({ children }) => {
 export const useTeamPlayers = () => {
   const context = useContext(ContextTeamPlayer);
   if (context === undefined) {
-    throw new Error('useUser must be used within a UserProvider');
+    throw new Error('useTeamPlayers must be used within a TeamPlayersProvider');
   }
   return context;
 };

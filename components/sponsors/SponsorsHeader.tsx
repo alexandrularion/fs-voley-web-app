@@ -37,7 +37,7 @@ const SponsorsHeader: React.FC<ISponsorsHeader> = ({ isUsedInAdminPage = false }
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { setSponsors, sponsors } = useSponsors();
   const { data } = useSession();
-  const cuModal = useDisclosure();
+  const { onClose, isOpen, onOpen } = useDisclosure();
 
   const onSubmitHandler = async (values: object, form: FormApi) => {
     const { title, logo, endDate, startDate, site } = values as TSponsor;
@@ -46,7 +46,7 @@ const SponsorsHeader: React.FC<ISponsorsHeader> = ({ isUsedInAdminPage = false }
       await createSponsor({ website: site, date_end: endDate, title, image_url: logo, date_start: startDate } as TBESponsor);
       setSponsors([...sponsors, values as TSponsor]);
       toast('Felicitari! Sponsorul a fost adaugat cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
-      cuModal.onClose();
+      onClose();
       form.reset();
     } catch (err) {
       toast('Ooops. Ceva nu a mers bine, te rugam incearca din nou.', { hideProgressBar: true, autoClose: 5000, type: 'error', position: 'bottom-right' });
@@ -74,7 +74,7 @@ const SponsorsHeader: React.FC<ISponsorsHeader> = ({ isUsedInAdminPage = false }
                     variant: 'outline',
                     colorScheme: 'whiteAlpha',
                     color: 'var(--white-color)',
-                    onClick: () => cuModal.onOpen(),
+                    onClick: () => onOpen(),
                     leftIcon: <PlusIcon {...{ color: 'var(--white-color)', size: '22px' }} />,
                   }}
                 >
@@ -95,8 +95,8 @@ const SponsorsHeader: React.FC<ISponsorsHeader> = ({ isUsedInAdminPage = false }
       {isUsedInAdminPage && (
         <SponsorsCUModal
           {...{
-            isOpen: cuModal.isOpen,
-            onClose: cuModal.onClose,
+            isOpen,
+            onClose,
             title: 'Adauga sponsor',
             onSubmitHandler,
             isLoading,

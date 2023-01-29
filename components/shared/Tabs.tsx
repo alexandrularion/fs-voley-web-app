@@ -4,7 +4,7 @@ import { useTab } from '../../context/ContextTab';
 import { ITab, ITabs } from './Interfaces';
 
 const Tabs: React.FC<ITabs> = ({ tabs }) => {
-  const { push, pathname } = useRouter();
+  const { push, asPath } = useRouter();
   const { tab, setTab } = useTab();
 
   return (
@@ -20,8 +20,8 @@ const Tabs: React.FC<ITabs> = ({ tabs }) => {
                 setTab && setTab({ title, tabId, href, value });
               }
             },
-            variant: tab?.tabId === tabId || href === pathname ? 'solid' : 'ghost',
-            color: tab?.tabId === tabId || href === pathname ? 'var(--black-color)' : 'var(--white-color)',
+            variant: tab?.tabId === tabId || href === asPath ? 'solid' : 'ghost',
+            color: tab?.tabId === tabId || href === asPath ? 'var(--black-color)' : 'var(--white-color)',
             borderRadius: '50px',
             fontWeight: 'normal',
             _hover: {

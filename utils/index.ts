@@ -1,3 +1,4 @@
+import { nanoid } from 'nanoid';
 import { axiosConfigJSON } from '../services/AxiosConfig';
 import { TUserRole } from '../types/next-auth';
 
@@ -61,3 +62,110 @@ export const convertFileToBase64URL = (file: File, callback: (result: string) =>
 };
 
 export const fetcher = (url: string) => axiosConfigJSON.get(url).then((res) => res.data);
+
+/**
+ *  Get common nationalities
+ * @returns object[]
+ */
+export const getNationalities = () => {
+  return [
+    { title: 'American', key: nanoid() },
+    { title: 'Chinez', key: nanoid() },
+    { title: 'Indian', key: nanoid() },
+    { title: 'Indonezian', key: nanoid() },
+    { title: 'Rus', key: nanoid() },
+    { title: 'Mexican', key: nanoid() },
+    { title: 'Filipinez', key: nanoid() },
+    { title: 'Britanic', key: nanoid() },
+    { title: 'Vietnamez', key: nanoid() },
+    { title: 'Turc', key: nanoid() },
+    { title: 'Italian', key: nanoid() },
+    { title: 'Egiptean', key: nanoid() },
+    { title: 'German', key: nanoid() },
+    { title: 'Iranian', key: nanoid() },
+    { title: 'Thailandez', key: nanoid() },
+    { title: 'Japonez', key: nanoid() },
+    { title: 'Coreeană de Sud', key: nanoid() },
+    { title: 'Francez', key: nanoid() },
+    { title: 'Argentinian', key: nanoid() },
+    { title: 'Ucrainean', key: nanoid() },
+    { title: 'Brazilian', key: nanoid() },
+    { title: 'Pakistanez Pakistanez', key: nanoid() },
+    { title: 'Bangladeș', key: nanoid() },
+    { title: 'Nigerian', key: nanoid() },
+    { title: 'Birmanez', key: nanoid() },
+    { title: 'Iordanian', key: nanoid() },
+    { title: 'Marocan', key: nanoid() },
+    { title: 'Arabă Saudită', key: nanoid() },
+    { title: 'Malaezian', key: nanoid() },
+    { title: 'Coreeană de Nord', key: nanoid() },
+    { title: 'Columbian', key: nanoid() },
+    { title: 'Uzbec Pakistanez', key: nanoid() },
+    { title: 'Sirian', key: nanoid() },
+    { title: 'Algerian', key: nanoid() },
+    { title: 'Canadian', key: nanoid() },
+    { title: 'Iracian', key: nanoid() },
+    { title: 'Yemenit', key: nanoid() },
+    { title: 'Român', key: nanoid() },
+  ] as { title: string; key: string }[];
+};
+
+/**
+ * Get number of days based on time
+ *
+ * @param {number} time
+ * @return {number}  days
+ */
+export const getNumberOfDays = (time: number) => Math.floor(time / (24 * 60 * 60 * 1000));
+
+/**
+ * Get number of minutes based on time
+ *
+ * @param {number} time
+ * @return number minutes
+ */
+export const getNumberOfMinutes = (time: number) => Math.floor((time % (1000 * 3600)) / (1000 * 60));
+
+/**
+ * Get number of hours based on time
+ *
+ * @param {number} time
+ * @return number hours
+ */
+export const getNumberOfHours = (time: number) => Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+/**
+ * Get number of seconds based on time
+ *
+ * @param {number} time
+ * @return number seconds
+ */
+export const getNumberOfSeconds = (time: number) => Math.floor((time % (1000 * 60)) / 1000);
+
+/**
+ * Convert a date to readable human date
+ * @param {string} date
+ * @returns human a readable date string
+ */
+export const getHumanDate = (date: Date) => {
+  const currentDate: number = new Date().getTime() - date.getTime();
+  const numberOfDays: number = getNumberOfDays(currentDate);
+  const numberOfMinutes: number = getNumberOfMinutes(currentDate);
+  const numberOfHours: number = getNumberOfHours(currentDate);
+
+  const days: string = `${numberOfDays} ${numberOfDays > 1 ? 'Zile' : 'Zi'} In Urmă`;
+  const hours: string = `${numberOfHours} ${numberOfHours > 1 ? 'Ore' : 'Oră'} In Urmă`;
+  const minutes: string = `${numberOfMinutes} ${numberOfMinutes > 1 ? 'Minute' : 'Minut'} In Urmă`;
+  const seconds: string = `Cateva secunde in urma`;
+
+  if (numberOfDays >= 1) {
+    return days;
+  } else if (numberOfDays <= 0 && numberOfHours > 1 && numberOfHours <= 24) {
+    return hours;
+  } else if (numberOfDays <= 0 && numberOfHours <= 0 && numberOfMinutes > 0) {
+    return minutes;
+  } else if (numberOfDays <= 0 && numberOfHours <= 0 && numberOfMinutes <= 0) {
+    return seconds;
+  }
+  return 'Chiar Acum';
+};

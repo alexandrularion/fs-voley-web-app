@@ -40,6 +40,11 @@ export interface IDeleteModal extends IModal {
   isLoading?: boolean;
 }
 
+export interface IImageModal extends IModal {
+  image: string;
+  createdAt: string;
+}
+
 export interface IEmptyState {
   title?: string;
   description?: string;

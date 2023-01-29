@@ -1,4 +1,4 @@
-import { TBETeamPlayer } from '../components/team/Interfaces';
+import { TBETeamPlayer, TTeamCategory } from '../components/team/Interfaces';
 import { axiosConfigJSON } from './AxiosConfig';
 
 const getAllPlayers = () => {
@@ -21,4 +21,20 @@ const updatePlayer = (playerId: number, player: TBETeamPlayer) => {
   return axiosConfigJSON.post(`/player/update/${playerId}`, JSON.stringify(player));
 };
 
-export { getAllPlayers, getPlayer, deletePlayer, createPlayer, updatePlayer };
+const getAllCategories = () => {
+  return axiosConfigJSON.get('/category/get/all');
+};
+
+const deleteCategory = (categoryId: number) => {
+  return axiosConfigJSON.delete(`/category/delete/${categoryId}`);
+};
+
+const createCategory = (category: TTeamCategory) => {
+  return axiosConfigJSON.post('/category/create', JSON.stringify(category));
+};
+
+const updateCategory = (cateogryId: number, category: TTeamCategory) => {
+  return axiosConfigJSON.post(`/category/update/${cateogryId}`, JSON.stringify(category));
+};
+
+export { getAllPlayers, getPlayer, deletePlayer, createPlayer, updatePlayer, getAllCategories, updateCategory, createCategory, deleteCategory };

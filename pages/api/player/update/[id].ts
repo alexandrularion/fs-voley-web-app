@@ -34,3 +34,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.status(500).json({ message: e });
   }
 }
+
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '4mb', // Set desired value here
+    },
+  },
+};

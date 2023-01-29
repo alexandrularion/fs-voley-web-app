@@ -6,7 +6,7 @@ import { CustomValidation, EmailValidation } from '../shared/Validations';
 
 const UsersCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLoading, onSubmitHandler, initialValues }) => {
   return (
-    <Modal {...{ isOpen, onClose, blockScrollOnMount: true, isCentered: true, closeOnOverlayClick: !isLoading }}>
+    <Modal {...{ isOpen, onClose, blockScrollOnMount: true, isCentered: true, closeOnOverlayClick: !isLoading, size: '4xl' }}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{title}</ModalHeader>
@@ -17,7 +17,7 @@ const UsersCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLoading,
                 initialValues,
                 onSubmit: (values: any, form: FormApi) => onSubmitHandler(values, form),
                 render: ({ handleSubmit }) => (
-                  <Flex {...{ as: 'form', onSubmit: handleSubmit, id: 'sponsors-cu-modal', display: 'flex', flexDirection: 'column', gap: 'var(--gap-md)' }}>
+                  <Flex {...{ as: 'form', onSubmit: handleSubmit, id: 'users-cu-modal', display: 'flex', flexDirection: 'column', gap: 'var(--gap-md)' }}>
                     <Field
                       {...{
                         name: 'firstName',
@@ -25,7 +25,7 @@ const UsersCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLoading,
                         render: ({ input, meta: { touched, error } }) => (
                           <Tooltip {...{ label: touched && error ? error : '' }}>
                             <InputGroup>
-                              <InputLeftAddon {...{ children: 'Nume' }} />
+                              <InputLeftAddon {...{ children: 'Nume', w: '145px' }} />
                               <Input
                                 {...{
                                   ...input,
@@ -46,7 +46,7 @@ const UsersCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLoading,
                         render: ({ input, meta: { touched, error } }) => (
                           <Tooltip {...{ label: touched && error ? error : '' }}>
                             <InputGroup>
-                              <InputLeftAddon {...{ children: 'Prenume' }} />
+                              <InputLeftAddon {...{ children: 'Prenume', w: '145px' }} />
                               <Input
                                 {...{
                                   ...input,
@@ -67,7 +67,7 @@ const UsersCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLoading,
                         render: ({ input, meta: { touched, error } }) => (
                           <Tooltip {...{ label: touched && error ? error : '' }}>
                             <InputGroup>
-                              <InputLeftAddon {...{ children: 'Email' }} />
+                              <InputLeftAddon {...{ children: 'Email', w: '145px' }} />
                               <Input
                                 {...{
                                   ...input,
@@ -88,12 +88,14 @@ const UsersCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLoading,
                         render: ({ input, meta: { touched, error } }) => (
                           <Tooltip {...{ label: touched && error ? error : '' }}>
                             <InputGroup>
-                              <InputLeftAddon {...{ children: 'Tip de utilizator' }} />
+                              <InputLeftAddon {...{ children: 'Tip de utilizator', w: '145px' }} />
                               <Select
                                 {...{
                                   isInvalid: touched && error,
                                   placeholder: 'Alegeti tipul de utilizator',
                                   ...input,
+                                  borderTopLeftRadius: 0,
+                                  borderBottomLeftRadius: 0,
                                 }}
                               >
                                 {<option {...{ value: 1 }}>{'Administrator'}</option>}
@@ -112,7 +114,7 @@ const UsersCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLoading,
         </ModalBody>
         <ModalFooter>
           <Button {...{ onClick: onClose, mr: 3, variant: 'outline', disabled: isLoading }}>Inchide</Button>
-          <Button {...{ variant: 'solid', background: 'var(--blue-600)', color: 'var(--white-color)', colorScheme: 'blue', type: 'submit', form: 'sponsors-cu-modal', disabled: isLoading, isLoading }}>
+          <Button {...{ variant: 'solid', background: 'var(--blue-600)', color: 'var(--white-color)', colorScheme: 'blue', type: 'submit', form: 'users-cu-modal', disabled: isLoading, isLoading }}>
             {'Salveaza'}
           </Button>
         </ModalFooter>

@@ -17,7 +17,7 @@ import TeamPlayerDModal from './TeamPlayerDModal';
 import TeamPlayerCUModal from './TeamPlayerCUModal';
 import ImageModal from '../shared/ImageModal';
 
-const TeamPlayersTable: React.FC = () => {
+const TeamCoachesTable: React.FC = () => {
   const { teamPlayers, setTeamPlayers } = useTeamPlayers();
   const deleteModal = useDisclosure();
   const dModal = useDisclosure();
@@ -231,7 +231,7 @@ const TeamPlayersTable: React.FC = () => {
   );
 };
 
-export default TeamPlayersTable;
+export default TeamCoachesTable;
 
 const Container = styled.section`
   display: flex;

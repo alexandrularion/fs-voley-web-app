@@ -44,7 +44,7 @@ const CommonTable: React.FC<ICommonTable> = ({ columns, data, filter }) => {
           {headerGroups.map((headerGroup: any, index: number) => (
             <Tr key={`${index}_headerGroups`} {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column: any, indexHeader: number) => (
-                <Th key={`${indexHeader}_headerGroup`} {...column.getHeaderProps()}>
+                <Th key={`${indexHeader}_headerGroup`} {...{ ...column.getHeaderProps(), padding: 'var(--chakra-space-4)' }}>
                   {column.render('Header')}
                 </Th>
               ))}
@@ -59,7 +59,7 @@ const CommonTable: React.FC<ICommonTable> = ({ columns, data, filter }) => {
                 <Tr {...row.getRowProps()} key={`${index}_row`}>
                   {row.cells.map((cell, indexRow: number) => {
                     return (
-                      <Td {...cell.getCellProps()} key={`${indexRow}_row_cells`}>
+                      <Td {...{ ...cell.getCellProps(), padding: 'var(--chakra-space-4)' }} key={`${indexRow}_row_cells`}>
                         {cell.render('Cell')}
                       </Td>
                     );
