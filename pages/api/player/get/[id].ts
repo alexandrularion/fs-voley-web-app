@@ -9,6 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       try {
         const user = await prisma.player.findFirst({
           where: { id: Number(id) },
+          include: { category: true, edition: true },
         });
         return res.status(200).json(user);
       } catch (e) {
