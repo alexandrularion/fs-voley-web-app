@@ -16,7 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(401).json({ message: 'Unauthorized' });
       }
       const { id } = req.query;
-      const { first_name, last_name, description, shirtNumber, height, position, birthday, nationality, image,categoryId } = req.body;
+      const { first_name, last_name, description, shirtNumber, height, position, birthday, nationality, image, categoryId, editionId } = req.body;
       await prisma.player.update({
         where: { id: Number(id) },
         data: {
@@ -30,6 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           nationality: nationality,
           image: image,
           categoryId: categoryId,
+          editionId: editionId,
         },
       });
       return res.status(200).json({ message: 'The player was updated!' });
