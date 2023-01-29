@@ -44,6 +44,7 @@ model Player {
   description                String?
   height                     Float
   position                   String?
+  shirtNumber                Int?
   birthday                   DateTime
   nationality                String?
   image                      String?        @db.LongText
@@ -87,7 +88,6 @@ model Keyword {
     @@map("keywords")
 }
 
-/// create
 model Sponsor {
     id                         Int               @id @default(autoincrement())
     title                      String
@@ -101,6 +101,53 @@ model Sponsor {
 
     @@map("sponsors")
 }
+
+model Category {
+    id                         Int               @id @default(autoincrement())
+    title                      String
+    createdAt                  DateTime          @default(now())
+    updatedAt                  DateTime          @updatedAt
+
+    @@map("categories")
+}
+
+model Championship {
+    id                         Int               @id @default(autoincrement())
+    title                      String
+    createdAt                  DateTime          @default(now())
+    updatedAt                  DateTime          @updatedAt
+
+    @@map("championships")
+}
+
+model Team {
+    id                         Int               @id @default(autoincrement())
+    title                      String
+    createdAt                  DateTime          @default(now())
+    updatedAt                  DateTime          @updatedAt
+
+    @@map("teams")
+}
+
+model Edition {
+    id                         Int               @id @default(autoincrement())
+    title                      String
+    createdAt                  DateTime          @default(now())
+    updatedAt                  DateTime          @updatedAt
+
+    @@map("editions")
+}
+
+model History {
+    id                         Int               @id @default(autoincrement())
+    title                      String
+    image                      String?           @db.LongText
+    description                String?             @db.LongText
+    createdAt                  DateTime          @default(now())
+    updatedAt                  DateTime          @updatedAt
+
+    @@map("histories")
+}
 // categorie
 //: id, title
 // campionat
@@ -111,4 +158,4 @@ model Sponsor {
 // o entittate editie, cand adaugi un jucator trebuei sa poti sa il atribui la o anumita editie.
 //editie: id , titlu (2023-20224).
 // campionat
-// O alta entitate care se numeste (echipa) voley type ex(juniori, middle, seniori)
+// + O alta entitate care se numeste (echipa) voley type ex(juniori, middle, seniori)
