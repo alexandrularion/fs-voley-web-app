@@ -10,22 +10,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(401).json({ message: 'Unauthorized' });
       }
       const { id } = req.query;
-      const { first_name, last_name, description, shirtNumber, height, position, birthday, nationality, image } = req.body;
-      await prisma.player.update({
+      const { title } = req.body;
+      await prisma.category.update({
         where: { id: Number(id) },
         data: {
-          first_name: first_name,
-          last_name: last_name,
-          description: description,
-          height: height,
-          shirtNumber: shirtNumber,
-          position: position,
-          birthday: birthday,
-          nationality: nationality,
-          image: image,
+          title: title,
         },
       });
-      return res.status(200).json({ message: 'The player was updated!' });
+      return res.status(200).json({ message: 'The category was updated!' });
     } else {
       res.status(405).json({ message: 'Method Not Allowed' });
     }

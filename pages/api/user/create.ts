@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../lib/prisma';
 import { getSession } from 'next-auth/react';
-// 0 -administrator
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     if (req.method == 'POST') {
@@ -22,9 +22,33 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         },
       });
 
-      console.log(randomstring);
+      //console.log(randomstring);
       //TODO: send password to user email address
-
+      // const transporter = nodemailer.createTransport({
+      //   host: 'smtp.mailtrap.io',
+      //   port: 2525,
+      //   auth: {
+      //     user: '775597e69b1a14',
+      //     pass: '2b3ed2418b3f27',
+      //   },
+      //   secure: true,
+      // });
+      //
+      // const mailData = {
+      //   from: '32caf55ac1-f9a504@inbox.mailtrap.io',
+      //   to: '32caf55ac1-f9a504@inbox.mailtrap.io',
+      //   subject: `Message From ${req.body.name}`,
+      //   text: req.body.message,
+      //   html: '<div> Parola generata este: {randomstring}, va rugam sa schimabi parola dupa ce va conectati la cont.</div>',
+      // };
+      //
+      // transporter.sendMail(mailData, function (err, info) {
+      //   if (err) {
+      //     console.log(err);
+      //   } else {
+      //     console.log(info);
+      //   }
+      // });
       return res.status(200).json(user);
     } else {
       res.status(405).json({ message: 'Method Not Allowed' });

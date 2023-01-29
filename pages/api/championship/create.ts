@@ -9,22 +9,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (session == null) {
         return res.status(401).json({ message: 'Unauthorized' });
       }
-      const { first_name, last_name, description, height, position, shirtNumber, birthday, nationality, image } = req.body;
-      const user = await prisma.player.create({
+      const { title } = req.body;
+      const championship = await prisma.championship.create({
         data: {
-          first_name: first_name,
-          last_name: last_name,
-          description: description,
-          height: height,
-          position: position,
-          shirtNumber: shirtNumber,
-          birthday: birthday,
-          nationality: nationality,
-          image: image,
+          title: title,
         },
       });
 
-      return res.status(200).json(user);
+      return res.status(200).json(championship);
     } else {
       return res.status(405).json({ message: 'Method Not Allowed' });
     }
