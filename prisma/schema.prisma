@@ -41,7 +41,7 @@ model Player {
   id                         Int            @id @default(autoincrement())
   first_name                 String
   last_name                  String
-  description                String?
+  description                String?        @db.LongText
   height                     Float
   position                   String?
   shirtNumber                Int?
