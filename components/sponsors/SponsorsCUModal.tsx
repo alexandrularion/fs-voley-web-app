@@ -16,7 +16,7 @@ const SponsorsCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLoadi
   }, [initialValues, isLoading]);
 
   return (
-    <Modal {...{ isOpen, onClose, blockScrollOnMount: true, isCentered: true, closeOnOverlayClick: !isLoading }}>
+    <Modal {...{ isOpen, onClose, blockScrollOnMount: true, isCentered: true, closeOnOverlayClick: !isLoading, size: '4xl' }}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{title}</ModalHeader>
@@ -26,7 +26,7 @@ const SponsorsCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLoadi
               {...{
                 initialValues,
                 onSubmit: (values: any, form: FormApi) => onSubmitHandler(hasEndedSponsorship ? values : { ...values, endDate: '0' }, form),
-                render: ({ handleSubmit }) => (
+                render: ({ handleSubmit, values }) => (
                   <Flex {...{ as: 'form', onSubmit: handleSubmit, id: 'sponsors-cu-modal', display: 'flex', flexDirection: 'column', gap: 'var(--gap-md)' }}>
                     <Field
                       {...{
@@ -35,7 +35,7 @@ const SponsorsCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLoadi
                         render: ({ input: { onBlur, onChange, onFocus }, meta: { touched, error } }) => (
                           <Tooltip {...{ label: touched && error ? error : '' }}>
                             <InputGroup>
-                              <InputLeftAddon {...{ children: 'Logo' }} />
+                              <InputLeftAddon {...{ children: 'Logo', w: '115px' }} />
                               <Input
                                 {...{
                                   onBlur,
@@ -51,7 +51,7 @@ const SponsorsCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLoadi
                                   type: 'file',
                                   title: '',
                                   _after: {
-                                    content: `"${initialValues?.title ? `${initialValues?.title?.toLowerCase()}.png` : touched && !error ? 'Fisier adaugat ✓' : 'Selecteaza un logo'}"`,
+                                    content: `"${initialValues?.title ? `${initialValues?.title?.toLowerCase()}.png` : touched && !error ? 'Fisier adaugat ✓' : 'Incarca un logo din computer'}"`,
                                     width: '100%',
                                     height: '100%',
                                     top: '0',
@@ -59,7 +59,7 @@ const SponsorsCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLoadi
                                     padding: '7px',
                                     position: 'absolute',
                                     background: 'var(--white-color)',
-                                    color: 'var(--grey-alpha-600)',
+                                    color: values?.logo ? 'var(--black-color)' : 'var(--grey-alpha-600)',
                                   },
                                   sx: {
                                     '::file-selector-button': {
@@ -83,7 +83,7 @@ const SponsorsCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLoadi
                         render: ({ input, meta: { touched, error } }) => (
                           <Tooltip {...{ label: touched && error ? error : '' }}>
                             <InputGroup>
-                              <InputLeftAddon {...{ children: 'Nume' }} />
+                              <InputLeftAddon {...{ children: 'Nume', w: '115px' }} />
                               <Input
                                 {...{
                                   ...input,
@@ -104,7 +104,7 @@ const SponsorsCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLoadi
                         render: ({ input, meta: { touched, error } }) => (
                           <Tooltip {...{ label: touched && error ? error : '' }}>
                             <InputGroup>
-                              <InputLeftAddon {...{ children: 'Site' }} />
+                              <InputLeftAddon {...{ children: 'Site', w: '115px' }} />
                               <Input
                                 {...{
                                   ...input,
@@ -125,7 +125,7 @@ const SponsorsCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLoadi
                         render: ({ input, meta: { touched, error } }) => (
                           <Tooltip {...{ label: touched && error ? error : '' }}>
                             <InputGroup>
-                              <InputLeftAddon {...{ children: 'Sponsor din' }} />
+                              <InputLeftAddon {...{ children: 'Sponsor din', w: '115px' }} />
                               <Input
                                 {...{
                                   ...input,

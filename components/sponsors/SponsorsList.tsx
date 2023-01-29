@@ -15,18 +15,22 @@ const SponsorsList: React.FC<ISponsorsList> = () => {
   return (
     <Container>
       <LayoutContainer {...{ className: 'sl-layout-container' }}>
-        <Box
-          {...{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3,1fr)',
-            w: '100%',
-            gap: 'var(--gap-md)',
-            bg: data && data.length > 0 ? 'unset' : 'var(--white-color)',
-            h: data && data.length > 0 ? 'unset' : '330px',
-          }}
-        >
-          {data && data.length > 0 ? data.map(({ key, ...obj }) => <SponsorsCard key={key} {...obj} />) : <EmptyState />}
-        </Box>
+        {data && data.length > 0 ? (
+          <Box
+            {...{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3,1fr)',
+              w: '100%',
+              gap: 'var(--gap-md)',
+            }}
+          >
+            {data.map(({ key, ...obj }) => (
+              <SponsorsCard key={key} {...obj} />
+            ))}
+          </Box>
+        ) : (
+          <EmptyState />
+        )}
       </LayoutContainer>
     </Container>
   );
