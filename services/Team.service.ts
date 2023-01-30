@@ -1,5 +1,8 @@
-import { TBETeamPlayer, TTeamCategory } from '../components/team/Interfaces';
+import { TBETeamPlayer, TTeamCategory, TTeamEdition } from '../components/team/Interfaces';
 import { axiosConfigJSON } from './AxiosConfig';
+
+const getAllCategoriesSWRKey = '/category/get/all';
+const getAllEditionsSWRKey = '/editiion/get/all';
 
 const getAllPlayers = () => {
   return axiosConfigJSON.get('/player/get/all');
@@ -37,4 +40,36 @@ const updateCategory = (cateogryId: number, category: TTeamCategory) => {
   return axiosConfigJSON.post(`/category/update/${cateogryId}`, JSON.stringify(category));
 };
 
-export { getAllPlayers, getPlayer, deletePlayer, createPlayer, updatePlayer, getAllCategories, updateCategory, createCategory, deleteCategory };
+const getAllEditions = () => {
+  return axiosConfigJSON.get('/editiion/get/all');
+};
+
+const deleteEdition = (editionId: number) => {
+  return axiosConfigJSON.delete(`/editiion/delete/${editionId}`);
+};
+
+const createEdition = (edition: TTeamEdition) => {
+  return axiosConfigJSON.post('/editiion/create', JSON.stringify(edition));
+};
+
+const updateEdition = (editionId: number, edition: TTeamEdition) => {
+  return axiosConfigJSON.post(`/editiion/update/${editionId}`, JSON.stringify(edition));
+};
+
+export {
+  getAllPlayers,
+  getPlayer,
+  deletePlayer,
+  createPlayer,
+  updatePlayer,
+  getAllCategories,
+  updateCategory,
+  createCategory,
+  deleteCategory,
+  getAllEditions,
+  createEdition,
+  deleteEdition,
+  updateEdition,
+  getAllCategoriesSWRKey,
+  getAllEditionsSWRKey,
+};

@@ -45,7 +45,7 @@ const Container = styled.div`
   .sl-layout-container {
     place-content: start;
     position: relative;
-    top: -120px;
+    top: -110px;
     gap: var(--gap-md);
   }
 `;

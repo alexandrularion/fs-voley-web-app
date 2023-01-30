@@ -11,6 +11,7 @@ const EmptyState: React.FC<IEmptyState> = ({ title = 'Căutare fără rezultate'
         gap: 'var(--gap-md)',
         bg: 'var(--white-color)',
         h: '330px',
+        borderRadius: '15px',
       }}
     >
       <Flex {...{ gap: 'var(--gap-md)', alignItems: 'center', w: 'max-content' }}>
