@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import Image from 'next/dist/client/image';
 import TeamPlayerStats from '../../components/team/TeamPlayerStats';
 
-const PlayerProfilePage: NextPage<IPlayerProfilePage> = ({ data: { name, surName, image, position, nationality, birthday, height, description, ...rest } }) => {
+const PlayerProfilePage: NextPage<IPlayerProfilePage> = ({ data: { name, surName, image, position, nationality, birthday, height, shirtNumber, description, ...rest } }) => {
   return (
     <Layout {...{ bgColor: 'var(--blue-600)' }}>
       <Container {...{ bgSrc: Background.src }}>
@@ -22,12 +22,13 @@ const PlayerProfilePage: NextPage<IPlayerProfilePage> = ({ data: { name, surName
             <Text {...{ color: 'var(--white-color)' }}>{'ECHIPĂ'}</Text>
             <Flex {...{ flexDirection: 'column', gap: 'var(--gap-sm)' }}>
               <Heading {...{ color: 'var(--white-color)', fontSize: 'calc(var(--heading-md) + var(--heading-xs))' }}>{surName}</Heading>
-              <Heading {...{ color: 'var(--white-color)', fontSize: '280px', lineHeight: '240px', position: 'relative', left: '-16px' }}>{name}</Heading>
+              <Heading {...{ color: 'var(--white-color)', fontSize: '280px', position: 'relative', left: '-16px' }}>{name}</Heading>
             </Flex>
           </Flex>
+          <Heading {...{ color: 'var(--blue-400)', fontSize: '200px', position: 'absolute', right: '0', top: '80px', zIndex: 'var(--z-index-5)' }}>{shirtNumber}</Heading>
         </LayoutContainer>
         <LayoutContainer {...{ className: 'tm-layout-container-info' }}>
-          <TeamPlayerStats {...{ data: { ...rest, position, nationality, birthday, height, name, surName, image, description } }} />
+          <TeamPlayerStats {...{ data: { ...rest, position, nationality, birthday, height, name, surName, image, description, shirtNumber } }} />
           <Flex {...{ flexDirection: 'column', gap: 'var(--gap-sm)' }}>
             <Text {...{ fontSize: 'var(--text-md)', color: 'var(--black-color)' }}>{'Biografie'}</Text>
             <Heading {...{ fontSize: 'var(--heading-xs)', color: 'var(--blue-600)' }}>{description}</Heading>
@@ -58,9 +59,10 @@ const Container = styled.div<{ bgSrc: string }>`
     z-index: var(--z-index-6);
     background-color: var(--white-color);
     padding: 80px 100px;
-    border-radius: 15px;
     flex-direction: column;
     gap: var(--gap-lg);
+    border-left: 20px solid var(--blue-400);
+    border-top: 20px solid var(--blue-600);
   }
   .tm-img-container {
     position: relative;
