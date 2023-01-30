@@ -15,7 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (session == null) {
         return res.status(401).json({ message: 'Unauthorized' });
       }
-      const { first_name, last_name, description, height, position, shirtNumber, birthday, nationality, image, categoryId, editionId } = req.body;
+      const { first_name, last_name, description, height, position, shirtNumber, birthday, nationality, slug, image, categoryId, editionId } = req.body;
       const user = await prisma.player.create({
         data: {
           first_name: first_name,
@@ -29,6 +29,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           image: image,
           categoryId: categoryId,
           editionId: editionId,
+          slug: slug,
         },
       });
 

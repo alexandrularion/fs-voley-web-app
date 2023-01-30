@@ -1,6 +1,3 @@
--- AlterTable
-ALTER TABLE `editions` ADD COLUMN `updatedAt` DATETIME(3) NULL;
-
 -- CreateTable
 CREATE TABLE `clubs` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
