@@ -58,9 +58,12 @@ const TeamHeader: React.FC<ITeamHeader> = ({ setSearch, isUsedOnCoachPage = fals
   const setSearchQuery = useMemo(() => debounce((query: string) => setSearch((prevState) => ({ ...prevState, query: query }))), [setSearch]);
 
   useEffect(() => {
-    editionId && setSearch((prevState) => ({ ...prevState, editionId }));
-    categoryId && setSearch((prevState) => ({ ...prevState, categoryId }));
-  }, [editionId, categoryId, setSearch]);
+    setSearch((prevState) => ({ ...prevState, categoryId }));
+  }, [categoryId, setSearch]);
+
+  useEffect(() => {
+    setSearch((prevState) => ({ ...prevState, editionId }));
+  }, [editionId, setSearch]);
 
   useEffect(() => {
     setSearchQuery(query);
@@ -96,7 +99,7 @@ const TeamHeader: React.FC<ITeamHeader> = ({ setSearch, isUsedOnCoachPage = fals
         onClose();
         form.reset();
       } else {
-        const { name, surName, position, birthday, nationality, height, description, image, shirtNumber } = values as TTeamPlayer;
+        const { name, surName, position, birthday, nationality, height, description, image, shirtNumber, categoryId, editionId } = values as TTeamPlayer;
         await createPlayer({
           first_name: name,
           last_name: surName,
@@ -107,6 +110,8 @@ const TeamHeader: React.FC<ITeamHeader> = ({ setSearch, isUsedOnCoachPage = fals
           description,
           shirtNumber,
           image,
+          categoryId: Number(categoryId),
+          editionId: Number(editionId),
         } as TBETeamPlayer);
         setTeamPlayers([...teamPlayers, values as TTeamPlayer]);
         toast('Felicitari! jucatorul a fost adaugat cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
@@ -128,7 +133,7 @@ const TeamHeader: React.FC<ITeamHeader> = ({ setSearch, isUsedOnCoachPage = fals
           <Text {...{ color: 'var(--white-color)', fontSize: 'var(--text-sm)' }}>{'C.S.M Suceava'}</Text>
         )}
         <Flex {...{ w: '100%', justifyContent: 'space-between', alignItems: 'center', gap: 'var(--gap-md)' }}>
-          <Heading {...{ color: 'var(--grey-alpha-50)', fontSize: 'var(--heading-md)' }}>{'Echipa'}</Heading>
+          <Heading {...{ color: 'var(--grey-alpha-50)', fontSize: 'var(--heading-md)' }}>{'Echipă'}</Heading>
           {data?.role === USER_ROLE.ADMIN && (
             <>
               {isUsedInAdminPage && (
@@ -141,12 +146,12 @@ const TeamHeader: React.FC<ITeamHeader> = ({ setSearch, isUsedOnCoachPage = fals
                     leftIcon: <PlusIcon {...{ color: 'var(--white-color)', size: '22px' }} />,
                   }}
                 >
-                  {isUsedOnCoachPage ? 'Adauga un antrenor' : isUsedInCategoryPage ? 'Adauga un lot' : isUsedInEditionPage ? 'Adauga o editie' : 'Adauga un jucator'}
+                  {isUsedOnCoachPage ? 'Adaugă un antrenor' : isUsedInCategoryPage ? 'Adaugă un lot' : isUsedInEditionPage ? 'Adaugă o editie' : 'Adaugă un jucator'}
                 </Button>
               )}
               {!isUsedInAdminPage && (
                 <Link {...{ href: adminRoutes.team.url }}>
-                  <Button {...{ variant: 'solid', colorScheme: 'whiteAlpha', color: 'var(--black-color)', background: 'var(--white-color)' }}>{'Gestioneaza echipa'}</Button>
+                  <Button {...{ variant: 'solid', colorScheme: 'whiteAlpha', color: 'var(--black-color)', background: 'var(--white-color)' }}>{'Gestionează echipa'}</Button>
                 </Link>
               )}
             </>
@@ -181,7 +186,7 @@ const TeamHeader: React.FC<ITeamHeader> = ({ setSearch, isUsedOnCoachPage = fals
                   outline: 'none',
                   _focus: { borderColor: 'var(--grey-alpha-50)' },
                   color: 'var(--grey-alpha-50)',
-                  onChange: (e) => setEditionId(e.target.value),
+                  onChange: (e) => setEditionId(e.target.value || undefined),
                   className: 'th-select',
                 }}
               >
@@ -199,7 +204,7 @@ const TeamHeader: React.FC<ITeamHeader> = ({ setSearch, isUsedOnCoachPage = fals
                   outline: 'none',
                   _focus: { borderColor: 'var(--grey-alpha-50)' },
                   color: 'var(--grey-alpha-50)',
-                  onChange: (e) => setCategoryId(e.target.value),
+                  onChange: (e) => setCategoryId(e.target.value || undefined),
                   className: 'th-select',
                 }}
               >
@@ -222,7 +227,7 @@ const TeamHeader: React.FC<ITeamHeader> = ({ setSearch, isUsedOnCoachPage = fals
             {...{
               isOpen,
               onClose,
-              title: 'Adauga o editie',
+              title: 'Adaugă o editie',
               onSubmitHandler,
               isLoading,
             }}
@@ -232,7 +237,7 @@ const TeamHeader: React.FC<ITeamHeader> = ({ setSearch, isUsedOnCoachPage = fals
             {...{
               isOpen,
               onClose,
-              title: 'Adauga un lot',
+              title: 'Adaugă un lot',
               onSubmitHandler,
               isLoading,
             }}
@@ -242,7 +247,7 @@ const TeamHeader: React.FC<ITeamHeader> = ({ setSearch, isUsedOnCoachPage = fals
             {...{
               isOpen,
               onClose,
-              title: 'Adauga un jucator',
+              title: 'Adaugă un jucator',
               onSubmitHandler,
               isLoading,
             }}

@@ -2,15 +2,21 @@ import { Box } from '@chakra-ui/react';
 import { nanoid } from 'nanoid';
 import { useMemo } from 'react';
 import styled from 'styled-components';
+import { useTeamCoaches } from '../../context/ContextTeamCoaches';
 import { useTeamPlayers } from '../../context/ContextTeamPlayers';
 import EmptyState from '../shared/EmptyState';
 import { LayoutContainer } from '../shared/Layout';
-import { TTeamPlayer } from './Interfaces';
+import { ITeamList } from './Interfaces';
 import TeamCard from './TeamCard';
 
-const TeamList: React.FC = () => {
+const TeamList: React.FC<ITeamList> = ({ isUsedInCoachPage = false }) => {
   const { teamPlayers } = useTeamPlayers();
-  const data: TTeamPlayer[] = useMemo(() => teamPlayers.map((obj) => ({ ...obj, key: nanoid() })), [teamPlayers]);
+  const { teamCoaches } = useTeamCoaches();
+  const data = useMemo(
+    () => (isUsedInCoachPage ? teamCoaches?.map((obj) => ({ ...obj, key: nanoid() })) : teamPlayers?.map((obj) => ({ ...obj, key: nanoid() }))),
+    [teamPlayers, teamCoaches, isUsedInCoachPage]
+  );
+
   return (
     <Container>
       <LayoutContainer {...{ className: 'sl-layout-container' }}>

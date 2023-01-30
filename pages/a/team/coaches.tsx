@@ -2,25 +2,25 @@ import { GetServerSidePropsContext, NextPage } from 'next';
 import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import Layout from '../../../components/shared/Layout';
-import { ITeamPlayersPage, TBETeamPlayer, TSearchTeam, TTeamPlayer } from '../../../components/team/Interfaces';
+import { ICoachesPage, TBETeamPlayer, TSearchTeam, TTeamCoach, TTeamPlayer } from '../../../components/team/Interfaces';
 import TeamCoachesTable from '../../../components/team/TeamCoachesTable';
 import TeamHeader from '../../../components/team/TeamHeader';
 import { useTab } from '../../../context/ContextTab';
-import { useTeamPlayers } from '../../../context/ContextTeamPlayers';
+import { useTeamCoaches } from '../../../context/ContextTeamCoaches';
 import { getAllPlayers } from '../../../services/Team.service';
 
-const TeamPlayersPage: NextPage<ITeamPlayersPage> = ({ data }) => {
+const TeamPlayersPage: NextPage<ICoachesPage> = ({ data }) => {
   const [search, setSearch] = useState<TSearchTeam>({});
-  const { setTeamPlayers } = useTeamPlayers();
+  const { setTeamCoaches } = useTeamCoaches();
   const { setTab } = useTab();
 
   useEffect(() => {
     if (search.query) {
-      // setTeamPlayers(data.filter(({ startDate }: TSponsor) => Number(startDate) === tab.value));
+      setTeamCoaches(data?.filter(({ name, surName }: TTeamCoach) => name.toLowerCase().includes(search.query!.toLowerCase()) || surName.toLowerCase().includes(search.query!.toLowerCase())));
     } else {
-      setTeamPlayers(data);
+      setTeamCoaches(data);
     }
-  }, [search, data, setTeamPlayers]);
+  }, [search, data, setTeamCoaches]);
 
   useEffect(() => {
     setTab({ tabId: 1, title: 'Antrenori', href: '/a/team/coaches', value: 1 });

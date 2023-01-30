@@ -12,25 +12,39 @@ import { getAllPlayers } from '../../../services/Team.service';
 const TeamPlayersPage: NextPage<ITeamPlayersPage> = ({ data }) => {
   const [search, setSearch] = useState<TSearchTeam>({});
   const { setTab } = useTab();
-  const { setTeamPlayers, teamPlayers } = useTeamPlayers();
+  const { setTeamPlayers } = useTeamPlayers();
 
   useEffect(() => {
-    if (search.query || search.categoryId || search.editionId) {
+    if (search?.query || search?.categoryId || search?.editionId) {
       setTeamPlayers(
-        teamPlayers.filter(({ name, surName, categoryId, editionId, ...rest }) => {
-          if (
-            (search?.query && (name.includes(search?.query) || surName.includes(search?.query))) ||
-            (search?.categoryId && categoryId === Number(search?.categoryId)) ||
-            (search?.editionId && editionId === Number(search?.editionId))
-          ) {
-            return { ...rest, name, surName, categoryId, editionId };
-          }
-        })
+        data?.filter(
+          ({ name, surName, categoryId, editionId }) =>
+            (search?.query &&
+              (name.toLowerCase().includes(search?.query) || surName.toLowerCase().includes(search?.query)) &&
+              search?.categoryId &&
+              categoryId === Number(search?.categoryId) &&
+              search?.editionId &&
+              editionId === Number(search?.editionId)) ||
+            (search?.query &&
+              (name.toLowerCase().includes(search?.query) || surName.toLowerCase().includes(search?.query)) &&
+              search?.categoryId &&
+              categoryId === Number(search?.categoryId) &&
+              !search?.editionId) ||
+            (search?.query &&
+              (name.toLowerCase().includes(search?.query) || surName.toLowerCase().includes(search?.query)) &&
+              !search?.categoryId &&
+              categoryId === Number(search?.categoryId) &&
+              search?.editionId) ||
+            (search?.categoryId && categoryId === Number(search?.categoryId) && search?.editionId && editionId === Number(search?.editionId) && !search?.query) ||
+            (search?.query && (name.toLowerCase().includes(search?.query) || surName.toLowerCase().includes(search?.query)) && !search?.categoryId && !search?.editionId) ||
+            (search?.categoryId && categoryId === Number(search?.categoryId) && !search?.query && !search?.editionId) ||
+            (search?.editionId && editionId === Number(search?.editionId) && !search?.query && !search?.categoryId)
+        )
       );
     } else {
+      console.log('a1');
       setTeamPlayers(data);
     }
-    /* eslint-disable-next-line */
   }, [search, data, setTeamPlayers]);
 
   useEffect(() => {
@@ -51,14 +65,11 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   try {
     const session = await getSession(ctx);
     const { data } = await getAllPlayers();
-
-    console.log(data);
-
     return {
       props: {
         session,
         data: data?.map(
-          ({ id, image, first_name, last_name, position, height, birthday, nationality, description, shirtNumber }: TBETeamPlayer) =>
+          ({ id, image, first_name, last_name, position, height, birthday, nationality, description, shirtNumber, category, edition }: TBETeamPlayer) =>
             ({
               id,
               image,
@@ -70,6 +81,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
               birthday,
               nationality,
               description,
+              categoryId: category.id,
+              editionId: edition.id,
             } as TTeamPlayer)
         ),
       },

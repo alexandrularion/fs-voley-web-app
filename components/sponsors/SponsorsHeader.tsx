@@ -78,7 +78,7 @@ const SponsorsHeader: React.FC<ISponsorsHeader> = ({ isUsedInAdminPage = false }
                     leftIcon: <PlusIcon {...{ color: 'var(--white-color)', size: '22px' }} />,
                   }}
                 >
-                  {'Adauga un sponsor'}
+                  {'Adaugă un sponsor'}
                 </Button>
               )}
               {!isUsedInAdminPage && (
@@ -97,7 +97,7 @@ const SponsorsHeader: React.FC<ISponsorsHeader> = ({ isUsedInAdminPage = false }
           {...{
             isOpen,
             onClose,
-            title: 'Adauga sponsor',
+            title: 'Adaugă sponsor',
             onSubmitHandler,
             isLoading,
           }}

@@ -64,7 +64,7 @@ const UsersHeader: React.FC = () => {
                 leftIcon: <PlusIcon {...{ color: 'var(--white-color)', size: '22px' }} />,
               }}
             >
-              {'Adauga un utilizator'}
+              {'Adaugă un utilizator'}
             </Button>
           </Flex>
         )}
@@ -75,7 +75,7 @@ const UsersHeader: React.FC = () => {
         {...{
           isOpen: cuModal.isOpen,
           onClose: cuModal.onClose,
-          title: 'Adauga utilizator',
+          title: 'Adaugă utilizator',
           onSubmitHandler,
           isLoading,
         }}

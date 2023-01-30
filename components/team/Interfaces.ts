@@ -7,10 +7,6 @@ export type TTeamPlayer = {
   name: string;
   surName: string;
   position: string;
-  // edition?: {
-  //   title: string;
-  //   id: string;
-  // };
   height: number;
   birthday: string;
   nationality: string;
@@ -36,6 +32,16 @@ export type TBETeamPlayer = {
   image: string;
   categoryId?: number;
   editionId?: number;
+  category: TTeamCategory;
+  edition: TTeamEdition;
+};
+
+export type TTeamCoach = {
+  id: number;
+  image: string;
+  name: string;
+  surName: string;
+  position: string;
 };
 
 export type TTeamCategory = {
@@ -64,8 +70,6 @@ export interface ITeamHeader {
   isUsedInEditionPage?: boolean;
 }
 
-export interface ITeamCard extends TTeamPlayer {}
-
 export interface ITeamPlayersPage {
   data: TTeamPlayer[];
 }
@@ -74,6 +78,13 @@ export interface ITeamCategoriesPage {
   data: TTeamCategory[];
 }
 
+export interface ICoachesPage {
+  data: TTeamCoach[];
+}
 export interface ITeamPlayerDModal extends IModal {
   description: string;
+}
+
+export interface ITeamList {
+  isUsedInCoachPage?: boolean;
 }

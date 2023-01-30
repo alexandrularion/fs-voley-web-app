@@ -107,7 +107,7 @@ const TeamCategoriesTable: React.FC = () => {
               </Box>
             </Flex>
           ) : (
-            <Box {...{ onClick: () => reload(), cursor: 'pointer' }}>{'Apasa click pentru incarcare'}</Box>
+            <Box {...{ onClick: () => reload(), cursor: 'pointer' }}>{'Click aici pentru incarcare'}</Box>
           ),
       },
     ],

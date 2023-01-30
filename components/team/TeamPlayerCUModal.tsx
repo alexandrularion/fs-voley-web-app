@@ -212,7 +212,7 @@ const TeamPlayerCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLoa
                             <Tooltip {...{ label: touched && error ? error : '' }}>
                               <InputGroup>
                                 <InputLeftAddon {...{ children: 'Numar', w: '140px' }} />
-                                <NumberInput {...{ ...input, onChange: (value) => input.onChange(Number(value)), w: '100%', min: 0, max: 30, value: 20, isInvalid: touched && error }}>
+                                <NumberInput {...{ ...input, onChange: (value) => input.onChange(Number(value)), w: '100%', min: 0, max: 30, isInvalid: touched && error }}>
                                   <NumberInputField {...{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }} />
                                   <NumberInputStepper>
                                     <NumberIncrementStepper />

@@ -16,9 +16,11 @@ import EmptyState from '../shared/EmptyState';
 import TeamPlayerDModal from './TeamPlayerDModal';
 import TeamPlayerCUModal from './TeamPlayerCUModal';
 import ImageModal from '../shared/ImageModal';
+import { useRouter } from 'next/router';
 
 const TeamPlayersTable: React.FC = () => {
   const { teamPlayers, setTeamPlayers } = useTeamPlayers();
+  const { reload } = useRouter();
   const deleteModal = useDisclosure();
   const dModal = useDisclosure();
   const cuModal = useDisclosure();
@@ -27,7 +29,7 @@ const TeamPlayersTable: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const onSubmitHandler = async (values: object, form: FormApi) => {
-    const { name, surName, position, birthday, nationality, height, description, image, shirtNumber } = values as TTeamPlayer;
+    const { name, surName, position, birthday, nationality, height, description, image, shirtNumber, editionId, categoryId } = values as TTeamPlayer;
     setIsLoading(true);
     try {
       await updatePlayer(teamPlayer?.id!, {
@@ -40,6 +42,8 @@ const TeamPlayersTable: React.FC = () => {
         description,
         image,
         shirtNumber,
+        categoryId: Number(categoryId),
+        editionId: Number(editionId),
       } as TBETeamPlayer);
       setTeamPlayers(teamPlayers.map(({ id, ...obj }) => (id === teamPlayer?.id ? { id, name, surName, position, birthday, nationality, height, description, image, shirtNumber } : { ...obj, id })));
       toast('Felicitari! Jucatorul a fost actualizat cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
@@ -119,7 +123,7 @@ const TeamPlayersTable: React.FC = () => {
       {
         Header: 'Inaltime',
         accessor: 'height',
-        Cell: ({ row: { original } }: CellValue) => original.height,
+        Cell: ({ row: { original } }: CellValue) => `${original.height}cm`,
       },
       {
         Header: 'Bibliografie',
@@ -151,7 +155,7 @@ const TeamPlayersTable: React.FC = () => {
         Header: 'Actiuni',
         accessor: 'actions',
         Cell: ({ row: { original } }: CellValue) =>
-          original?.id && (
+          original?.id ? (
             <Flex {...{ gap: 'var(--gap-md)' }}>
               <Box {...{ cursor: 'pointer ' }}>
                 <PenIcon
@@ -178,10 +182,12 @@ const TeamPlayersTable: React.FC = () => {
                 />
               </Box>
             </Flex>
+          ) : (
+            <Box {...{ onClick: () => reload(), cursor: 'pointer' }}>{'Click aici pentru incarcare'}</Box>
           ),
       },
     ],
-    [deleteModal, cuModal, dModal, iModal]
+    [deleteModal, cuModal, dModal, iModal, reload]
   );
 
   return (

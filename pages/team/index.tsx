@@ -5,31 +5,50 @@ import Layout from '../../components/shared/Layout';
 import { ITeamPlayersPage, TBETeamPlayer, TSearchTeam, TTeamPlayer } from '../../components/team/Interfaces';
 import TeamHeader from '../../components/team/TeamHeader';
 import TeamList from '../../components/team/TeamList';
+import { useTab } from '../../context/ContextTab';
 import { useTeamPlayers } from '../../context/ContextTeamPlayers';
 import { getAllPlayers } from '../../services/Team.service';
 
 const TeamPlayersPage: NextPage<ITeamPlayersPage> = ({ data }) => {
   const [search, setSearch] = useState<TSearchTeam>({});
-  const { setTeamPlayers, teamPlayers } = useTeamPlayers();
+  const { setTeamPlayers } = useTeamPlayers();
+  const { setTab } = useTab();
 
   useEffect(() => {
     if (search?.query || search?.categoryId || search?.editionId) {
       setTeamPlayers(
-        teamPlayers.filter(({ name, surName, categoryId, editionId, ...rest }) => {
-          if (
-            (search?.query && (name.includes(search?.query) || surName.includes(search?.query))) ||
-            (search?.categoryId && categoryId === Number(search?.categoryId)) ||
-            (search?.editionId && editionId === Number(search?.editionId))
-          ) {
-            return { ...rest, name, surName, categoryId, editionId };
-          }
-        })
+        data?.filter(
+          ({ name, surName, categoryId, editionId }) =>
+            (search?.query &&
+              (name.toLowerCase().includes(search?.query) || surName.toLowerCase().includes(search?.query)) &&
+              search?.categoryId &&
+              categoryId === Number(search?.categoryId) &&
+              search?.editionId &&
+              editionId === Number(search?.editionId)) ||
+            (search?.query &&
+              (name.toLowerCase().includes(search?.query) || surName.toLowerCase().includes(search?.query)) &&
+              search?.categoryId &&
+              categoryId === Number(search?.categoryId) &&
+              !search?.editionId) ||
+            (search?.query &&
+              (name.toLowerCase().includes(search?.query) || surName.toLowerCase().includes(search?.query)) &&
+              !search?.categoryId &&
+              categoryId === Number(search?.categoryId) &&
+              search?.editionId) ||
+            (search?.categoryId && categoryId === Number(search?.categoryId) && search?.editionId && editionId === Number(search?.editionId) && !search?.query) ||
+            (search?.query && (name.toLowerCase().includes(search?.query) || surName.toLowerCase().includes(search?.query)) && !search?.categoryId && !search?.editionId) ||
+            (search?.categoryId && categoryId === Number(search?.categoryId) && !search?.query && !search?.editionId) ||
+            (search?.editionId && editionId === Number(search?.editionId) && !search?.query && !search?.categoryId)
+        )
       );
     } else {
       setTeamPlayers(data);
     }
-    /* eslint-disable-next-line */
   }, [search, data, setTeamPlayers]);
+
+  useEffect(() => {
+    setTab({ tabId: 0, title: 'Jucatori', href: '/team', value: 0 });
+  }, [setTab]);
 
   return (
     <Layout {...{ bgColor: 'var(--blue-600)' }}>
@@ -49,7 +68,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       props: {
         session,
         data: data?.map(
-          ({ id, image, first_name, last_name, position, shirtNumber }: TBETeamPlayer) =>
+          ({ id, image, first_name, last_name, position, shirtNumber, category, edition }: TBETeamPlayer) =>
             ({
               id,
               image,
@@ -57,6 +76,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
               surName: last_name,
               position,
               shirtNumber,
+              categoryId: category.id,
+              editionId: edition.id,
             } as TTeamPlayer)
         ),
       },
