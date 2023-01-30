@@ -113,8 +113,20 @@ model Category {
     createdAt                  DateTime          @default(now())
     updatedAt                  DateTime          @updatedAt
     players Player[]
+    clubs Club[]
 
     @@map("categories")
+}
+
+model Club {
+    id                         Int               @id @default(autoincrement())
+    title                      String
+    image                      String?           @db.LongText
+    category                   Category          @relation(fields: [categoryId], references: [id])
+    categoryId                 Int
+    createdAt                  DateTime          @default(now())
+
+    @@map("clubs")
 }
 
 model Championship {
@@ -139,6 +151,7 @@ model Edition {
     id                         Int               @id @default(autoincrement())
     title                      String
     createdAt                  DateTime          @default(now())
+    updatedAt                  DateTime?          @updatedAt
     players Player[]
     @@map("editions")
 }
@@ -153,11 +166,6 @@ model History {
 
     @@map("histories")
 }
-// categorie
-//: id, title
-// campionat
-//: id, title
-//in history, va trebui sa avem coloanele astea: "image, title, description"
 
 
 // o entittate editie, cand adaugi un jucator trebuei sa poti sa il atribui la o anumita editie.
