@@ -117,16 +117,14 @@ const Container = styled.section`
     padding: 100px 0;
 
     img {
-      width: 100px;
-      height: 100px;
+      width: 60px;
+      height: max-content;
 
       @media ${device.tablet} {
-        width: 70px;
-        height: 70px;
+        width: 50px;
       }
       @media ${device.mobile} {
-        width: 55px;
-        height: 55px;
+        width: 45px;
       }
     }
     .n-link-container:hover {

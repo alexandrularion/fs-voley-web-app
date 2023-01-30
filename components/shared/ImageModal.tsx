@@ -1,5 +1,6 @@
 import { Button, Image, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text } from '@chakra-ui/react';
 import { useMemo } from 'react';
+import styled from 'styled-components';
 import { getHumanDate } from '../../utils';
 import { IImageModal } from './Interfaces';
 
@@ -10,9 +11,11 @@ const ImageModal: React.FC<IImageModal> = ({ isOpen, onClose, title, image, crea
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{title}</ModalHeader>
-        <ModalBody {...{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 'var(--gap-sm)' }}>
-          <Image {...{ src: image, alt: title }} />
-          <Text>{`Adaugat ${memoizedCreatedAt}`}</Text>
+        <ModalBody {...{ textAlign: 'center' }}>
+          <Container>
+            <Image {...{ src: image, alt: title, height: 450 }} />
+            <Text>{`Actualizat ${memoizedCreatedAt}`}</Text>
+          </Container>
         </ModalBody>
         <ModalFooter>
           <Button {...{ onClick: onClose, mr: 3, variant: 'outline' }}>Inchide</Button>
@@ -22,3 +25,15 @@ const ImageModal: React.FC<IImageModal> = ({ isOpen, onClose, title, image, crea
   );
 };
 export default ImageModal;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--gap-sm);
+
+  img {
+    width: max-content;
+  }
+`;

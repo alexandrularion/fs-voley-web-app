@@ -42,7 +42,6 @@ const TeamPlayersPage: NextPage<ITeamPlayersPage> = ({ data }) => {
         )
       );
     } else {
-      console.log('a1');
       setTeamPlayers(data);
     }
   }, [search, data, setTeamPlayers]);
@@ -69,7 +68,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       props: {
         session,
         data: data?.map(
-          ({ id, image, first_name, last_name, position, height, birthday, nationality, description, shirtNumber, category, edition }: TBETeamPlayer) =>
+          ({ id, image, first_name, last_name, position, height, birthday, nationality, description, shirtNumber, category, edition, createdAt }: TBETeamPlayer) =>
             ({
               id,
               image,
@@ -83,6 +82,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
               description,
               categoryId: category.id,
               editionId: edition.id,
+              createdAt,
             } as TTeamPlayer)
         ),
       },

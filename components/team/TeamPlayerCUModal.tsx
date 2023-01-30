@@ -37,7 +37,6 @@ const TeamPlayerCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLoa
   const nationalityOptions = useMemo(() => getNationalities(), []);
   const { data: edition } = useSWR(getAllEditionsSWRKey, fetcher);
   const editionOptions: TTeamEdition[] = useMemo(() => edition?.map((obj: TTeamEdition) => ({ ...obj, key: nanoid() })) || [], [edition]);
-
   return (
     <Modal {...{ isOpen, onClose, blockScrollOnMount: true, isCentered: true, closeOnOverlayClick: !isLoading, size: '4xl' }}>
       <ModalOverlay />
