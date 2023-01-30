@@ -126,7 +126,7 @@ const TeamPlayersTable: React.FC = () => {
         Cell: ({ row: { original } }: CellValue) => `${original.height}cm`,
       },
       {
-        Header: 'Bibliografie',
+        Header: 'Biografie',
         accessor: 'description',
         Cell: ({ row: { original } }: CellValue) => (
           <Flex
@@ -147,7 +147,7 @@ const TeamPlayersTable: React.FC = () => {
                 color: 'var(--grey-alpha-600)',
               }}
             />
-            Vezi bibliografie
+            Vezi Biografie
           </Flex>
         ),
       },
@@ -220,7 +220,7 @@ const TeamPlayersTable: React.FC = () => {
         {...{
           isOpen: dModal.isOpen,
           onClose: dModal.onClose,
-          title: `Bibliografie - ${teamPlayer?.name} ${teamPlayer?.surName}`,
+          title: `Biografie - ${teamPlayer?.name} ${teamPlayer?.surName}`,
           description: teamPlayer?.description!,
         }}
       />

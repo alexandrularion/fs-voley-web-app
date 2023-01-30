@@ -344,7 +344,7 @@ const TeamPlayerCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLoa
                         render: ({ input, meta: { touched, error } }) => (
                           <Tooltip {...{ label: touched && error ? error : '' }}>
                             <InputGroup>
-                              <InputLeftAddon {...{ children: 'Bibliografie', w: '140px', h: 'auto' }} />
+                              <InputLeftAddon {...{ children: 'Biografie', w: '140px', h: 'auto' }} />
                               <Textarea
                                 {...{
                                   ...input,

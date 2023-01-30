@@ -33,7 +33,6 @@ model Trainers{
   last_name                  String
   description                String?
   image                      String?        @db.LongText
-
   @@map("trainers")
 }
 

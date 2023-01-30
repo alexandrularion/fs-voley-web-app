@@ -88,3 +88,11 @@ export interface ITeamPlayerDModal extends IModal {
 export interface ITeamList {
   isUsedInCoachPage?: boolean;
 }
+
+export interface IPlayerProfilePage {
+  data: TTeamPlayer;
+}
+
+export interface ITeamPlayerStats {
+  data: TTeamPlayer;
+}
