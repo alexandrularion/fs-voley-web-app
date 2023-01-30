@@ -50,6 +50,7 @@ model Player {
   categoryId                 Int
   edition                    Edition @relation(fields: [editionId], references: [id])
   editionId                  Int
+  slug                       String?
   image                      String?        @db.LongText
   createdAt                  DateTime       @default(now())
   @@map("players")

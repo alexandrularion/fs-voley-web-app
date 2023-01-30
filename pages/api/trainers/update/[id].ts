@@ -12,7 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
 
       const { id } = req.query;
-      const { first_name, last_name, description, nationality, image } = req.body;
+      const { first_name, last_name, description, image } = req.body;
 
       await prisma.trainers.update({
         where: { id: Number(id) },
@@ -20,7 +20,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           first_name: first_name,
           last_name: last_name,
           description: description,
-          nationality: nationality,
           image: image,
         },
       });
