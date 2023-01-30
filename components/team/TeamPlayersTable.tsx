@@ -13,7 +13,7 @@ import { TBETeamPlayer, TTeamPlayer } from './Interfaces';
 import { deletePlayer, updatePlayer } from '../../services/Team.service';
 import Image from 'next/image';
 import EmptyState from '../shared/EmptyState';
-import TeamPlayerDModal from './TeamPlayerDModal';
+import TeamPlayerDModal from './TeamCommonDModal';
 import TeamPlayerCUModal from './TeamPlayerCUModal';
 import ImageModal from '../shared/ImageModal';
 import { useRouter } from 'next/router';
@@ -199,7 +199,7 @@ const TeamPlayersTable: React.FC = () => {
         {...{
           isOpen: deleteModal.isOpen,
           onClose: deleteModal.onClose,
-          title: `Sterge utilizator - ${teamPlayer?.name} ${teamPlayer?.surName}`,
+          title: `Sterge jucator - ${teamPlayer?.name} ${teamPlayer?.surName}`,
           description: `Este sigur ca vrei sa stergi jucatorul ${teamPlayer?.name}? Toate datele asociate jucatorului vor fi sterse definitiv.`,
           isLoading,
           onDeleteHandler,

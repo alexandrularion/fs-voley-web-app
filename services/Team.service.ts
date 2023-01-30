@@ -1,4 +1,4 @@
-import { TBETeamPlayer, TTeamCategory, TTeamCoach, TTeamEdition } from '../components/team/Interfaces';
+import { TBETeamCoach, TBETeamPlayer, TTeamCategory, TTeamEdition } from '../components/team/Interfaces';
 import { axiosConfigJSON } from './AxiosConfig';
 
 const getAllCategoriesSWRKey = '/category/get/all';
@@ -64,11 +64,11 @@ const deleteCoach = (coachId: number) => {
   return axiosConfigJSON.delete(`/trainers/delete/${coachId}`);
 };
 
-const createCoach = (coach: TTeamCoach) => {
+const createCoach = (coach: TBETeamCoach) => {
   return axiosConfigJSON.post('/trainers/create', JSON.stringify(coach));
 };
 
-const updateCoach = (coachId: number, coach: TTeamCoach) => {
+const updateCoach = (coachId: number, coach: TBETeamCoach) => {
   return axiosConfigJSON.post(`/trainers/update/${coachId}`, JSON.stringify(coach));
 };
 

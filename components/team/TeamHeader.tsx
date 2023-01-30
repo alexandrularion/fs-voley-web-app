@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ITeamHeader, TBETeamPlayer, TTeamCategory, TTeamEdition, TTeamPlayer } from './Interfaces';
+import { ITeamHeader, TBETeamCoach, TBETeamPlayer, TTeamCategory, TTeamCoach, TTeamEdition, TTeamPlayer } from './Interfaces';
 import Background from '../../assets/Background.png';
 import { useEffect, useMemo, useState } from 'react';
 import { nanoid } from 'nanoid';
@@ -12,7 +12,7 @@ import { debounce, fetcher, getRoleNameByRoleId } from '../../utils';
 import { USER_ROLE } from '../../constants/Enums';
 import { useSession } from 'next-auth/react';
 import { adminRoutes } from '../../constants/Navigation';
-import { createCategory, createEdition, createPlayer, getAllCategoriesSWRKey, getAllEditionsSWRKey } from '../../services/Team.service';
+import { createCategory, createCoach, createEdition, createPlayer, getAllCategoriesSWRKey, getAllEditionsSWRKey } from '../../services/Team.service';
 import { toast } from 'react-toastify';
 import { useTeamPlayers } from '../../context/ContextTeamPlayers';
 import TeamPlayerCUModal from './TeamPlayerCUModal';
@@ -21,6 +21,8 @@ import { useTeamCategories } from '../../context/ContextTeamCategory';
 import useSWR from 'swr';
 import TeamCommonCUModal from './TeamCommonCUModal';
 import { useTeamEditions } from '../../context/ContextTeamEdition';
+import TeamCoachCUModal from './TeamCoachCUModal';
+import { useTeamCoaches } from '../../context/ContextTeamCoaches';
 
 const TeamHeader: React.FC<ITeamHeader> = ({ setSearch, isUsedOnCoachPage = false, isUsedInAdminPage = false, isUsedInCategoryPage = false, isUsedInEditionPage = false }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -30,6 +32,7 @@ const TeamHeader: React.FC<ITeamHeader> = ({ setSearch, isUsedOnCoachPage = fals
 
   const { data } = useSession();
   const { setTeamPlayers, teamPlayers } = useTeamPlayers();
+  const { setTeamCoaches, teamCoaches } = useTeamCoaches();
   const { setTeamCategories, teamCategories } = useTeamCategories();
   const { setTeamEditions, teamEditions } = useTeamEditions();
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -74,16 +77,16 @@ const TeamHeader: React.FC<ITeamHeader> = ({ setSearch, isUsedOnCoachPage = fals
 
     try {
       if (isUsedOnCoachPage) {
-        // const { title, logo, endDate, startDate, site } = values as T;
-        // try {
-        //   await createPlayer({ website: site, date_end: endDate, title, image_url: logo, date_start: startDate } as TBESponsor);
-        //   setSponsors([...sponsors, values as TSponsor]);
-        //   toast('Felicitari! Sponsorul a fost adaugat cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
-        //   onClose();
-        //   form.reset();
-        // } catch (err) {
-        //   toast('Ooops. Ceva nu a mers bine, te rugam incearca din nou.', { hideProgressBar: true, autoClose: 5000, type: 'error', position: 'bottom-right' });
-        // }
+        const { surName, name, description, image } = values as TTeamCoach;
+        try {
+          await createCoach({ first_name: name, last_name: surName, description, image } as TBETeamCoach);
+          setTeamCoaches([...teamCoaches, values as TTeamCoach]);
+          toast('Felicitari! Antrenorul a fost adaugat cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
+          onClose();
+          form.reset();
+        } catch (err) {
+          toast('Ooops. Ceva nu a mers bine, te rugam incearca din nou.', { hideProgressBar: true, autoClose: 5000, type: 'error', position: 'bottom-right' });
+        }
       } else if (isUsedInCategoryPage) {
         const { title } = values as TTeamCategory;
         await createCategory({ title } as TTeamCategory);
@@ -221,7 +224,15 @@ const TeamHeader: React.FC<ITeamHeader> = ({ setSearch, isUsedOnCoachPage = fals
       <Box {...{ position: 'absolute', top: '320px', left: 0, w: '20px', h: '250px', zIndex: 'var(--z-index-2)', background: 'var(--blue-400)' }} />
       {isUsedInAdminPage &&
         (isUsedOnCoachPage ? (
-          <>asdasdasd</>
+          <TeamCoachCUModal
+            {...{
+              isOpen,
+              onClose,
+              title: 'Adaugă un antrenor',
+              onSubmitHandler,
+              isLoading,
+            }}
+          />
         ) : isUsedInEditionPage ? (
           <TeamCommonCUModal
             {...{
