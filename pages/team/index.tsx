@@ -10,14 +10,25 @@ import { getAllPlayers } from '../../services/Team.service';
 
 const TeamPlayersPage: NextPage<ITeamPlayersPage> = ({ data }) => {
   const [search, setSearch] = useState<TSearchTeam>({});
-  const { setTeamPlayers } = useTeamPlayers();
+  const { setTeamPlayers, teamPlayers } = useTeamPlayers();
 
   useEffect(() => {
     if (search?.query || search?.categoryId || search?.editionId) {
-      // setTeamPlayers(data.filter(({ startDate }: TSponsor) => Number(startDate) === tab.value));
+      setTeamPlayers(
+        teamPlayers.filter(({ name, surName, categoryId, editionId, ...rest }) => {
+          if (
+            (search?.query && (name.includes(search?.query) || surName.includes(search?.query))) ||
+            (search?.categoryId && categoryId === Number(search?.categoryId)) ||
+            (search?.editionId && editionId === Number(search?.editionId))
+          ) {
+            return { ...rest, name, surName, categoryId, editionId };
+          }
+        })
+      );
     } else {
       setTeamPlayers(data);
     }
+    /* eslint-disable-next-line */
   }, [search, data, setTeamPlayers]);
 
   return (

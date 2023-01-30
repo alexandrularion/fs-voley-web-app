@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ITeamHeader, TBETeamPlayer, TTeamCategory, TTeamPlayer } from './Interfaces';
+import { ITeamHeader, TBETeamPlayer, TTeamCategory, TTeamEdition, TTeamPlayer } from './Interfaces';
 import Background from '../../assets/Background.png';
 import { useEffect, useMemo, useState } from 'react';
 import { nanoid } from 'nanoid';
@@ -8,19 +8,21 @@ import Tabs from '../shared/Tabs';
 import { ITab } from '../shared/Interfaces';
 import { Box, Button, Flex, Heading, Input, InputGroup, InputLeftElement, Link, Select, Text, useDisclosure } from '@chakra-ui/react';
 import { PlusIcon, SearchIcon } from '../../styles/Icons';
-import { debounce, getRoleNameByRoleId } from '../../utils';
+import { debounce, fetcher, getRoleNameByRoleId } from '../../utils';
 import { USER_ROLE } from '../../constants/Enums';
 import { useSession } from 'next-auth/react';
 import { adminRoutes } from '../../constants/Navigation';
-import { createCategory, createPlayer } from '../../services/Team.service';
+import { createCategory, createEdition, createPlayer, getAllCategoriesSWRKey, getAllEditionsSWRKey } from '../../services/Team.service';
 import { toast } from 'react-toastify';
 import { useTeamPlayers } from '../../context/ContextTeamPlayers';
 import TeamPlayerCUModal from './TeamPlayerCUModal';
 import { FormApi } from 'final-form';
-import TeamCategoryCUModal from './TeamCategoryCUModal';
 import { useTeamCategories } from '../../context/ContextTeamCategory';
+import useSWR from 'swr';
+import TeamCommonCUModal from './TeamCommonCUModal';
+import { useTeamEditions } from '../../context/ContextTeamEdition';
 
-const TeamHeader: React.FC<ITeamHeader> = ({ setSearch, isUsedOnCoachPage = false, isUsedInAdminPage = false, isUsedInCategoryPage = false }) => {
+const TeamHeader: React.FC<ITeamHeader> = ({ setSearch, isUsedOnCoachPage = false, isUsedInAdminPage = false, isUsedInCategoryPage = false, isUsedInEditionPage = false }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [query, setQuery] = useState<string>();
   const [editionId, setEditionId] = useState<string>();
@@ -29,6 +31,7 @@ const TeamHeader: React.FC<ITeamHeader> = ({ setSearch, isUsedOnCoachPage = fals
   const { data } = useSession();
   const { setTeamPlayers, teamPlayers } = useTeamPlayers();
   const { setTeamCategories, teamCategories } = useTeamCategories();
+  const { setTeamEditions, teamEditions } = useTeamEditions();
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   const tabs: ITab[] = useMemo(
@@ -37,7 +40,8 @@ const TeamHeader: React.FC<ITeamHeader> = ({ setSearch, isUsedOnCoachPage = fals
         ? [
             { tabId: 0, title: 'Jucatori', href: '/a/team', value: 0 },
             { tabId: 1, title: 'Antrenori', href: '/a/team/coaches', value: 1 },
-            { tabId: 2, title: 'Categorii', href: '/a/team/categories', value: 2 },
+            { tabId: 2, title: 'Loturi', href: '/a/team/categories', value: 2 },
+            { tabId: 3, title: 'Editii', href: '/a/team/editions', value: 3 },
           ].map((obj) => ({ ...obj, key: nanoid() }))
         : [
             { tabId: 0, title: 'Jucatori', href: isUsedInAdminPage ? '/a/team' : '/team', value: 0 },
@@ -46,25 +50,10 @@ const TeamHeader: React.FC<ITeamHeader> = ({ setSearch, isUsedOnCoachPage = fals
     [isUsedInAdminPage]
   );
 
-  //this should come from BE
-  const options: { id: string; title: string; key?: string }[] = useMemo(
-    () =>
-      [
-        {
-          id: '0',
-          title: '2022-2023',
-        },
-        {
-          id: '1',
-          title: '2021-2022',
-        },
-        {
-          id: '2',
-          title: '2020-2021',
-        },
-      ].map((obj) => ({ ...obj, key: nanoid() })),
-    []
-  );
+  const { data: categories } = useSWR(getAllCategoriesSWRKey, fetcher);
+  const categoryOptions: TTeamCategory[] = useMemo(() => categories?.map((obj: TTeamCategory) => ({ ...obj, key: nanoid() })) || [], [categories]);
+  const { data: edition } = useSWR(getAllEditionsSWRKey, fetcher);
+  const editionOptions: TTeamEdition[] = useMemo(() => edition?.map((obj: TTeamEdition) => ({ ...obj, key: nanoid() })) || [], [edition]);
 
   const setSearchQuery = useMemo(() => debounce((query: string) => setSearch((prevState) => ({ ...prevState, query: query }))), [setSearch]);
 
@@ -80,31 +69,34 @@ const TeamHeader: React.FC<ITeamHeader> = ({ setSearch, isUsedOnCoachPage = fals
   const onSubmitHandler = async (values: object, form: FormApi) => {
     setIsLoading(true);
 
-    if (isUsedOnCoachPage) {
-      // const { title, logo, endDate, startDate, site } = values as T;
-      // try {
-      //   await createPlayer({ website: site, date_end: endDate, title, image_url: logo, date_start: startDate } as TBESponsor);
-      //   setSponsors([...sponsors, values as TSponsor]);
-      //   toast('Felicitari! Sponsorul a fost adaugat cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
-      //   onClose();
-      //   form.reset();
-      // } catch (err) {
-      //   toast('Ooops. Ceva nu a mers bine, te rugam incearca din nou.', { hideProgressBar: true, autoClose: 5000, type: 'error', position: 'bottom-right' });
-      // }
-    } else if (isUsedInCategoryPage) {
-      const { title } = values as TTeamCategory;
-      try {
+    try {
+      if (isUsedOnCoachPage) {
+        // const { title, logo, endDate, startDate, site } = values as T;
+        // try {
+        //   await createPlayer({ website: site, date_end: endDate, title, image_url: logo, date_start: startDate } as TBESponsor);
+        //   setSponsors([...sponsors, values as TSponsor]);
+        //   toast('Felicitari! Sponsorul a fost adaugat cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
+        //   onClose();
+        //   form.reset();
+        // } catch (err) {
+        //   toast('Ooops. Ceva nu a mers bine, te rugam incearca din nou.', { hideProgressBar: true, autoClose: 5000, type: 'error', position: 'bottom-right' });
+        // }
+      } else if (isUsedInCategoryPage) {
+        const { title } = values as TTeamCategory;
         await createCategory({ title } as TTeamCategory);
         setTeamCategories([...teamCategories, { ...values, createdAt: new Date().toString(), updatedAt: new Date().toString() } as TTeamCategory]);
         toast('Felicitari! Categoria a fost adaugata cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
         onClose();
         form.reset();
-      } catch (err) {
-        toast('Ooops. Ceva nu a mers bine, te rugam incearca din nou.', { hideProgressBar: true, autoClose: 5000, type: 'error', position: 'bottom-right' });
-      }
-    } else {
-      const { name, surName, position, birthday, nationality, height, description, image, shirtNumber } = values as TTeamPlayer;
-      try {
+      } else if (isUsedInEditionPage) {
+        const { title } = values as TTeamEdition;
+        await createEdition({ title } as TTeamEdition);
+        setTeamEditions([...teamEditions, { ...values, createdAt: new Date().toString(), updatedAt: new Date().toString() } as TTeamEdition]);
+        toast('Felicitari! Editia a fost adaugata cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
+        onClose();
+        form.reset();
+      } else {
+        const { name, surName, position, birthday, nationality, height, description, image, shirtNumber } = values as TTeamPlayer;
         await createPlayer({
           first_name: name,
           last_name: surName,
@@ -120,9 +112,9 @@ const TeamHeader: React.FC<ITeamHeader> = ({ setSearch, isUsedOnCoachPage = fals
         toast('Felicitari! jucatorul a fost adaugat cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
         onClose();
         form.reset();
-      } catch (err) {
-        toast('Ooops. Ceva nu a mers bine, te rugam incearca din nou.', { hideProgressBar: true, autoClose: 5000, type: 'error', position: 'bottom-right' });
       }
+    } catch (e) {
+      toast('Ooops. Ceva nu a mers bine, te rugam incearca din nou.', { hideProgressBar: true, autoClose: 5000, type: 'error', position: 'bottom-right' });
     }
     setIsLoading(false);
   };
@@ -149,7 +141,7 @@ const TeamHeader: React.FC<ITeamHeader> = ({ setSearch, isUsedOnCoachPage = fals
                     leftIcon: <PlusIcon {...{ color: 'var(--white-color)', size: '22px' }} />,
                   }}
                 >
-                  {isUsedOnCoachPage ? 'Adauga un antrenor' : isUsedInCategoryPage ? 'Adauga categorie' : 'Adauga un jucator'}
+                  {isUsedOnCoachPage ? 'Adauga un antrenor' : isUsedInCategoryPage ? 'Adauga un lot' : isUsedInEditionPage ? 'Adauga o editie' : 'Adauga un jucator'}
                 </Button>
               )}
               {!isUsedInAdminPage && (
@@ -169,7 +161,7 @@ const TeamHeader: React.FC<ITeamHeader> = ({ setSearch, isUsedOnCoachPage = fals
             <Input
               {...{
                 type: 'text',
-                placeholder: isUsedOnCoachPage ? 'Cautare: Antrenor' : isUsedInCategoryPage ? 'Cautare: Categorie' : 'Cautare: Jucator',
+                placeholder: isUsedOnCoachPage ? 'Cautare: Antrenor' : isUsedInCategoryPage ? 'Cautare: Categorie' : isUsedInEditionPage ? 'Cautare: Editie' : 'Cautare: Jucator',
                 _placeholder: { color: 'var(--grey-alpha-300)' },
                 outline: 'none',
                 _focus: { borderColor: 'var(--grey-alpha-50)' },
@@ -179,7 +171,7 @@ const TeamHeader: React.FC<ITeamHeader> = ({ setSearch, isUsedOnCoachPage = fals
               }}
             />
           </InputGroup>
-          {!isUsedOnCoachPage && !isUsedInCategoryPage && (
+          {!isUsedOnCoachPage && !isUsedInCategoryPage && !isUsedInEditionPage && (
             <>
               <Select
                 {...{
@@ -193,7 +185,7 @@ const TeamHeader: React.FC<ITeamHeader> = ({ setSearch, isUsedOnCoachPage = fals
                   className: 'th-select',
                 }}
               >
-                {options?.map(({ title, key, id }) => (
+                {editionOptions?.map(({ title, key, id }) => (
                   <option key={key} {...{ value: id }}>
                     {title}
                   </option>
@@ -202,7 +194,7 @@ const TeamHeader: React.FC<ITeamHeader> = ({ setSearch, isUsedOnCoachPage = fals
               <Select
                 {...{
                   type: 'text',
-                  placeholder: 'Selecteaza categoria',
+                  placeholder: 'Selecteaza lotul',
                   _placeholder: { color: 'var(--grey-alpha-300)' },
                   outline: 'none',
                   _focus: { borderColor: 'var(--grey-alpha-50)' },
@@ -211,7 +203,7 @@ const TeamHeader: React.FC<ITeamHeader> = ({ setSearch, isUsedOnCoachPage = fals
                   className: 'th-select',
                 }}
               >
-                {options?.map(({ title, key, id }) => (
+                {categoryOptions?.map(({ title, key, id }: TTeamCategory) => (
                   <option key={key} {...{ value: id }}>
                     {title}
                   </option>
@@ -225,12 +217,22 @@ const TeamHeader: React.FC<ITeamHeader> = ({ setSearch, isUsedOnCoachPage = fals
       {isUsedInAdminPage &&
         (isUsedOnCoachPage ? (
           <>asdasdasd</>
-        ) : isUsedInCategoryPage ? (
-          <TeamCategoryCUModal
+        ) : isUsedInEditionPage ? (
+          <TeamCommonCUModal
             {...{
               isOpen,
               onClose,
-              title: 'Adauga categorie',
+              title: 'Adauga o editie',
+              onSubmitHandler,
+              isLoading,
+            }}
+          />
+        ) : isUsedInCategoryPage ? (
+          <TeamCommonCUModal
+            {...{
+              isOpen,
+              onClose,
+              title: 'Adauga un lot',
               onSubmitHandler,
               isLoading,
             }}
@@ -240,7 +242,7 @@ const TeamHeader: React.FC<ITeamHeader> = ({ setSearch, isUsedOnCoachPage = fals
             {...{
               isOpen,
               onClose,
-              title: 'Adauga jucator',
+              title: 'Adauga un jucator',
               onSubmitHandler,
               isLoading,
             }}

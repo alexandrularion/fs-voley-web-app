@@ -4,9 +4,9 @@ import { Field, Form } from 'react-final-form';
 import { IFormModal } from '../shared/Interfaces';
 import { CustomValidation } from '../shared/Validations';
 
-const TeamCategoryCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLoading, onSubmitHandler, initialValues }) => {
+const TeamCommonCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLoading, onSubmitHandler, initialValues }) => {
   return (
-    <Modal {...{ isOpen, onClose, blockScrollOnMount: true, isCentered: true, closeOnOverlayClick: !isLoading, size: '4xl' }}>
+    <Modal {...{ isOpen, onClose, blockScrollOnMount: true, isCentered: true, closeOnOverlayClick: !isLoading, size: '2xl' }}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{title}</ModalHeader>
@@ -17,7 +17,7 @@ const TeamCategoryCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isL
                 initialValues,
                 onSubmit: (values: any, form: FormApi) => onSubmitHandler(values, form),
                 render: ({ handleSubmit }) => (
-                  <Flex {...{ as: 'form', onSubmit: handleSubmit, id: 'team-player-cu-modal', display: 'flex', flexDirection: 'column', gap: 'var(--gap-md)' }}>
+                  <Flex {...{ as: 'form', onSubmit: handleSubmit, id: 'common-cu-modal', display: 'flex', flexDirection: 'column', gap: 'var(--gap-md)' }}>
                     <Field
                       {...{
                         name: 'title',
@@ -31,7 +31,7 @@ const TeamCategoryCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isL
                                   ...input,
                                   type: 'text',
                                   isInvalid: touched && error,
-                                  placeholder: 'Introduceti numele categoriei',
+                                  placeholder: 'Introduceti numele ',
                                 }}
                               />
                             </InputGroup>
@@ -47,9 +47,7 @@ const TeamCategoryCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isL
         </ModalBody>
         <ModalFooter>
           <Button {...{ onClick: onClose, mr: 3, variant: 'outline', disabled: isLoading }}>Inchide</Button>
-          <Button
-            {...{ variant: 'solid', background: 'var(--blue-600)', color: 'var(--white-color)', colorScheme: 'blue', type: 'submit', form: 'team-player-cu-modal', disabled: isLoading, isLoading }}
-          >
+          <Button {...{ variant: 'solid', background: 'var(--blue-600)', color: 'var(--white-color)', colorScheme: 'blue', type: 'submit', form: 'common-cu-modal', disabled: isLoading, isLoading }}>
             {'Salveaza'}
           </Button>
         </ModalFooter>
@@ -57,4 +55,4 @@ const TeamCategoryCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isL
     </Modal>
   );
 };
-export default TeamCategoryCUModal;
+export default TeamCommonCUModal;

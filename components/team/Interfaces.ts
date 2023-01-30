@@ -7,16 +7,18 @@ export type TTeamPlayer = {
   name: string;
   surName: string;
   position: string;
-  edition?: {
-    title: string;
-    id: string;
-  };
+  // edition?: {
+  //   title: string;
+  //   id: string;
+  // };
   height: number;
   birthday: string;
   nationality: string;
   shirtNumber: number;
   description: string;
   createdAt?: string;
+  categoryId?: number;
+  editionId?: number;
   key?: string;
 };
 
@@ -32,6 +34,8 @@ export type TBETeamPlayer = {
   shirtNumber: number;
   createdAt?: string;
   image: string;
+  categoryId?: number;
+  editionId?: number;
 };
 
 export type TTeamCategory = {
@@ -39,6 +43,15 @@ export type TTeamCategory = {
   title: string;
   createdAt?: string;
   updatedAt?: string;
+  key?: string;
+};
+
+export type TTeamEdition = {
+  id: number;
+  title: string;
+  createdAt?: string;
+  updatedAt?: string;
+  key?: string;
 };
 
 export type TSearchTeam = { query?: string; editionId?: string; categoryId?: string };
@@ -48,6 +61,7 @@ export interface ITeamHeader {
   isUsedOnCoachPage?: boolean;
   isUsedInAdminPage?: boolean;
   isUsedInCategoryPage?: boolean;
+  isUsedInEditionPage?: boolean;
 }
 
 export interface ITeamCard extends TTeamPlayer {}

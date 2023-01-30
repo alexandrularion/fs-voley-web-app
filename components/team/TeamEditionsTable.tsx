@@ -8,27 +8,27 @@ import { PenIcon, TrashIcon } from '../../styles/Icons';
 import DeleteModal from '../shared/DeleteModal';
 import { toast } from 'react-toastify';
 import { FormApi } from 'final-form';
-import { TTeamCategory } from './Interfaces';
+import { TTeamCategory, TTeamEdition } from './Interfaces';
 import { deleteCategory, updateCategory } from '../../services/Team.service';
 import EmptyState from '../shared/EmptyState';
-import { useTeamCategories } from '../../context/ContextTeamCategory';
+import TeamCategoryCUModal from './TeamCommonCUModal';
 import { useRouter } from 'next/dist/client/router';
-import TeamCommonCUModal from './TeamCommonCUModal';
+import { useTeamEditions } from '../../context/ContextTeamEdition';
 
-const TeamCategoriesTable: React.FC = () => {
-  const { teamCategories, setTeamCategories } = useTeamCategories();
+const TeamEditionsTable: React.FC = () => {
+  const { teamEditions, setTeamEditions } = useTeamEditions();
   const { reload } = useRouter();
   const deleteModal = useDisclosure();
   const cuModal = useDisclosure();
-  const [teamCategory, setTeamCategory] = useState<TTeamCategory>();
+  const [teamEdition, setTeamEdition] = useState<TTeamCategory>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const onSubmitHandler = async (values: object, form: FormApi) => {
     const { title } = values as TTeamCategory;
     setIsLoading(true);
     try {
-      await updateCategory(teamCategory?.id!, { title } as TTeamCategory);
-      setTeamCategories(teamCategories.map(({ id, ...obj }) => (id === teamCategory?.id ? { id, title, createdAt: new Date().toString(), updatedAt: new Date().toString() } : { ...obj, id })));
+      await updateCategory(teamEdition?.id!, { title } as TTeamCategory);
+      setTeamEditions(teamEditions.map(({ id, ...obj }) => (id === teamEdition?.id ? { id, title, createdAt: new Date().toString(), updatedAt: new Date().toString() } : { ...obj, id })));
       toast('Felicitari! Categoria a fost actualizata cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
       cuModal.onClose();
       form.reset();
@@ -38,11 +38,11 @@ const TeamCategoriesTable: React.FC = () => {
     setIsLoading(false);
   };
 
-  const onDeleteHandler = async (categoryId: number) => {
+  const onDeleteHandler = async (editionId: number) => {
     setIsLoading(true);
     try {
-      await deleteCategory(categoryId);
-      setTeamCategories(teamCategories.filter(({ id }) => id !== categoryId));
+      await deleteCategory(editionId);
+      setTeamEditions(teamEditions.filter(({ id }) => id !== editionId));
       toast('Categoria a fost stearsa cu succcess.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
       deleteModal.onClose();
     } catch (e) {
@@ -59,7 +59,7 @@ const TeamCategoriesTable: React.FC = () => {
         Cell: ({ row: { original } }: CellValue) => <> {original.id ? `#${original.id}` : '-'}</>,
       },
       {
-        Header: 'Nume lot',
+        Header: 'Nume editie',
         accessor: 'title',
         Cell: ({ row: { original } }: CellValue) => original.title,
       },
@@ -87,7 +87,7 @@ const TeamCategoriesTable: React.FC = () => {
                     size: '22px',
                     color: 'var(--grey-alpha-600)',
                     onClick: async () => {
-                      setTeamCategory(original);
+                      setTeamEdition(original);
                       cuModal.onOpen();
                     },
                   }}
@@ -99,7 +99,7 @@ const TeamCategoriesTable: React.FC = () => {
                     size: '22px',
                     color: 'var(--red-color)',
                     onClick: () => {
-                      setTeamCategory(original);
+                      setTeamEdition(original);
                       deleteModal.onOpen();
                     },
                   }}
@@ -117,34 +117,34 @@ const TeamCategoriesTable: React.FC = () => {
   return (
     <Container>
       <LayoutContainer {...{ className: 'sl-layout-container' }}>
-        {teamCategories && teamCategories.length > 0 ? <CommonTable {...{ columns, data: teamCategories }} /> : <EmptyState {...{ title: 'Uuups.' }} />}
+        {teamEditions && teamEditions.length > 0 ? <CommonTable {...{ columns, data: teamEditions }} /> : <EmptyState {...{ title: 'Uuups.' }} />}
       </LayoutContainer>
       <DeleteModal
         {...{
           isOpen: deleteModal.isOpen,
           onClose: deleteModal.onClose,
-          title: `Sterge lot - ${teamCategory?.title}`,
-          description: `Este sigur ca vrei sa stergi lotul  ${teamCategory?.title}?`,
+          title: `Sterge editie - ${teamEdition?.title}`,
+          description: `Este sigur ca vrei sa stergi editia  ${teamEdition?.title}?`,
           isLoading,
           onDeleteHandler,
-          entityId: teamCategory?.id!,
+          entityId: teamEdition?.id!,
         }}
       />
-      <TeamCommonCUModal
+      <TeamCategoryCUModal
         {...{
           isOpen: cuModal.isOpen,
           onClose: cuModal.onClose,
-          title: `Editeaza lot - ${teamCategory?.title}`,
+          title: `Editeaza lot - ${teamEdition?.title}`,
           onSubmitHandler,
           isLoading,
-          initialValues: teamCategory as TTeamCategory,
+          initialValues: teamEdition as TTeamEdition,
         }}
       />
     </Container>
   );
 };
 
-export default TeamCategoriesTable;
+export default TeamEditionsTable;
 
 const Container = styled.section`
   display: flex;
