@@ -23,7 +23,7 @@ const RankingMatchesPage = () => {
       const list: TMatchesRanking[] = [];
       const accessors = ['position', 'image', 'points', 'played', 'wins', 'losings', 'winnedSets', 'losedSets', 'winnedPoints', 'losedPoints'];
 
-      const res = await fetch('https://unrivaled-smakager-2b60d0.netlify.app/https://www.sportexclusiv.ro/clasament-volei-masculin');
+      const res = await fetch('https://cors-anywhere.herokuapp.com/https://www.sportexclusiv.ro/clasament-volei-masculin');
       const htmlString = await res.text();
       const $ = cheerio.load(htmlString);
       const body = $('tr');
