@@ -11,12 +11,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
       const { id } = req.query;
       try {
-        await prisma.category.delete({
+        await prisma.match.delete({
           where: { id: Number(id) },
         });
-        return res.status(200).json({ message: 'This category has been deleted!' });
+        return res.status(200).json({ message: 'This match has been deleted!' });
       } catch (e) {
-        return res.status(404).json({ message: 'This category cannot be accessed or does not exist.' });
+        return res.status(404).json({ message: 'This match cannot be accessed or does not exist.' });
       }
     } else {
       return res.status(405).json({ message: 'Method Not Allowed' });

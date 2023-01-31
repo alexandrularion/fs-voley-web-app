@@ -7,12 +7,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (req.method == 'GET') {
       const { id } = req.query;
       try {
-        const category = await prisma.category.findFirst({
+        const match = await prisma.match.findFirst({
           where: { id: Number(id) },
+          include: {
+            championship: true,
+            clubFirst: true,
+            clubSecond: true,
+          },
         });
-        return res.status(200).json(category);
+
+        return res.status(200).json(match);
       } catch (e) {
-        return res.status(404).json({ message: 'This category cannot be accessed or does not exist.' });
+        return res.status(404).json({ message: 'This match cannot be accessed or does not exist.' });
       }
     } else {
       return res.status(405).json({ message: 'Method Not Allowed' });

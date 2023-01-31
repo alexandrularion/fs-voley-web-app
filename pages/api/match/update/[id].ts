@@ -10,14 +10,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(401).json({ message: 'Unauthorized' });
       }
       const { id } = req.query;
-      const { title } = req.body;
-      await prisma.category.update({
+      const { dateTime, link, editionId, championshipId, club_firstId, club_secondId } = req.body;
+      await prisma.match.update({
         where: { id: Number(id) },
         data: {
-          title: title,
+          dateTime: dateTime,
+          link: link,
+          editionId: editionId,
+          championshipId: championshipId,
+          club_firstId: club_firstId,
+          club_secondId: club_secondId,
         },
       });
-      return res.status(200).json({ message: 'The category was updated!' });
+      return res.status(200).json({ message: 'The match was updated!' });
     } else {
       res.status(405).json({ message: 'Method Not Allowed' });
     }

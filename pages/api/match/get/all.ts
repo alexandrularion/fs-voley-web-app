@@ -5,9 +5,15 @@ import prisma from '../../../../lib/prisma';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     if (req.method == 'GET') {
-      const categories = await prisma.category.findMany();
+      const matches = await prisma.match.findMany({
+        include: {
+          championship: true,
+          clubFirst: true,
+          clubSecond: true,
+        },
+      });
 
-      return res.status(200).json(categories);
+      return res.status(200).json(matches);
     } else {
       res.status(405).json({ message: 'Method Not Allowed' });
     }
