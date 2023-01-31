@@ -8,10 +8,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const clubs = await prisma.club.findMany({ include: { championship: true } });
       return res.status(200).json(clubs);
     } else {
-      res.status(405).json({ message: 'Method Not Allowed' });
+      return res.status(405).json({ message: 'Method Not Allowed' });
     }
   } catch (e) {
     console.log(e);
-    res.status(500).json({ message: e });
+    return res.status(500).json({ message: e });
   }
 }
