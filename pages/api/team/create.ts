@@ -10,13 +10,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(401).json({ message: 'Unauthorized' });
       }
       const { title } = req.body;
-      const category = await prisma.category.create({
+      const team = await prisma.team.create({
         data: {
           title: title,
         },
       });
 
-      return res.status(200).json(category);
+      return res.status(200).json(team);
     } else {
       return res.status(405).json({ message: 'Method Not Allowed' });
     }
