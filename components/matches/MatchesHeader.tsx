@@ -5,71 +5,107 @@ import { nanoid } from 'nanoid';
 import { LayoutContainer } from '../shared/Layout';
 import Tabs from '../shared/Tabs';
 import { ITab } from '../shared/Interfaces';
-import { Box, Flex, Heading, Select, Text } from '@chakra-ui/react';
-import { IMatchesHeader } from './Interfaces';
-import { getRoleNameByRoleId } from '../../utils';
+import { Box, Button, Flex, Heading, Select, Text, useDisclosure } from '@chakra-ui/react';
+import { IMatchesHeader, TBEMatch, TMatch, TMatchChampionship, TMatchClub } from './Interfaces';
+import { fetcher, getRoleNameByRoleId } from '../../utils';
 import { USER_ROLE } from '../../constants/Enums';
 import { useSession } from 'next-auth/react';
+import { getAllEditionsSWRKey } from '../../services/Team.service';
+import { TTeamEdition } from '../team/Interfaces';
+import { createChampionship, createClub, createMatch, getAllChampionshipsSWRKey } from '../../services/Match.service';
+import useSWR from 'swr';
+import { adminRoutes } from '../../constants/Navigation';
+import { PlusIcon } from '../../styles/Icons';
+import Link from 'next/link';
+import MatchesChampionshipCUModal from './MatchesChampionshipCUModal';
+import { FormApi } from 'final-form';
+import { toast } from 'react-toastify';
+import { useChampionships } from '../../context/ContextChampionship';
+import MatchesClubCUModal from './MatchesClubCUModal';
+import MatchesMatchCUModal from './MatchesMatchCUModal';
+import { useClubs } from '../../context/ContextClub';
+import { useMatches } from '../../context/ContextMatch';
 
-const MatchesHeader: React.FC<IMatchesHeader> = ({ setSearch, areFiltrablesVisible = true, isUsedInAdminPage = false }) => {
+const MatchesHeader: React.FC<IMatchesHeader> = ({
+  setSearch,
+  areFiltrablesVisible = true,
+  isUsedInAdminPage = false,
+  isUsedInMatchPage = false,
+  isUsedInChampionshipPage = false,
+  isUsedInClubsPage = false,
+}) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [championship, setChampionship] = useState<string>();
   const [edition, setEdition] = useState<string>();
   const { data } = useSession();
+  const { setChampionships, championships } = useChampionships();
+  const { setClubs, clubs } = useClubs();
+  const { setMatches, matches } = useMatches();
+
+  const { onOpen, isOpen, onClose } = useDisclosure();
 
   const tabs: ITab[] = useMemo(
     () =>
-      [
-        { tabId: 0, title: 'Meciuri viitoare', href: '/matches', value: 0 },
-        { tabId: 1, title: 'Rezultate', href: '/matches/results', value: 1 },
-        { tabId: 2, title: 'Clasament', href: '/matches/ranking', value: 2 },
-      ].map((obj) => ({ ...obj, key: nanoid() })),
-    []
+      isUsedInAdminPage
+        ? [
+            { tabId: 0, title: 'Meciuri', href: '/a/matches', value: 0 },
+            { tabId: 1, title: 'Cluburi', href: '/a/matches/clubs', value: 1 },
+            { tabId: 2, title: 'Campionate', href: '/a/matches/championships', value: 2 },
+          ]
+        : [
+            { tabId: 0, title: 'Meciuri viitoare', href: '/matches', value: 0 },
+            { tabId: 1, title: 'Rezultate', href: '/matches/results', value: 1 },
+            { tabId: 2, title: 'Clasament', href: '/matches/ranking', value: 2 },
+          ].map((obj) => ({ ...obj, key: nanoid() })),
+    [isUsedInAdminPage]
   );
 
-  //TO-DO
-  // Get it from BE
-  const editionOptions: { id: string; title: string; key?: string }[] = useMemo(
-    () =>
-      [
-        {
-          id: '0',
-          title: '2022-2023',
-        },
-        {
-          id: '1',
-          title: '2021-2022',
-        },
-        {
-          id: '2',
-          title: '2020-2021',
-        },
-      ].map((obj) => ({ ...obj, key: nanoid() })),
-    []
-  );
-  const championshipOptions: { id: string; title: string; key?: string }[] = useMemo(
-    () =>
-      [
-        {
-          id: '0',
-          title: '2022-2023',
-        },
-        {
-          id: '1',
-          title: '2021-2022',
-        },
-        {
-          id: '2',
-          title: '2020-2021',
-        },
-      ].map((obj) => ({ ...obj, key: nanoid() })),
-    []
-  );
+  const { data: championshipsOpt } = useSWR(getAllChampionshipsSWRKey, fetcher);
+  const championshipOptions: TMatchChampionship[] = useMemo(() => championshipsOpt?.map((obj: TMatchChampionship) => ({ ...obj, key: nanoid() })) || [], [championshipsOpt]);
+  const { data: editions } = useSWR(getAllEditionsSWRKey, fetcher);
+  const editionOptions: TTeamEdition[] = useMemo(() => editions?.map((obj: TTeamEdition) => ({ ...obj, key: nanoid() })) || [], [editions]);
 
   useEffect(() => {
     edition && setSearch && setSearch((prevState) => ({ ...prevState, edition }));
+  }, [edition, setSearch]);
+
+  useEffect(() => {
     championship && setSearch && setSearch((prevState) => ({ ...prevState, championship }));
-    /* eslint-disable-next-line */
-  }, [edition, championship]);
+  }, [championship, setSearch]);
+
+  const onSubmitHandler = async (values: object, form: FormApi) => {
+    setIsLoading(true);
+
+    try {
+      if (isUsedInChampionshipPage) {
+        try {
+          await createChampionship(values as TMatchChampionship);
+          setChampionships([...championships, { ...values, updatedAt: new Date().toString(), createdAt: new Date().toString() } as TMatchChampionship]);
+          toast('Felicitari! Antrenorul a fost adaugat cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
+          onClose();
+          form.reset();
+        } catch (err) {
+          toast('Ooops. Ceva nu a mers bine, te rugam incearca din nou.', { hideProgressBar: true, autoClose: 5000, type: 'error', position: 'bottom-right' });
+        }
+      } else if (isUsedInClubsPage) {
+        await createClub(values as TMatchClub);
+        setClubs([...clubs, { ...values, createdAt: new Date().toString() } as TMatchClub]);
+        toast('Felicitari! Clubul a fost adaugata cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
+        onClose();
+        form.reset();
+      } else {
+        const { dateTime, link, editionId, championshipId, clubOneId, clubTwoId } = values as TMatch;
+        await createMatch({ dateTime, link, editionId, championshipId, club_firstId: clubOneId, club_secondId: clubTwoId } as TBEMatch);
+        setMatches([...matches, { ...values, createdAt: new Date().toString() } as TMatch]);
+        toast('Felicitari! Meciul a fost adaugata cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
+        onClose();
+        form.reset();
+      }
+    } catch (e) {
+      toast('Ooops. Ceva nu a mers bine, te rugam incearca din nou.', { hideProgressBar: true, autoClose: 5000, type: 'error', position: 'bottom-right' });
+    }
+    setIsLoading(false);
+  };
 
   return (
     <Container {...{ src: Background.src }}>
@@ -79,9 +115,33 @@ const MatchesHeader: React.FC<IMatchesHeader> = ({ setSearch, areFiltrablesVisib
         ) : (
           <Text {...{ color: 'var(--white-color)', fontSize: 'var(--text-sm)' }}>{'C.S.M Suceava'}</Text>
         )}
-        <Heading {...{ color: 'var(--grey-alpha-50)', fontSize: 'var(--heading-md)' }}>{'Calendar Meciuri'}</Heading>
+        <Flex {...{ w: '100%', justifyContent: 'space-between', alignItems: 'center', gap: 'var(--gap-md)' }}>
+          <Heading {...{ color: 'var(--grey-alpha-50)', fontSize: 'var(--heading-md)' }}>{'Calendar Meciuri'}</Heading>
+          {data?.role === USER_ROLE.ADMIN && (
+            <>
+              {isUsedInAdminPage && (
+                <Button
+                  {...{
+                    variant: 'outline',
+                    colorScheme: 'whiteAlpha',
+                    color: 'var(--white-color)',
+                    onClick: () => onOpen(),
+                    leftIcon: <PlusIcon {...{ color: 'var(--white-color)', size: '22px' }} />,
+                  }}
+                >
+                  {isUsedInClubsPage ? 'Adaugă un club' : isUsedInChampionshipPage ? 'Adaugă un campionat' : 'Adaugă un meci'}
+                </Button>
+              )}
+              {!isUsedInAdminPage && (
+                <Link {...{ href: adminRoutes.matches.url }}>
+                  <Button {...{ variant: 'solid', colorScheme: 'whiteAlpha', color: 'var(--black-color)', background: 'var(--white-color)' }}>{'Gestionează meciuri'}</Button>
+                </Link>
+              )}
+            </>
+          )}
+        </Flex>
         <Tabs {...{ tabs }} />
-        {areFiltrablesVisible && (
+        {areFiltrablesVisible && isUsedInMatchPage && (
           <Flex {...{ gap: '20px' }}>
             <Select
               {...{
@@ -123,6 +183,38 @@ const MatchesHeader: React.FC<IMatchesHeader> = ({ setSearch, areFiltrablesVisib
         )}
       </LayoutContainer>
       <Box {...{ position: 'absolute', top: '310px', left: 0, w: '20px', h: '250px', zIndex: 'var(--z-index-2)', background: 'var(--blue-400)' }} />
+      {isUsedInAdminPage &&
+        (isUsedInChampionshipPage ? (
+          <MatchesChampionshipCUModal
+            {...{
+              isOpen,
+              onClose,
+              title: 'Adaugă un campionat',
+              onSubmitHandler,
+              isLoading,
+            }}
+          />
+        ) : isUsedInClubsPage ? (
+          <MatchesClubCUModal
+            {...{
+              isOpen,
+              onClose,
+              title: 'Adaugă un club',
+              onSubmitHandler,
+              isLoading,
+            }}
+          />
+        ) : (
+          <MatchesMatchCUModal
+            {...{
+              isOpen,
+              onClose,
+              title: 'Adaugă un meci',
+              onSubmitHandler,
+              isLoading,
+            }}
+          />
+        ))}
     </Container>
   );
 };

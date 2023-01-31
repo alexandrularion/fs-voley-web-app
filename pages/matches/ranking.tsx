@@ -102,12 +102,12 @@ const RankingMatchesPage = () => {
         Cell: ({ row: { original } }: CellValue) => <Tooltip {...{ label: 'Seturi Pierdute' }}>{original.losedSets}</Tooltip>,
       },
       {
-        Header: 'OC',
+        Header: 'PC',
         accessor: 'winnedPoints',
         Cell: ({ row: { original } }: CellValue) => <Tooltip {...{ label: 'Puncte Castigate' }}>{original.winnedPoints}</Tooltip>,
       },
       {
-        Header: 'Puncte Pierdute',
+        Header: 'PP',
         accessor: 'losedPoints',
         Cell: ({ row: { original } }: CellValue) => <Tooltip {...{ label: 'Puncte Pierdute' }}>{original.losedPoints}</Tooltip>,
       },
