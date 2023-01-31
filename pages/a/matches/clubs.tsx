@@ -34,9 +34,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   try {
     const session = await getSession(ctx);
     const { data } = await getAllClubs();
-
-    console.log(data);
-
     return {
       props: {
         session,

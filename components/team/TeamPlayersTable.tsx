@@ -16,11 +16,9 @@ import EmptyState from '../shared/EmptyState';
 import TeamPlayerDModal from './TeamCommonDModal';
 import TeamPlayerCUModal from './TeamPlayerCUModal';
 import ImageModal from '../shared/ImageModal';
-import { useRouter } from 'next/router';
 
 const TeamPlayersTable: React.FC = () => {
   const { teamPlayers, setTeamPlayers } = useTeamPlayers();
-  const { reload } = useRouter();
   const deleteModal = useDisclosure();
   const dModal = useDisclosure();
   const cuModal = useDisclosure();
@@ -154,40 +152,37 @@ const TeamPlayersTable: React.FC = () => {
       {
         Header: 'Actiuni',
         accessor: 'actions',
-        Cell: ({ row: { original } }: CellValue) =>
-          original?.id ? (
-            <Flex {...{ gap: 'var(--gap-md)' }}>
-              <Box {...{ cursor: 'pointer ' }}>
-                <PenIcon
-                  {...{
-                    size: '22px',
-                    color: 'var(--grey-alpha-600)',
-                    onClick: async () => {
-                      setTeamPlayer(original);
-                      cuModal.onOpen();
-                    },
-                  }}
-                />
-              </Box>
-              <Box {...{ cursor: 'pointer ' }}>
-                <TrashIcon
-                  {...{
-                    size: '22px',
-                    color: 'var(--red-color)',
-                    onClick: () => {
-                      setTeamPlayer(original);
-                      deleteModal.onOpen();
-                    },
-                  }}
-                />
-              </Box>
-            </Flex>
-          ) : (
-            <Box {...{ onClick: () => reload(), cursor: 'pointer' }}>{'Click aici pentru incarcare'}</Box>
-          ),
+        Cell: ({ row: { original } }: CellValue) => (
+          <Flex {...{ gap: 'var(--gap-md)' }}>
+            <Box {...{ cursor: 'pointer ' }}>
+              <PenIcon
+                {...{
+                  size: '22px',
+                  color: 'var(--grey-alpha-600)',
+                  onClick: async () => {
+                    setTeamPlayer(original);
+                    cuModal.onOpen();
+                  },
+                }}
+              />
+            </Box>
+            <Box {...{ cursor: 'pointer ' }}>
+              <TrashIcon
+                {...{
+                  size: '22px',
+                  color: 'var(--red-color)',
+                  onClick: () => {
+                    setTeamPlayer(original);
+                    deleteModal.onOpen();
+                  },
+                }}
+              />
+            </Box>
+          </Flex>
+        ),
       },
     ],
-    [deleteModal, cuModal, dModal, iModal, reload]
+    [deleteModal, cuModal, dModal, iModal]
   );
 
   return (
@@ -210,7 +205,7 @@ const TeamPlayersTable: React.FC = () => {
         {...{
           isOpen: cuModal.isOpen,
           onClose: cuModal.onClose,
-          title: `Editeaza jucator - ${teamPlayer?.name} ${teamPlayer?.surName}`,
+          title: `Editeaza Jucator - ${teamPlayer?.name} ${teamPlayer?.surName}`,
           onSubmitHandler,
           isLoading,
           initialValues: { ...teamPlayer!, birthday: teamPlayer?.birthday! ? new Date(teamPlayer?.birthday!)?.toISOString().slice(0, 10) : teamPlayer?.birthday! } as TTeamPlayer,
@@ -228,7 +223,7 @@ const TeamPlayersTable: React.FC = () => {
         {...{
           isOpen: iModal.isOpen,
           onClose: iModal.onClose,
-          title: `Vizualiare imagine profil - ${teamPlayer?.name} ${teamPlayer?.surName}`,
+          title: `Vizualiare Imagine Profil - ${teamPlayer?.name} ${teamPlayer?.surName}`,
           image: teamPlayer?.image!,
           createdAt: teamPlayer?.createdAt!,
         }}

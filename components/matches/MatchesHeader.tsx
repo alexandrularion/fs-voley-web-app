@@ -79,8 +79,9 @@ const MatchesHeader: React.FC<IMatchesHeader> = ({
     try {
       if (isUsedInChampionshipPage) {
         try {
-          await createChampionship(values as TMatchChampionship);
-          setChampionships([...championships, { ...values, updatedAt: new Date().toString(), createdAt: new Date().toString() } as TMatchChampionship]);
+          const { data } = await createChampionship(values as TMatchChampionship);
+          const { id } = data as TMatchChampionship;
+          setChampionships([...championships, { ...values, updatedAt: new Date().toString(), createdAt: new Date().toString(), id } as TMatchChampionship]);
           toast('Felicitari! Antrenorul a fost adaugat cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
           onClose();
           form.reset();
@@ -89,14 +90,15 @@ const MatchesHeader: React.FC<IMatchesHeader> = ({
         }
       } else if (isUsedInClubsPage) {
         const { championshipId } = values as TMatchClub;
-        await createClub({ ...values, championshipId: Number(championshipId) } as TMatchClub);
-        setClubs([...clubs, { ...values, createdAt: new Date().toString(), championshipId: Number(championshipId) } as TMatchClub]);
+        const { data } = await createClub({ ...values, championshipId: Number(championshipId) } as TMatchClub);
+        const { id } = data as TMatchClub;
+        setClubs([...clubs, { ...values, createdAt: new Date().toString(), championshipId: Number(championshipId), id } as TMatchClub]);
         toast('Felicitari! Clubul a fost adaugata cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
         onClose();
         form.reset();
       } else {
         const { dateTime, link, editionId, championshipId, clubTwoId } = values as TMatch;
-        await createMatch({
+        const { data } = await createMatch({
           dateTime: new Date(dateTime).toISOString(),
           link,
           editionId: Number(editionId),
@@ -104,7 +106,8 @@ const MatchesHeader: React.FC<IMatchesHeader> = ({
           club_firstId: Number(1),
           club_secondId: Number(clubTwoId),
         } as TBEMatch);
-        setMatches([...matches, { ...values, createdAt: new Date().toString() } as TMatch]);
+        const { id } = data as TMatch;
+        setMatches([...matches, { ...values, createdAt: new Date().toString(), id } as TMatch]);
         toast('Felicitari! Meciul a fost adaugata cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
         onClose();
         form.reset();

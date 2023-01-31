@@ -120,7 +120,7 @@ const UsersTable: React.FC<IUsersTable> = ({ filter }) => {
         {...{
           isOpen: deleteModal.isOpen,
           onClose: deleteModal.onClose,
-          title: `Sterge utilizator - ${user?.firstName} ${user?.lastName}`,
+          title: `Sterge Utilizator - ${user?.firstName} ${user?.lastName}`,
           description: `Este sigur ca vrei sa stergi utilizatorul ${user?.firstName}? Toate datele asociate utilizatorului vor fi sterse definitiv.`,
           isLoading,
           onDeleteHandler,
@@ -131,7 +131,7 @@ const UsersTable: React.FC<IUsersTable> = ({ filter }) => {
         {...{
           isOpen: cuModal.isOpen,
           onClose: cuModal.onClose,
-          title: `Editeaza utilizator - ${user?.firstName} ${user?.lastName}`,
+          title: `Editeaza Utilizator - ${user?.firstName} ${user?.lastName}`,
           onSubmitHandler,
           isLoading,
           initialValues: user!,

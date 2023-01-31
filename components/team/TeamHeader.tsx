@@ -79,8 +79,9 @@ const TeamHeader: React.FC<ITeamHeader> = ({ setSearch, isUsedOnCoachPage = fals
       if (isUsedOnCoachPage) {
         const { surName, name, description, image } = values as TTeamCoach;
         try {
-          await createCoach({ first_name: name, last_name: surName, description, image } as TBETeamCoach);
-          setTeamCoaches([...teamCoaches, values as TTeamCoach]);
+          const { data } = await createCoach({ first_name: name, last_name: surName, description, image } as TBETeamCoach);
+          const { id } = data as TBETeamCoach;
+          setTeamCoaches([...teamCoaches, { ...values, id } as TTeamCoach]);
           toast('Felicitari! Antrenorul a fost adaugat cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
           onClose();
           form.reset();
@@ -89,8 +90,9 @@ const TeamHeader: React.FC<ITeamHeader> = ({ setSearch, isUsedOnCoachPage = fals
         }
       } else if (isUsedInCategoryPage) {
         const { title } = values as TTeamCategory;
-        await createCategory({ title } as TTeamCategory);
-        setTeamCategories([...teamCategories, { ...values, createdAt: new Date().toString(), updatedAt: new Date().toString() } as TTeamCategory]);
+        const { data } = await createCategory({ title } as TTeamCategory);
+        const { id } = data as TTeamCategory;
+        setTeamCategories([...teamCategories, { ...values, createdAt: new Date().toString(), updatedAt: new Date().toString(), id } as TTeamCategory]);
         toast('Felicitari! Categoria a fost adaugata cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
         onClose();
         form.reset();
@@ -103,7 +105,7 @@ const TeamHeader: React.FC<ITeamHeader> = ({ setSearch, isUsedOnCoachPage = fals
         form.reset();
       } else {
         const { name, surName, position, birthday, nationality, height, description, image, shirtNumber, categoryId, editionId } = values as TTeamPlayer;
-        await createPlayer({
+        const { data } = await createPlayer({
           first_name: name,
           last_name: surName,
           position,
@@ -116,7 +118,8 @@ const TeamHeader: React.FC<ITeamHeader> = ({ setSearch, isUsedOnCoachPage = fals
           categoryId: Number(categoryId),
           editionId: Number(editionId),
         } as TBETeamPlayer);
-        setTeamPlayers([...teamPlayers, values as TTeamPlayer]);
+        const { id } = data as TBETeamPlayer;
+        setTeamPlayers([...teamPlayers, { ...values, id } as TTeamPlayer]);
         toast('Felicitari! jucatorul a fost adaugat cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
         onClose();
         form.reset();

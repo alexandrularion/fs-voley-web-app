@@ -37,8 +37,9 @@ const UsersHeader: React.FC = () => {
     const { firstName, lastName, email, role } = values as TUser;
     setIsLoading(true);
     try {
-      await createUser({ first_name: firstName, last_name: lastName, email, role: Number(role) } as TBEUser);
-      setUsers([...users, { ...values, role: Number(role) } as TUser]);
+      const { data } = await createUser({ first_name: firstName, last_name: lastName, email, role: Number(role) } as TBEUser);
+      const { id } = data as TBEUser;
+      setUsers([...users, { ...values, role: Number(role), id } as TUser]);
       toast('Felicitari! Utilizatorul a fost adaugat cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
       cuModal.onClose();
       form.reset();

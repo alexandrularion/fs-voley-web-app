@@ -131,7 +131,7 @@ const MatchesClubsTable: React.FC = () => {
         {...{
           isOpen: deleteModal.isOpen,
           onClose: deleteModal.onClose,
-          title: `Sterge club - ${club?.title}`,
+          title: `Sterge Club - ${club?.title}`,
           description: `Este sigur ca vrei sa stergi clubul - ${club?.title}? Toate datele asociate clubului vor fi sterse definitiv.`,
           isLoading,
           onDeleteHandler,
@@ -142,7 +142,7 @@ const MatchesClubsTable: React.FC = () => {
         {...{
           isOpen: cuModal.isOpen,
           onClose: cuModal.onClose,
-          title: `Editeaza club - ${club?.title}`,
+          title: `Editeaza Club - ${club?.title}`,
           onSubmitHandler,
           isLoading,
           initialValues: {
@@ -163,7 +163,7 @@ const Container = styled.section`
   .sl-layout-container {
     display: flex;
     position: relative;
-    top: -85px;
+    top: -120px;
     gap: var(--gap-lg);
   }
 `;

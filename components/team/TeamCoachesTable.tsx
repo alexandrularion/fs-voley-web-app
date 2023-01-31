@@ -9,7 +9,7 @@ import DeleteModal from '../shared/DeleteModal';
 import { toast } from 'react-toastify';
 import { FormApi } from 'final-form';
 import { TBETeamCoach, TTeamCoach } from './Interfaces';
-import { deletePlayer, updateCoach } from '../../services/Team.service';
+import { deleteCoach, updateCoach } from '../../services/Team.service';
 import Image from 'next/image';
 import EmptyState from '../shared/EmptyState';
 import ImageModal from '../shared/ImageModal';
@@ -44,7 +44,7 @@ const TeamCoachesTable: React.FC = () => {
   const onDeleteHandler = async (coachId: number) => {
     setIsLoading(true);
     try {
-      await deletePlayer(coachId);
+      await deleteCoach(coachId);
       setTeamCoaches(teamCoaches.filter(({ id }) => id !== coachId));
       toast('Antrenorul a fost sters cu succes.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
       deleteModal.onClose();
@@ -161,7 +161,7 @@ const TeamCoachesTable: React.FC = () => {
         {...{
           isOpen: deleteModal.isOpen,
           onClose: deleteModal.onClose,
-          title: `Sterge antrenor - ${teamCoach?.name} ${teamCoach?.surName}`,
+          title: `Sterge Antrenor - ${teamCoach?.name} ${teamCoach?.surName}`,
           description: `Este sigur ca vrei sa stergi antrenorul ${teamCoach?.name}? Toate datele asociate antrenorului vor fi sterse definitiv.`,
           isLoading,
           onDeleteHandler,
@@ -172,7 +172,7 @@ const TeamCoachesTable: React.FC = () => {
         {...{
           isOpen: cuModal.isOpen,
           onClose: cuModal.onClose,
-          title: `Editeaza antrenor - ${teamCoach?.name} ${teamCoach?.surName}`,
+          title: `Editeaza Antrenor - ${teamCoach?.name} ${teamCoach?.surName}`,
           onSubmitHandler,
           isLoading,
           initialValues: { ...teamCoach! } as TTeamCoach,

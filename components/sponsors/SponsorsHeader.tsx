@@ -43,8 +43,9 @@ const SponsorsHeader: React.FC<ISponsorsHeader> = ({ isUsedInAdminPage = false }
     const { title, logo, endDate, startDate, site } = values as TSponsor;
     setIsLoading(true);
     try {
-      await createSponsor({ website: site, date_end: endDate, title, image_url: logo, date_start: startDate } as TBESponsor);
-      setSponsors([...sponsors, values as TSponsor]);
+      const { data } = await createSponsor({ website: site, date_end: endDate, title, image_url: logo, date_start: startDate } as TBESponsor);
+      const { id } = data as TSponsor;
+      setSponsors([...sponsors, { ...values, id } as TSponsor]);
       toast('Felicitari! Sponsorul a fost adaugat cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
       onClose();
       form.reset();

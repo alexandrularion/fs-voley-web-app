@@ -12,12 +12,10 @@ import { TTeamCategory, TTeamEdition } from './Interfaces';
 import { deleteCategory, updateCategory } from '../../services/Team.service';
 import EmptyState from '../shared/EmptyState';
 import TeamCategoryCUModal from './TeamCommonCUModal';
-import { useRouter } from 'next/dist/client/router';
 import { useTeamEditions } from '../../context/ContextTeamEdition';
 
 const TeamEditionsTable: React.FC = () => {
   const { teamEditions, setTeamEditions } = useTeamEditions();
-  const { reload } = useRouter();
   const deleteModal = useDisclosure();
   const cuModal = useDisclosure();
   const [teamEdition, setTeamEdition] = useState<TTeamCategory>();
@@ -78,40 +76,37 @@ const TeamEditionsTable: React.FC = () => {
       {
         Header: 'Actiuni',
         accessor: 'actions',
-        Cell: ({ row: { original } }: CellValue) =>
-          original?.id ? (
-            <Flex {...{ gap: 'var(--gap-md)' }}>
-              <Box {...{ cursor: 'pointer ' }}>
-                <PenIcon
-                  {...{
-                    size: '22px',
-                    color: 'var(--grey-alpha-600)',
-                    onClick: async () => {
-                      setTeamEdition(original);
-                      cuModal.onOpen();
-                    },
-                  }}
-                />
-              </Box>
-              <Box {...{ cursor: 'pointer ' }}>
-                <TrashIcon
-                  {...{
-                    size: '22px',
-                    color: 'var(--red-color)',
-                    onClick: () => {
-                      setTeamEdition(original);
-                      deleteModal.onOpen();
-                    },
-                  }}
-                />
-              </Box>
-            </Flex>
-          ) : (
-            <Box {...{ onClick: () => reload(), cursor: 'pointer' }}>{'Click aici pentru incarcare'}</Box>
-          ),
+        Cell: ({ row: { original } }: CellValue) => (
+          <Flex {...{ gap: 'var(--gap-md)' }}>
+            <Box {...{ cursor: 'pointer ' }}>
+              <PenIcon
+                {...{
+                  size: '22px',
+                  color: 'var(--grey-alpha-600)',
+                  onClick: async () => {
+                    setTeamEdition(original);
+                    cuModal.onOpen();
+                  },
+                }}
+              />
+            </Box>
+            <Box {...{ cursor: 'pointer ' }}>
+              <TrashIcon
+                {...{
+                  size: '22px',
+                  color: 'var(--red-color)',
+                  onClick: () => {
+                    setTeamEdition(original);
+                    deleteModal.onOpen();
+                  },
+                }}
+              />
+            </Box>
+          </Flex>
+        ),
       },
     ],
-    [deleteModal, cuModal, reload]
+    [deleteModal, cuModal]
   );
 
   return (
@@ -123,7 +118,7 @@ const TeamEditionsTable: React.FC = () => {
         {...{
           isOpen: deleteModal.isOpen,
           onClose: deleteModal.onClose,
-          title: `Sterge editie - ${teamEdition?.title}`,
+          title: `Sterge Editie - ${teamEdition?.title}`,
           description: `Este sigur ca vrei sa stergi editia  ${teamEdition?.title}?`,
           isLoading,
           onDeleteHandler,
@@ -134,7 +129,7 @@ const TeamEditionsTable: React.FC = () => {
         {...{
           isOpen: cuModal.isOpen,
           onClose: cuModal.onClose,
-          title: `Editeaza lot - ${teamEdition?.title}`,
+          title: `Editeaza Editie - ${teamEdition?.title}`,
           onSubmitHandler,
           isLoading,
           initialValues: teamEdition as TTeamEdition,

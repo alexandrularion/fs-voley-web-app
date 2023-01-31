@@ -9,7 +9,6 @@ import DeleteModal from '../shared/DeleteModal';
 import { toast } from 'react-toastify';
 import { FormApi } from 'final-form';
 import EmptyState from '../shared/EmptyState';
-import { useRouter } from 'next/dist/client/router';
 import { TMatchChampionship } from './Interfaces';
 import MatchesChampionshipCUModal from './MatchesChampionshipCUModal';
 import { useChampionships } from '../../context/ContextChampionship';
@@ -17,7 +16,6 @@ import { deleteChampionship, updateChampionship } from '../../services/Match.ser
 
 const MatchesChampionshipsTable: React.FC = () => {
   const { championships, setChampionships } = useChampionships();
-  const { reload } = useRouter();
   const deleteModal = useDisclosure();
   const cuModal = useDisclosure();
   const [championship, setChampionship] = useState<TMatchChampionship>();
@@ -78,40 +76,37 @@ const MatchesChampionshipsTable: React.FC = () => {
       {
         Header: 'Actiuni',
         accessor: 'actions',
-        Cell: ({ row: { original } }: CellValue) =>
-          original?.id ? (
-            <Flex {...{ gap: 'var(--gap-md)' }}>
-              <Box {...{ cursor: 'pointer ' }}>
-                <PenIcon
-                  {...{
-                    size: '22px',
-                    color: 'var(--grey-alpha-600)',
-                    onClick: async () => {
-                      setChampionship(original);
-                      cuModal.onOpen();
-                    },
-                  }}
-                />
-              </Box>
-              <Box {...{ cursor: 'pointer ' }}>
-                <TrashIcon
-                  {...{
-                    size: '22px',
-                    color: 'var(--red-color)',
-                    onClick: () => {
-                      setChampionship(original);
-                      deleteModal.onOpen();
-                    },
-                  }}
-                />
-              </Box>
-            </Flex>
-          ) : (
-            <Box {...{ onClick: () => reload(), cursor: 'pointer' }}>{'Click aici pentru incarcare'}</Box>
-          ),
+        Cell: ({ row: { original } }: CellValue) => (
+          <Flex {...{ gap: 'var(--gap-md)' }}>
+            <Box {...{ cursor: 'pointer ' }}>
+              <PenIcon
+                {...{
+                  size: '22px',
+                  color: 'var(--grey-alpha-600)',
+                  onClick: async () => {
+                    setChampionship(original);
+                    cuModal.onOpen();
+                  },
+                }}
+              />
+            </Box>
+            <Box {...{ cursor: 'pointer ' }}>
+              <TrashIcon
+                {...{
+                  size: '22px',
+                  color: 'var(--red-color)',
+                  onClick: () => {
+                    setChampionship(original);
+                    deleteModal.onOpen();
+                  },
+                }}
+              />
+            </Box>
+          </Flex>
+        ),
       },
     ],
-    [deleteModal, cuModal, reload]
+    [deleteModal, cuModal]
   );
 
   return (
@@ -123,7 +118,7 @@ const MatchesChampionshipsTable: React.FC = () => {
         {...{
           isOpen: deleteModal.isOpen,
           onClose: deleteModal.onClose,
-          title: `Sterge campionat - ${championship?.title}`,
+          title: `Sterge Campionat - ${championship?.title}`,
           description: `Este sigur ca vrei sa stergi campionatul  ${championship?.title}?`,
           isLoading,
           onDeleteHandler,
@@ -134,7 +129,7 @@ const MatchesChampionshipsTable: React.FC = () => {
         {...{
           isOpen: cuModal.isOpen,
           onClose: cuModal.onClose,
-          title: `Editeaza campionat - ${championship?.title}`,
+          title: `Editeaza Campionat - ${championship?.title}`,
           onSubmitHandler,
           isLoading,
           initialValues: championship as TMatchChampionship,
@@ -153,7 +148,7 @@ const Container = styled.section`
   .sl-layout-container {
     display: flex;
     position: relative;
-    top: -110px;
+    top: -120px;
     gap: var(--gap-lg);
   }
 `;

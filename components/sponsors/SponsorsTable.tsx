@@ -133,7 +133,7 @@ const SponsorsTable: React.FC<ISponsorsList> = ({ filter }) => {
         {...{
           isOpen: deleteModal.isOpen,
           onClose: deleteModal.onClose,
-          title: `Sterge sponsor - ${sponsor?.title}`,
+          title: `Sterge Sponsor - ${sponsor?.title}`,
           description: `Este sigur ca vrei sa stergi sponsorul ${sponsor?.title}? Toate datele asociate sponsorului vor fi sterse definitiv.`,
           isLoading,
           onDeleteHandler,
@@ -144,7 +144,7 @@ const SponsorsTable: React.FC<ISponsorsList> = ({ filter }) => {
         {...{
           isOpen: cuModal.isOpen,
           onClose: cuModal.onClose,
-          title: `Editeaza sponsor - ${sponsor?.title}`,
+          title: `Editeaza Sponsor - ${sponsor?.title}`,
           onSubmitHandler,
           isLoading,
           initialValues: {
