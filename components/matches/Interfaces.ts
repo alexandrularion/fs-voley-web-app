@@ -12,17 +12,7 @@ export interface IMatchesHeader {
 }
 
 export interface IMatchesCard extends TSearchMatches {
-  date: string;
-  score?: string[];
-  league: string;
-  location: string;
-  link: string;
-  teams: { logo: string; name: string }[];
-  key?: string;
-}
-
-export interface IMatchesList {
-  matches: IMatchesCard[];
+  match: TMatch;
 }
 
 export type TMatchesRanking = {
@@ -47,6 +37,10 @@ export type TMatch = {
   clubOneId: number;
   clubTwoId: number;
   createdAt: string;
+  championship?: TMatchChampionship;
+  clubFirst?: TMatchClub;
+  clubSecond?: TMatchClub;
+  key?: string;
 };
 
 export type TBEMatch = {
@@ -73,7 +67,7 @@ export type TMatchClub = {
   title: string;
   image: string;
   championshipId: number;
-  createdAt: string;
+  createdAt?: string;
   key?: string;
 };
 
@@ -87,4 +81,8 @@ export interface IChampionshipsPage {
 
 export interface IClubsPage {
   data: TMatchClub[];
+}
+
+export interface IFutureMatchesPage {
+  data: TMatch[];
 }

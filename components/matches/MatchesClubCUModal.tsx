@@ -50,7 +50,7 @@ const MatchesClubCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLo
                                   type: 'file',
                                   title: '',
                                   _after: {
-                                    content: initialValues?.name && !touched ? `"${values?.title?.toLowerCase()}.png"` : touched && !error ? '"Fisier adaugat ✓"' : '"Selecteaza imaginea de profile"',
+                                    content: initialValues?.title && !touched ? `"${values?.title?.toLowerCase()}.png"` : touched && !error ? '"Fisier adaugat ✓"' : '"Selecteaza imaginea de profile"',
                                     width: '100%',
                                     height: '100%',
                                     top: '0',
@@ -82,7 +82,7 @@ const MatchesClubCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLo
                         render: ({ input, meta: { touched, error } }) => (
                           <Tooltip {...{ label: touched && error ? error : '' }}>
                             <InputGroup>
-                              <InputLeftAddon {...{ children: 'Nume' }} />
+                              <InputLeftAddon {...{ children: 'Nume', w: '140px' }} />
                               <Input
                                 {...{
                                   ...input,
@@ -103,7 +103,7 @@ const MatchesClubCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLo
                         render: ({ input, meta: { touched, error } }) => (
                           <Tooltip {...{ label: touched && error ? error : '' }}>
                             <InputGroup>
-                              <InputLeftAddon {...{ children: 'Lot', w: '140px' }} />
+                              <InputLeftAddon {...{ children: 'Campionat', w: '140px' }} />
                               <Select
                                 {...{
                                   isInvalid: touched && error,

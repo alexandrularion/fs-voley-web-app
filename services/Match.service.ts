@@ -2,9 +2,18 @@ import { TBEMatch, TMatchChampionship, TMatchClub } from '../components/matches/
 import { axiosConfigJSON } from './AxiosConfig';
 
 const getAllChampionshipsSWRKey = '/championship/get/all';
+const getAllClubsSWRKey = '/club/get/all';
 
 const getAllMatches = () => {
   return axiosConfigJSON.get('/match/get/all');
+};
+
+const getAllFeatureMatches = () => {
+  return axiosConfigJSON.get('/match/get/feature');
+};
+
+const getAllLatestMatches = () => {
+  return axiosConfigJSON.get('/match/get/latest');
 };
 
 const deleteMatch = (matchId: number) => {
@@ -53,11 +62,14 @@ const updateClub = (clubId: number, club: TMatchClub) => {
 
 export {
   getAllChampionshipsSWRKey,
+  getAllClubsSWRKey,
   getAllClubs,
   deleteClub,
   createClub,
   updateClub,
   getAllMatches,
+  getAllFeatureMatches,
+  getAllLatestMatches,
   deleteMatch,
   createMatch,
   updateMatch,

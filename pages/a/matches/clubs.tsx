@@ -2,8 +2,8 @@ import { GetServerSidePropsContext, NextPage } from 'next';
 import { getSession } from 'next-auth/react';
 import { useEffect } from 'react';
 import { IClubsPage } from '../../../components/matches/Interfaces';
+import MatchesClubsTable from '../../../components/matches/MatchesClubsTable';
 import MatchesHeader from '../../../components/matches/MatchesHeader';
-import MatchesTable from '../../../components/matches/MatchesTable';
 import Layout from '../../../components/shared/Layout';
 import { useClubs } from '../../../context/ContextClub';
 import { useTab } from '../../../context/ContextTab';
@@ -24,7 +24,7 @@ const ClubsPage: NextPage<IClubsPage> = ({ data }) => {
   return (
     <Layout {...{ bgColor: 'var(--blue-500)' }}>
       <MatchesHeader {...{ isUsedInAdminPage: true, isUsedInClubsPage: true }} />
-      <MatchesTable />
+      <MatchesClubsTable />
     </Layout>
   );
 };
@@ -34,6 +34,9 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   try {
     const session = await getSession(ctx);
     const { data } = await getAllClubs();
+
+    console.log(data);
+
     return {
       props: {
         session,

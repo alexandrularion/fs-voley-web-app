@@ -4,7 +4,7 @@ import { nanoid } from 'nanoid';
 import { useMemo } from 'react';
 import { Field, Form } from 'react-final-form';
 import useSWR from 'swr';
-import { getAllChampionshipsSWRKey } from '../../services/Match.service';
+import { getAllChampionshipsSWRKey, getAllClubsSWRKey } from '../../services/Match.service';
 import { getAllEditionsSWRKey } from '../../services/Team.service';
 import { fetcher } from '../../utils';
 import { IFormModal } from '../shared/Interfaces';
@@ -18,7 +18,7 @@ const MatchesMatchCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isL
   const { data: edition } = useSWR(getAllEditionsSWRKey, fetcher);
   const editionOptions: TTeamEdition[] = useMemo(() => edition?.map((obj: TTeamEdition) => ({ ...obj, key: nanoid() })) || [], [edition]);
 
-  const { data: clubs } = useSWR(getAllChampionshipsSWRKey, fetcher);
+  const { data: clubs } = useSWR(getAllClubsSWRKey, fetcher);
   const clubOptions: TMatchClub[] = useMemo(() => clubs?.map((obj: TMatchClub) => ({ ...obj, key: nanoid() })) || [], [clubs]);
 
   return (
@@ -80,7 +80,6 @@ const MatchesMatchCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isL
                       <Field
                         {...{
                           name: 'clubOneId',
-                          validate: (value: string) => CustomValidation(value, 'Primul club'),
                           render: ({ input, meta: { touched, error } }) => (
                             <Tooltip {...{ label: touched && error ? error : '' }}>
                               <InputGroup>
@@ -90,7 +89,8 @@ const MatchesMatchCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isL
                                     isInvalid: touched && error,
                                     placeholder: 'Alegeti club',
                                     ...input,
-                                    defaultValue: 1,
+                                    value: '1',
+                                    defaultValue: '1',
                                     borderTopLeftRadius: 0,
                                     borderBottomLeftRadius: 0,
                                     disabled: true,
@@ -131,11 +131,14 @@ const MatchesMatchCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isL
                                     },
                                   }}
                                 >
-                                  {clubOptions?.map(({ title, key, id }) => (
-                                    <option key={key} {...{ value: id }}>
-                                      {title}
-                                    </option>
-                                  ))}
+                                  {clubOptions?.map(
+                                    ({ title, key, id }) =>
+                                      id !== 1 && (
+                                        <option key={key} {...{ value: id }}>
+                                          {title}
+                                        </option>
+                                      )
+                                  )}
                                 </Select>
                               </InputGroup>
                             </Tooltip>

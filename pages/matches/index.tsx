@@ -1,58 +1,27 @@
 import { GetServerSidePropsContext } from 'next';
 import { getSession } from 'next-auth/react';
+import { NextPage } from 'next/types';
 import { useEffect, useState } from 'react';
-import { IMatchesCard, TSearchMatches } from '../../components/matches/Interfaces';
+import { IFutureMatchesPage, TBEMatch, TMatch, TSearchMatches } from '../../components/matches/Interfaces';
 import MatchesHeader from '../../components/matches/MatchesHeader';
 import MatchesList from '../../components/matches/MatchesList';
 import Layout from '../../components/shared/Layout';
+import { useMatches } from '../../context/ContextMatch';
 import { useTab } from '../../context/ContextTab';
+import { getAllFeatureMatches } from '../../services/Match.service';
 
-const FutureMatchesPage = () => {
+const FutureMatchesPage: NextPage<IFutureMatchesPage> = ({ data }) => {
   const [search, setSearch] = useState<TSearchMatches>({});
   const { setTab } = useTab();
-
-  const matches: IMatchesCard[] = [
-    {
-      date: new Date('1/19/2023 7:23 PM').toString(),
-      championship: 'Campionatul X',
-      edition: '2022-2023',
-      location: 'Suceava, Romania',
-      teams: [
-        {
-          logo: 'https://i.imgur.com/HanfA7L.png',
-          name: 'C.S.M Suceava',
-        },
-        {
-          logo: 'https://i.imgur.com/HanfA7L.png',
-          name: 'C.S.M Suceava',
-        },
-      ],
-      link: 'https://google.com',
-      league: 'Liga 1',
-    },
-    {
-      date: new Date('1/19/2023 7:23 PM').toString(),
-      championship: 'Campionatul X',
-      edition: '2022-2023',
-      location: 'Suceava, Romania',
-      teams: [
-        {
-          logo: 'https://i.imgur.com/HanfA7L.png',
-          name: 'C.S.M Suceava',
-        },
-        {
-          logo: 'https://i.imgur.com/HanfA7L.png',
-          name: 'C.S.M Suceava',
-        },
-      ],
-      link: 'https://google.com',
-      league: 'Liga 1',
-    },
-  ];
+  const { setMatches } = useMatches();
 
   useEffect(() => {
-    console.log(search);
-  }, [search]);
+    if (search?.championship || search?.edition) {
+      //to-do
+    } else {
+      setMatches(data);
+    }
+  }, [data, setMatches, search]);
 
   useEffect(() => {
     setTab({ tabId: 0, title: 'Meciuri viitoare', href: '/matches', value: 0 });
@@ -61,17 +30,28 @@ const FutureMatchesPage = () => {
   return (
     <Layout {...{ bgColor: 'var(--blue-500)' }}>
       <MatchesHeader {...{ setSearch }} />
-      <MatchesList {...{ matches }} />
+      <MatchesList />
     </Layout>
   );
 };
 export default FutureMatchesPage;
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const session = await getSession(ctx);
-  return {
-    props: {
-      session,
-    },
-  };
+  try {
+    const session = await getSession(ctx);
+    const { data } = await getAllFeatureMatches();
+    return {
+      props: {
+        session,
+        data: data.map(({ club_firstId, club_secondId, ...rest }: TBEMatch) => ({ ...rest, clubOneId: club_firstId, clubTwoId: club_secondId } as TMatch)),
+      },
+    };
+  } catch (e) {
+    return {
+      props: {
+        session: {},
+        data: [],
+      },
+    };
+  }
 };

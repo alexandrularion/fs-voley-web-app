@@ -1,18 +1,20 @@
 import { nanoid } from 'nanoid';
 import { useMemo } from 'react';
 import styled from 'styled-components';
+import { useMatches } from '../../context/ContextMatch';
 import { device } from '../shared/DevicesBreakpoints';
 import { LayoutContainer } from '../shared/Layout';
-import { IMatchesCard, IMatchesList } from './Interfaces';
+import { TMatch } from './Interfaces';
 import MatchesCard from './MatchesCard';
 
-const MatchesList: React.FC<IMatchesList> = ({ matches }) => {
-  const data: IMatchesCard[] = useMemo(() => matches.map((obj) => ({ ...obj, key: nanoid() })), [matches]);
+const MatchesList: React.FC = () => {
+  const { matches } = useMatches();
+  const data: TMatch[] = useMemo(() => matches.map((obj) => ({ ...obj, key: nanoid() })), [matches]);
   return (
     <Container>
       <LayoutContainer {...{ className: 'sl-layout-container' }}>
         {data?.map(({ key, ...obj }) => (
-          <MatchesCard key={key} {...obj} />
+          <MatchesCard key={key} {...{ match: obj }} />
         ))}
       </LayoutContainer>
     </Container>

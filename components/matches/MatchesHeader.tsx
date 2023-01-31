@@ -88,14 +88,22 @@ const MatchesHeader: React.FC<IMatchesHeader> = ({
           toast('Ooops. Ceva nu a mers bine, te rugam incearca din nou.', { hideProgressBar: true, autoClose: 5000, type: 'error', position: 'bottom-right' });
         }
       } else if (isUsedInClubsPage) {
-        await createClub(values as TMatchClub);
-        setClubs([...clubs, { ...values, createdAt: new Date().toString() } as TMatchClub]);
+        const { championshipId } = values as TMatchClub;
+        await createClub({ ...values, championshipId: Number(championshipId) } as TMatchClub);
+        setClubs([...clubs, { ...values, createdAt: new Date().toString(), championshipId: Number(championshipId) } as TMatchClub]);
         toast('Felicitari! Clubul a fost adaugata cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
         onClose();
         form.reset();
       } else {
-        const { dateTime, link, editionId, championshipId, clubOneId, clubTwoId } = values as TMatch;
-        await createMatch({ dateTime, link, editionId, championshipId, club_firstId: clubOneId, club_secondId: clubTwoId } as TBEMatch);
+        const { dateTime, link, editionId, championshipId, clubTwoId } = values as TMatch;
+        await createMatch({
+          dateTime: new Date(dateTime).toISOString(),
+          link,
+          editionId: Number(editionId),
+          championshipId: Number(championshipId),
+          club_firstId: Number(1),
+          club_secondId: Number(clubTwoId),
+        } as TBEMatch);
         setMatches([...matches, { ...values, createdAt: new Date().toString() } as TMatch]);
         toast('Felicitari! Meciul a fost adaugata cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
         onClose();
