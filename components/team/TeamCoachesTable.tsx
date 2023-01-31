@@ -8,41 +8,31 @@ import { EyeIcon, PenIcon, TrashIcon } from '../../styles/Icons';
 import DeleteModal from '../shared/DeleteModal';
 import { toast } from 'react-toastify';
 import { FormApi } from 'final-form';
-import { useTeamPlayers } from '../../context/ContextTeamPlayers';
-import { TBETeamPlayer, TTeamPlayer } from './Interfaces';
-import { deletePlayer, updatePlayer } from '../../services/Team.service';
+import { TBETeamCoach, TTeamCoach } from './Interfaces';
+import { deletePlayer, updateCoach } from '../../services/Team.service';
 import Image from 'next/image';
 import EmptyState from '../shared/EmptyState';
-import TeamPlayerDModal from './TeamPlayerDModal';
-import TeamPlayerCUModal from './TeamPlayerCUModal';
 import ImageModal from '../shared/ImageModal';
+import { useTeamCoaches } from '../../context/ContextTeamCoaches';
+import TeamCoachCUModal from './TeamCoachCUModal';
+import TeamCommonDModal from './TeamCommonDModal';
 
 const TeamCoachesTable: React.FC = () => {
-  const { teamPlayers, setTeamPlayers } = useTeamPlayers();
+  const { teamCoaches, setTeamCoaches } = useTeamCoaches();
   const deleteModal = useDisclosure();
   const dModal = useDisclosure();
   const cuModal = useDisclosure();
   const iModal = useDisclosure();
-  const [teamPlayer, setTeamPlayer] = useState<TTeamPlayer>();
+  const [teamCoach, setTeamCoach] = useState<TTeamCoach>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const onSubmitHandler = async (values: object, form: FormApi) => {
-    const { name, surName, position, birthday, nationality, height, description, image, shirtNumber } = values as TTeamPlayer;
+    const { name, surName, description, image } = values as TTeamCoach;
     setIsLoading(true);
     try {
-      await updatePlayer(teamPlayer?.id!, {
-        first_name: name,
-        last_name: surName,
-        position,
-        birthday: new Date(birthday).toISOString(),
-        nationality,
-        height,
-        description,
-        image,
-        shirtNumber,
-      } as TBETeamPlayer);
-      setTeamPlayers(teamPlayers.map(({ id, ...obj }) => (id === teamPlayer?.id ? { id, name, surName, position, birthday, nationality, height, description, image, shirtNumber } : { ...obj, id })));
-      toast('Felicitari! Jucatorul a fost actualizat cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
+      await updateCoach(teamCoach?.id!, { first_name: name, last_name: surName, description, image } as TBETeamCoach);
+      setTeamCoaches(teamCoaches.map(({ id, ...obj }) => (id === teamCoach?.id ? { id, name, surName, description, image } : { ...obj, id })));
+      toast('Felicitari! Antrenorul a fost actualizat cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
       cuModal.onClose();
       form.reset();
     } catch (e) {
@@ -51,12 +41,12 @@ const TeamCoachesTable: React.FC = () => {
     setIsLoading(false);
   };
 
-  const onDeleteHandler = async (playerId: number) => {
+  const onDeleteHandler = async (coachId: number) => {
     setIsLoading(true);
     try {
-      await deletePlayer(playerId);
-      setTeamPlayers(teamPlayers.filter(({ id }) => id !== playerId));
-      toast('Jucatorul a fost sters cu succcess.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
+      await deletePlayer(coachId);
+      setTeamCoaches(teamCoaches.filter(({ id }) => id !== coachId));
+      toast('Antrenorul a fost sters cu succes.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
       deleteModal.onClose();
     } catch (e) {
       toast('Ooops. Ceva nu a mers bine, te rugam incearca din nou.', { hideProgressBar: true, autoClose: 5000, type: 'error', position: 'bottom-right' });
@@ -78,16 +68,15 @@ const TeamCoachesTable: React.FC = () => {
           <Flex
             {...{
               cursor: 'pointer',
-              justifyContent: 'center',
               gap: 'var(--gap-xs)',
               alignItems: 'center',
               onClick: async () => {
-                setTeamPlayer(original);
+                setTeamCoach(original);
                 iModal.onOpen();
               },
             }}
           >
-            <Image {...{ src: original.image, width: 100, height: 100, alt: 'Fotografie Profile' }} />
+            <Image {...{ src: original.image, width: 100, height: 100, alt: 'Fotografie de profil' }} />
           </Flex>
         ),
       },
@@ -102,37 +91,16 @@ const TeamCoachesTable: React.FC = () => {
         Cell: ({ row: { original } }: CellValue) => original.surName,
       },
       {
-        Header: 'Pozitie',
-        accessor: 'position',
-        Cell: ({ row: { original } }: CellValue) => original.position,
-      },
-      {
-        Header: 'Data nasterii',
-        accessor: 'birthday',
-        Cell: ({ row: { original } }: CellValue) => new Date(original.birthday).toLocaleDateString('ro-RO', { day: 'numeric', year: 'numeric', month: 'long' }),
-      },
-      {
-        Header: 'Nationalitate',
-        accessor: 'nationality',
-        Cell: ({ row: { original } }: CellValue) => original.nationality,
-      },
-      {
-        Header: 'Inaltime',
-        accessor: 'height',
-        Cell: ({ row: { original } }: CellValue) => original.height,
-      },
-      {
         Header: 'Biografie',
         accessor: 'description',
         Cell: ({ row: { original } }: CellValue) => (
           <Flex
             {...{
               cursor: 'pointer',
-              justifyContent: 'center',
               gap: 'var(--gap-xs)',
               alignItems: 'center',
               onClick: async () => {
-                setTeamPlayer(original);
+                setTeamCoach(original);
                 dModal.onOpen();
               },
             }}
@@ -159,7 +127,7 @@ const TeamCoachesTable: React.FC = () => {
                     size: '22px',
                     color: 'var(--grey-alpha-600)',
                     onClick: async () => {
-                      setTeamPlayer(original);
+                      setTeamCoach(original);
                       cuModal.onOpen();
                     },
                   }}
@@ -171,7 +139,7 @@ const TeamCoachesTable: React.FC = () => {
                     size: '22px',
                     color: 'var(--red-color)',
                     onClick: () => {
-                      setTeamPlayer(original);
+                      setTeamCoach(original);
                       deleteModal.onOpen();
                     },
                   }}
@@ -187,44 +155,44 @@ const TeamCoachesTable: React.FC = () => {
   return (
     <Container>
       <LayoutContainer {...{ className: 'sl-layout-container' }}>
-        {teamPlayers && teamPlayers.length > 0 ? <CommonTable {...{ columns, data: teamPlayers }} /> : <EmptyState {...{ title: 'Uuups.' }} />}
+        {teamCoaches && teamCoaches.length > 0 ? <CommonTable {...{ columns, data: teamCoaches }} /> : <EmptyState {...{ title: 'Uuups.' }} />}
       </LayoutContainer>
       <DeleteModal
         {...{
           isOpen: deleteModal.isOpen,
           onClose: deleteModal.onClose,
-          title: `Sterge utilizator - ${teamPlayer?.name} ${teamPlayer?.surName}`,
-          description: `Este sigur ca vrei sa stergi jucatorul ${teamPlayer?.name}? Toate datele asociate jucatorului vor fi sterse definitiv.`,
+          title: `Sterge antrenor - ${teamCoach?.name} ${teamCoach?.surName}`,
+          description: `Este sigur ca vrei sa stergi antrenorul ${teamCoach?.name}? Toate datele asociate antrenorului vor fi sterse definitiv.`,
           isLoading,
           onDeleteHandler,
-          entityId: teamPlayer?.id!,
+          entityId: teamCoach?.id!,
         }}
       />
-      <TeamPlayerCUModal
+      <TeamCoachCUModal
         {...{
           isOpen: cuModal.isOpen,
           onClose: cuModal.onClose,
-          title: `Editeaza jucator - ${teamPlayer?.name} ${teamPlayer?.surName}`,
+          title: `Editeaza antrenor - ${teamCoach?.name} ${teamCoach?.surName}`,
           onSubmitHandler,
           isLoading,
-          initialValues: { ...teamPlayer!, birthday: teamPlayer?.birthday! ? new Date(teamPlayer?.birthday!)?.toISOString().slice(0, 10) : teamPlayer?.birthday! } as TTeamPlayer,
+          initialValues: { ...teamCoach! } as TTeamCoach,
         }}
       />
-      <TeamPlayerDModal
+      <TeamCommonDModal
         {...{
           isOpen: dModal.isOpen,
           onClose: dModal.onClose,
-          title: `Biografie - ${teamPlayer?.name} ${teamPlayer?.surName}`,
-          description: teamPlayer?.description!,
+          title: `Biografie - ${teamCoach?.name} ${teamCoach?.surName}`,
+          description: teamCoach?.description!,
         }}
       />
       <ImageModal
         {...{
           isOpen: iModal.isOpen,
           onClose: iModal.onClose,
-          title: `Vizualiare imagine profil - ${teamPlayer?.name} ${teamPlayer?.surName}`,
-          image: teamPlayer?.image!,
-          createdAt: teamPlayer?.createdAt!,
+          title: `Vizualiare imagine profil - ${teamCoach?.name} ${teamCoach?.surName}`,
+          image: teamCoach?.image!,
+          createdAt: '',
         }}
       />
     </Container>

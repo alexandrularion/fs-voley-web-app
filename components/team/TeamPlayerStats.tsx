@@ -40,7 +40,7 @@ const TeamPlayerStats: React.FC<ITeamPlayerStats> = ({ data: { name, surName, po
       {playerStats?.map(({ title, description, key }) => (
         <Flex key={key} {...{ flexDirection: 'column', gap: 'var(--gap-sm)' }}>
           <Text {...{ color: 'var(--black-color)', fontSize: 'var(--text-md)' }}>{title}</Text>
-          <Heading {...{ color: 'var(--blue-600)', fontSize: 'var(--heading-xs)' }}>{description}</Heading>
+          <Heading {...{ color: 'var(--blue-600)', fontSize: 'var(--text-lg)', textTransform: 'uppercase' }}>{description}</Heading>
         </Flex>
       ))}
     </Container>
@@ -52,5 +52,5 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  gap: var(--gap-xl);
+  gap: var(--gap-md);
 `;

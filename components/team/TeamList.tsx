@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react';
+import { Box, Link } from '@chakra-ui/react';
 import { nanoid } from 'nanoid';
 import { useMemo } from 'react';
 import styled from 'styled-components';
@@ -29,9 +29,15 @@ const TeamList: React.FC<ITeamList> = ({ isUsedInCoachPage = false }) => {
               gap: 'var(--gap-md)',
             }}
           >
-            {data?.map(({ key, ...obj }) => (
-              <TeamCard key={key} {...obj} />
-            ))}
+            {data?.map(({ key, id, ...obj }) =>
+              isUsedInCoachPage ? (
+                <TeamCard key={key} {...obj} />
+              ) : (
+                <Link {...{ href: `/team/${id}` }}>
+                  <TeamCard key={key} {...obj} />
+                </Link>
+              )
+            )}
           </Box>
         ) : (
           <EmptyState />

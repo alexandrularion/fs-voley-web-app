@@ -2,7 +2,7 @@ import { GetServerSidePropsContext, NextPage } from 'next';
 import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import Layout from '../../components/shared/Layout';
-import { ICoachesPage, TSearchTeam, TTeamCoach } from '../../components/team/Interfaces';
+import { ICoachesPage, TBETeamCoach, TSearchTeam, TTeamCoach } from '../../components/team/Interfaces';
 import TeamHeader from '../../components/team/TeamHeader';
 import TeamList from '../../components/team/TeamList';
 import { useTab } from '../../context/ContextTab';
@@ -43,7 +43,16 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     return {
       props: {
         session,
-        data,
+        data: data?.map(
+          ({ id, image, first_name, last_name, description }: TBETeamCoach) =>
+            ({
+              id,
+              image,
+              name: first_name,
+              surName: last_name,
+              description,
+            } as TTeamCoach)
+        ),
       },
     };
   } catch (e) {

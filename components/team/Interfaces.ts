@@ -41,7 +41,15 @@ export type TTeamCoach = {
   image: string;
   name: string;
   surName: string;
-  position: string;
+  description: string;
+};
+
+export type TBETeamCoach = {
+  id?: number;
+  image: string;
+  first_name: string;
+  last_name: string;
+  description: string;
 };
 
 export type TTeamCategory = {
@@ -81,7 +89,7 @@ export interface ITeamCategoriesPage {
 export interface ICoachesPage {
   data: TTeamCoach[];
 }
-export interface ITeamPlayerDModal extends IModal {
+export interface ITeamCommonDModal extends IModal {
   description: string;
 }
 

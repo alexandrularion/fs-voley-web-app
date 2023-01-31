@@ -1,7 +1,7 @@
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text } from '@chakra-ui/react';
-import { ITeamPlayerDModal } from './Interfaces';
+import { ITeamCommonDModal } from './Interfaces';
 
-const TeamPlayerDModal: React.FC<ITeamPlayerDModal> = ({ isOpen, onClose, title, description }) => {
+const TeamCommonDModal: React.FC<ITeamCommonDModal> = ({ isOpen, onClose, title, description }) => {
   return (
     <Modal {...{ isOpen, onClose, blockScrollOnMount: true, isCentered: true, size: '2xl' }}>
       <ModalOverlay />
@@ -17,4 +17,4 @@ const TeamPlayerDModal: React.FC<ITeamPlayerDModal> = ({ isOpen, onClose, title,
     </Modal>
   );
 };
-export default TeamPlayerDModal;
+export default TeamCommonDModal;

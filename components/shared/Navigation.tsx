@@ -23,7 +23,7 @@ const Navigation = () => {
   return (
     <Container {...{ id: 'nav' }}>
       <div {...{ className: 'n-container' }}>
-        <Flex {...{ alignItems: 'center', gap: 'var(--gap-xs)' }}>
+        <Flex {...{ alignItems: 'center', gap: 'var(--gap-lg)' }}>
           <Image src={Logo} alt={'C.S.M Suceava'} />
           <Heading {...{ fontSize: 'var(--heading-xs)', color: 'var(--blue-600)' }}>{'C.S.M Suceava'}</Heading>
         </Flex>
@@ -304,16 +304,14 @@ const Container = styled.section`
     }
 
     img {
-      width: 90px;
-      height: 90px;
+      width: 60px;
+      height: max-content;
 
       @media ${device.tablet} {
-        width: 70px;
-        height: 70px;
+        width: 50px;
       }
       @media ${device.mobile} {
-        width: 55px;
-        height: 55px;
+        width: 45px;
       }
     }
 

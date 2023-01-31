@@ -31,7 +31,7 @@ const PlayerProfilePage: NextPage<IPlayerProfilePage> = ({ data: { name, surName
           <TeamPlayerStats {...{ data: { ...rest, position, nationality, birthday, height, name, surName, image, description, shirtNumber } }} />
           <Flex {...{ flexDirection: 'column', gap: 'var(--gap-sm)' }}>
             <Text {...{ fontSize: 'var(--text-md)', color: 'var(--black-color)' }}>{'Biografie'}</Text>
-            <Heading {...{ fontSize: 'var(--heading-xs)', color: 'var(--blue-600)' }}>{description}</Heading>
+            <Heading {...{ fontSize: 'var(--text-lg)', color: 'var(--blue-600)' }}>{description}</Heading>
           </Flex>
           {/* timeline */}
         </LayoutContainer>
@@ -61,12 +61,12 @@ const Container = styled.div<{ bgSrc: string }>`
     padding: 80px 100px;
     flex-direction: column;
     gap: var(--gap-lg);
-    border-left: 20px solid var(--blue-400);
-    border-top: 20px solid var(--blue-600);
+    border-left: 15px solid var(--blue-400);
+    border-top: 15px solid var(--blue-600);
   }
   .tm-img-container {
     position: relative;
-    background: linear-gradient(1.57deg, rgba(6, 4, 183, 0.7) 1.32%, rgba(56, 54, 218, 0.7) 57.87%, rgba(108, 106, 255, 0.7) 96.57%), url(${({ bgSrc }) => bgSrc});
+    background: linear-gradient(1.57deg, rgba(6, 4, 183, 0.8) 1.32%, rgba(56, 54, 218, 0.8) 57.87%, rgba(108, 106, 255, 0.8) 96.57%), url(${({ bgSrc }) => bgSrc});
     background-size: cover;
 
     img {
@@ -82,7 +82,7 @@ const Container = styled.div<{ bgSrc: string }>`
 `;
 export const getStaticPaths = async () => {
   return {
-    paths: [{ params: { id: '1' } }, { params: { id: '2' } }, { params: { id: '3' } }, { params: { id: '3' } }, { params: { id: '4' } }],
+    paths: [{ params: { id: '1' } }, { params: { id: '2' } }, { params: { id: '3' } }, { params: { id: '3' } }, { params: { id: '4' } }, { params: { id: '5' } }, { params: { id: '6' } }],
     fallback: false,
   };
 };
