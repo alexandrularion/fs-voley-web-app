@@ -188,14 +188,21 @@ model Match {
     @@map("matchs")
 }
 
-//match-ul va avea urmatoarele prop:
-//- data (care include ziua si ora)
-//- locatia
-//- link pentru vizualizare meci live (liveURL)
-//- editia (editionId)
-//- campionat-ul (championshipId)
-//- cluburi  ( cele 2 cluburi implicate la meci)
+model Rank {
+    id                         Int               @id @default(autoincrement())
+    position                   Int
+    image                      String?        @db.LongText
+    points                     Int
+    played                     Int
+    wins                       Int
+    losings                    Int
+    winnedSets                 Int
+    losedSets                  Int
+    winnedPoints               Int
+    losedPoints                Int
 
+    @@map("ranks")
+}
 
 // o entittate editie, cand adaugi un jucator trebuei sa poti sa il atribui la o anumita editie.
 //editie: id , titlu (2023-20224).
