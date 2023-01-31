@@ -184,6 +184,8 @@ model Match {
     clubFirst                  Club              @relation(fields: [club_firstId], references: [id], name: "first_opponent")
     clubSecond                 Club              @relation(fields: [club_secondId], references: [id], name: "second_opponent")
     createdAt                  DateTime          @default(now())
+    score_first              Int?
+    score_second              Int?
 
     @@map("matchs")
 }
