@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       try {
         const club = await prisma.club.findFirst({
           where: { id: Number(id) },
-          include: { category: true },
+          include: { championship: true },
         });
         return res.status(200).json(club);
       } catch (e) {
