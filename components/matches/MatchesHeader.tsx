@@ -5,12 +5,17 @@ import { nanoid } from 'nanoid';
 import { LayoutContainer } from '../shared/Layout';
 import Tabs from '../shared/Tabs';
 import { ITab } from '../shared/Interfaces';
-import { Box, Flex, Heading, Select } from '@chakra-ui/react';
+import { Box, Flex, Heading, Select, Text } from '@chakra-ui/react';
 import { IMatchesHeader } from './Interfaces';
+import { getRoleNameByRoleId } from '../../utils';
+import { USER_ROLE } from '../../constants/Enums';
+import { useSession } from 'next-auth/react';
 
-const MatchesHeader: React.FC<IMatchesHeader> = ({ setSearch, areFiltrablesVisible = true }) => {
+const MatchesHeader: React.FC<IMatchesHeader> = ({ setSearch, areFiltrablesVisible = true, isUsedInAdminPage = false }) => {
   const [championship, setChampionship] = useState<string>();
   const [edition, setEdition] = useState<string>();
+  const { data } = useSession();
+
   const tabs: ITab[] = useMemo(
     () =>
       [
@@ -61,14 +66,19 @@ const MatchesHeader: React.FC<IMatchesHeader> = ({ setSearch, areFiltrablesVisib
   );
 
   useEffect(() => {
-    edition && setSearch((prevState) => ({ ...prevState, edition }));
-    championship && setSearch((prevState) => ({ ...prevState, championship }));
+    edition && setSearch && setSearch((prevState) => ({ ...prevState, edition }));
+    championship && setSearch && setSearch((prevState) => ({ ...prevState, championship }));
     /* eslint-disable-next-line */
   }, [edition, championship]);
 
   return (
     <Container {...{ src: Background.src }}>
       <LayoutContainer {...{ className: 'sh-layout-container' }}>
+        {isUsedInAdminPage && data?.role === USER_ROLE.ADMIN ? (
+          <Text {...{ color: 'var(--white-color)', fontSize: 'var(--text-sm)' }}>{getRoleNameByRoleId(data?.role)}</Text>
+        ) : (
+          <Text {...{ color: 'var(--white-color)', fontSize: 'var(--text-sm)' }}>{'C.S.M Suceava'}</Text>
+        )}
         <Heading {...{ color: 'var(--grey-alpha-50)', fontSize: 'var(--heading-md)' }}>{'Calendar Meciuri'}</Heading>
         <Tabs {...{ tabs }} />
         {areFiltrablesVisible && (

@@ -68,7 +68,11 @@ const CommonTable: React.FC<ICommonTable> = ({ columns, data, filter }) => {
               );
             })
           ) : (
-            <Text {...{ padding: '20px', alignItems: 'center', justifyContent: 'center', width: '100%' }}>{'Nu exista nici o inregistrare.'}</Text>
+            <Tr>
+              <Text as="td" {...{ padding: '20px', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+                {'Nu exista nici o inregistrare.'}
+              </Text>
+            </Tr>
           )}
         </Tbody>
       </Table>

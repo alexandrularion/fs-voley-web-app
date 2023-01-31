@@ -5,9 +5,12 @@ import { IMatchesCard, TSearchMatches } from '../../components/matches/Interface
 import MatchesHeader from '../../components/matches/MatchesHeader';
 import MatchesList from '../../components/matches/MatchesList';
 import Layout from '../../components/shared/Layout';
+import { useTab } from '../../context/ContextTab';
 
 const FutureMatchesPage = () => {
   const [search, setSearch] = useState<TSearchMatches>({});
+  const { setTab } = useTab();
+
   const matches: IMatchesCard[] = [
     {
       date: new Date('1/19/2023 7:23 PM').toString(),
@@ -50,6 +53,10 @@ const FutureMatchesPage = () => {
   useEffect(() => {
     console.log(search);
   }, [search]);
+
+  useEffect(() => {
+    setTab({ tabId: 0, title: 'Meciuri viitoare', href: '/matches', value: 0 });
+  }, [setTab]);
 
   return (
     <Layout {...{ bgColor: 'var(--blue-500)' }}>
