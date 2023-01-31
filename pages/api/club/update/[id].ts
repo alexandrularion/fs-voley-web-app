@@ -16,13 +16,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(401).json({ message: 'Unauthorized' });
       }
       const { id } = req.query;
-      const { title, image, categoryId } = req.body;
+      const { title, image, championshipId } = req.body;
       await prisma.club.update({
         where: { id: Number(id) },
         data: {
           title: title,
           image: image,
-          categoryId: categoryId,
+          championshipId: championshipId,
         },
       });
       return res.status(200).json({ message: 'The club was updated!' });

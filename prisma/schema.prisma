@@ -113,7 +113,6 @@ model Category {
     createdAt                  DateTime          @default(now())
     updatedAt                  DateTime          @updatedAt
     players Player[]
-    clubs Club[]
     @@map("categories")
 }
 
@@ -121,8 +120,8 @@ model Club {
     id                         Int               @id @default(autoincrement())
     title                      String
     image                      String?           @db.LongText
-    category                   Category          @relation(fields: [categoryId], references: [id])
-    categoryId                 Int
+    championship               Championship          @relation(fields: [championshipId], references: [id])
+    championshipId             Int
     firstMatches               Match[]            @relation(name: "first_opponent")
     secondMatches              Match[]            @relation(name: "second_opponent")
     createdAt                  DateTime          @default(now())
@@ -136,6 +135,7 @@ model Championship {
     createdAt                  DateTime          @default(now())
     updatedAt                  DateTime          @updatedAt
     matches                    Match[]
+    clubs Club[]
 
     @@map("championships")
 }
@@ -184,6 +184,8 @@ model Match {
     clubFirst                  Club              @relation(fields: [club_firstId], references: [id], name: "first_opponent")
     clubSecond                 Club              @relation(fields: [club_secondId], references: [id], name: "second_opponent")
     createdAt                  DateTime          @default(now())
+    score_first                Int?
+    score_second               Int?
 
     @@map("matchs")
 }
