@@ -2,7 +2,7 @@ import { Box, Flex, Heading, Text } from '@chakra-ui/react';
 import { NextPage, GetStaticProps, GetStaticPropsContext } from 'next';
 import Layout, { LayoutContainer } from '../../components/shared/Layout';
 import { IPlayerProfilePage, TTeamPlayer } from '../../components/team/Interfaces';
-import { getPlayer } from '../../services/Team.service';
+import { getAllPlayersIds, getPlayer } from '../../services/Team.service';
 import Background from '../../assets/Background.png';
 import styled from 'styled-components';
 import Image from 'next/dist/client/image';
@@ -81,10 +81,18 @@ const Container = styled.div<{ bgSrc: string }>`
   }
 `;
 export const getStaticPaths = async () => {
-  return {
-    paths: [{ params: { id: '1' } }, { params: { id: '2' } }, { params: { id: '3' } }, { params: { id: '3' } }, { params: { id: '4' } }, { params: { id: '5' } }, { params: { id: '6' } }],
-    fallback: false,
-  };
+  try {
+    const { data } = await getAllPlayersIds();
+    return {
+      paths: data.map(({ id }: { id: number }) => ({ params: { id: String(id) } })),
+      fallback: false,
+    };
+  } catch (e) {
+    return {
+      paths: [],
+      fallback: false,
+    };
+  }
 };
 
 export const getStaticProps: GetStaticProps = async (ctx: GetStaticPropsContext) => {

@@ -12,6 +12,10 @@ const getPlayer = (playerId: number) => {
   return axiosConfigJSON.get(`/player/get/${playerId}`);
 };
 
+const getAllPlayersIds = () => {
+  return axiosConfigJSON.get(`/player/get/ids`);
+};
+
 const deletePlayer = (playeId: number) => {
   return axiosConfigJSON.delete(`/player/delete/${playeId}`);
 };
@@ -75,6 +79,7 @@ const updateCoach = (coachId: number, coach: TBETeamCoach) => {
 export {
   getAllPlayers,
   getPlayer,
+  getAllPlayersIds,
   deletePlayer,
   createPlayer,
   updatePlayer,
