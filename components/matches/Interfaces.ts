@@ -3,8 +3,9 @@ export type TSearchMatches = {
   edition?: string;
 };
 export interface IMatchesHeader {
-  setSearch: React.Dispatch<React.SetStateAction<TSearchMatches>>;
+  setSearch?: React.Dispatch<React.SetStateAction<TSearchMatches>>;
   areFiltrablesVisible?: boolean;
+  isUsedInAdminPage?: boolean;
 }
 
 export interface IMatchesCard extends TSearchMatches {
@@ -20,3 +21,16 @@ export interface IMatchesCard extends TSearchMatches {
 export interface IMatchesList {
   matches: IMatchesCard[];
 }
+
+export type TMatchesRanking = {
+  position: number;
+  image: string;
+  points: number;
+  played: number;
+  wins: number;
+  losings: number;
+  winnedSets: number;
+  losedSets: number;
+  winnedPoints: number;
+  losedPoints: number;
+};

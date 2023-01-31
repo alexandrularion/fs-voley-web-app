@@ -33,8 +33,8 @@ const TeamList: React.FC<ITeamList> = ({ isUsedInCoachPage = false }) => {
               isUsedInCoachPage ? (
                 <TeamCard key={key} {...obj} />
               ) : (
-                <Link {...{ href: `/team/${id}` }}>
-                  <TeamCard key={key} {...obj} />
+                <Link key={key} {...{ href: `/team/${id}` }}>
+                  <TeamCard {...obj} />
                 </Link>
               )
             )}
