@@ -65,7 +65,7 @@ const RankingMatchesPage = () => {
         Cell: ({ row: { original } }: CellValue) => original.position,
       },
       {
-        Header: 'Echipa',
+        Header: 'Echipă',
         accessor: 'image',
         Cell: ({ row: { original } }: CellValue) => (
           <Flex {...{ w: '80px' }}>

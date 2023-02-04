@@ -11,7 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
       const { id } = req.query;
       const { dateTime, link, editionId, championshipId, club_firstId, club_secondId, score_first, score_second, location } = req.body;
-      await prisma.match.update({
+      const data = await prisma.match.update({
         where: { id: Number(id) },
         data: {
           dateTime: dateTime,
@@ -24,8 +24,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           score_second: score_second,
           location: location,
         },
+        include: {
+          clubFirst: true,
+          clubSecond: true,
+        },
       });
-      return res.status(200).json({ message: 'The match was updated!' });
+      return res.status(200).json(data);
     } else {
       return res.status(405).json({ message: 'Method Not Allowed' });
     }

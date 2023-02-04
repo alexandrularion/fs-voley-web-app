@@ -4,14 +4,14 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import { IMatchesCard } from './Interfaces';
 
-const MatchesCard: React.FC<IMatchesCard> = ({ match: { dateTime, championship, clubFirst, clubSecond, link } }) => {
+const MatchesCard: React.FC<IMatchesCard> = ({ match: { dateTime, championship, clubFirst, clubSecond, link, location, edition, scoreClubOne, scoreClubTwo } }) => {
   return (
     <Container>
       <Box {...{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 'var(--gap-lg)' }}>
         <Heading {...{ color: 'var(--grey-alpha-500)', fontSize: 'var(--text-xs)', fontWeight: 'bold' }}>
           {new Date(dateTime).toLocaleDateString('ro-Ro', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).toUpperCase()}
         </Heading>
-        <Text {...{ color: 'var(--grey-alpha-500)', fontSize: 'var(--text-xs)' }}>{`${championship?.title} x ${'Suceava'}`}</Text>
+        <Text {...{ color: 'var(--grey-alpha-500)', fontSize: 'var(--text-xs)' }}>{`${championship?.title} x ${location} x Editia ${edition?.title}`}</Text>
       </Box>
       <Flex {...{ gap: 'var(--gap-md)', padding: '0 var(--gap-xl)' }}>
         <Flex {...{ gap: 'var(--gap-md)', alignItems: 'center' }}>
@@ -19,7 +19,9 @@ const MatchesCard: React.FC<IMatchesCard> = ({ match: { dateTime, championship, 
           <Image {...{ src: clubFirst?.image!, alt: `${clubFirst?.title}`, width: 90, height: 90 }} />
         </Flex>
         <Flex {...{ border: '1px solid var(--grey-alpha-500)', padding: '0 var(--gap-sm)', alignItems: 'center', justifyContent: 'center' }}>
-          <Heading {...{ as: 'h2', color: 'var(--blue-500)' }}>{new Date(dateTime).toLocaleTimeString('ro-RO', { hour: '2-digit', minute: '2-digit' })}</Heading>
+          <Heading {...{ as: 'h2', color: 'var(--blue-500)' }}>
+            {scoreClubOne === null || scoreClubTwo === null ? new Date(dateTime).toLocaleTimeString('ro-RO', { hour: '2-digit', minute: '2-digit' }) : `${scoreClubOne} - ${scoreClubTwo}`}
+          </Heading>
         </Flex>
         <Flex {...{ gap: 'var(--gap-md)', alignItems: 'center' }}>
           <Image {...{ src: clubSecond?.image!, alt: `${clubSecond?.title}`, width: 90, height: 90 }} />

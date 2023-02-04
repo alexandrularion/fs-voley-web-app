@@ -7,12 +7,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (req.method == 'GET') {
       const matches = await prisma.match.findMany({
         where: {
-          dateTime: {
-            gt: new Date(),
-          },
+          score_first: null,
+          score_second: null,
         },
         include: {
           championship: true,
+          edition: true,
           clubFirst: true,
           clubSecond: true,
         },

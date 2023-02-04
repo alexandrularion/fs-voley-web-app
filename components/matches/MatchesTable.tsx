@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import { CellValue } from 'react-table';
 import CommonTable from '../shared/Table';
 import { Box, Flex, Text, useDisclosure } from '@chakra-ui/react';
-import { PenIcon, TrashIcon } from '../../styles/Icons';
+import { CopyIcon, PenIcon, TrashIcon, CheckedFillIcon } from '../../styles/Icons';
 import DeleteModal from '../shared/DeleteModal';
 import { FormApi } from 'final-form';
 import { TBEMatch, TMatch } from './Interfaces';
@@ -14,7 +14,7 @@ import { toast } from 'react-toastify';
 import EmptyState from '../shared/EmptyState';
 import MatchesMatchCUModal from './MatchesMatchCUModal';
 import Image from 'next/image';
-import { getCurrentDateTimeLocal } from '../../utils';
+import { copyTextToClipboard, getCurrentDateTimeLocal } from '../../utils';
 
 const MatchesTable: React.FC = () => {
   const { matches, setMatches } = useMatches();
@@ -22,23 +22,41 @@ const MatchesTable: React.FC = () => {
   const cuModal = useDisclosure();
   const [match, setMatch] = useState<TMatch>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isCopied, setIsCopied] = useState<boolean>(false);
 
   const onSubmitHandler = async (values: object, form: FormApi) => {
-    const { dateTime, link, editionId, championshipId, clubOneId, clubTwoId } = values as TMatch;
+    const { dateTime, link, editionId, championshipId, clubOneId, clubTwoId, location, scoreClubOne, scoreClubTwo } = values as TMatch;
     setIsLoading(true);
     try {
-      await updateMatch(match?.id!, {
+      const { data } = await updateMatch(match?.id!, {
         dateTime: new Date(dateTime).toISOString(),
         link,
         editionId: Number(editionId),
         championshipId: Number(championshipId),
-        club_firstId: Number(1),
+        club_firstId: Number(clubOneId),
         club_secondId: Number(clubTwoId),
+        location,
+        score_first: Number(scoreClubOne),
+        score_second: Number(scoreClubTwo),
       } as TBEMatch);
       setMatches(
         matches.map(({ id, ...obj }) =>
           id === match?.id
-            ? { id, dateTime, link, editionId, championshipId, clubOneId, clubTwoId, createdAt: new Date().toString(), clubFirst: match.clubFirst, clubSecond: match.clubSecond }
+            ? {
+                id,
+                dateTime,
+                link,
+                editionId,
+                championshipId,
+                clubOneId,
+                clubTwoId,
+                createdAt: new Date().toString(),
+                clubFirst: data.clubFirst,
+                clubSecond: data.clubSecond,
+                location,
+                scoreClubOne,
+                scoreClubTwo,
+              }
             : { ...obj, id }
         )
       );
@@ -72,24 +90,34 @@ const MatchesTable: React.FC = () => {
         Cell: ({ row: { original } }: CellValue) => <> {original.id ? `#${original.id}` : ''}</>,
       },
       {
-        Header: 'C.S.M Suceava',
+        Header: 'Echipă Acasă',
         accessor: 'clubFirst',
         Cell: ({ row: { original } }: CellValue) => (
-          <Flex {...{ gap: 'var(--gap-md)', alignItems: 'center' }}>
-            <Image {...{ src: original.clubFirst.image, alt: 'C.S.M Suceava', width: 80, height: 80 }} />
+          <Flex {...{ gap: 'var(--gap-sm)', alignItems: 'center', flexDirection: 'column' }}>
+            <Image {...{ src: original.clubFirst.image, alt: 'C.S.M Suceava', width: 60, height: 60 }} />
             <Text>{original.clubFirst.title}</Text>
           </Flex>
         ),
       },
       {
-        Header: 'Adversar',
+        Header: 'Echipă Deplasare',
         accessor: 'clubSecond',
         Cell: ({ row: { original } }: CellValue) => (
-          <Flex {...{ gap: 'var(--gap-md)', alignItems: 'center' }}>
-            <Image {...{ src: original.clubSecond.image, alt: 'C.S.M Suceava', width: 80, height: 80 }} />
+          <Flex {...{ gap: 'var(--gap-sm)', alignItems: 'center', flexDirection: 'column' }}>
+            <Image {...{ src: original.clubSecond.image, alt: 'C.S.M Suceava', width: 60, height: 60 }} />
             <Text>{original.clubSecond.title}</Text>
           </Flex>
         ),
+      },
+      {
+        Header: 'Scor Final',
+        accessor: 'score',
+        Cell: ({ row: { original } }: CellValue) =>
+          original.scoreClubOne === null || original.scoreClubTwo === null ? (
+            <Text>{'Nesetat'}</Text>
+          ) : (
+            <Text {...{ w: '80%', whiteSpace: 'pre-wrap' }}>{`${original.scoreClubOne} - ${original.scoreClubTwo}`}</Text>
+          ),
       },
       {
         Header: 'Data si Ora',
@@ -99,13 +127,38 @@ const MatchesTable: React.FC = () => {
       {
         Header: 'Link live',
         accessor: 'link',
-        Cell: ({ row: { original } }: CellValue) => original.link,
+        Cell: ({ row: { original } }: CellValue) => (
+          <Flex {...{ w: '100%', gap: 'var(--gap-sm)', alignItems: 'center' }}>
+            <Text {...{ wordBreak: 'break-all', overflowWrap: 'break-word', whiteSpace: 'pre-wrap', w: '100px' }}>{original.link.slice(0, 20) + '...'}</Text>
+            {isCopied ? (
+              <CheckedFillIcon {...{ size: '18px', color: 'var(--green-color)' }} />
+            ) : (
+              <CopyIcon
+                {...{
+                  size: '18px',
+                  color: 'var(--grey-alpha-500)',
+                  onClick: async () => {
+                    await copyTextToClipboard(original.link);
+                    setIsCopied(true);
+                    setTimeout(() => setIsCopied(false), 1500);
+                  },
+                }}
+              />
+            )}
+          </Flex>
+        ),
+      },
+      {
+        Header: 'Locatia',
+        accessor: 'location',
+        Cell: ({ row: { original } }: CellValue) => <Text {...{ wordBreak: 'break-all', overflowWrap: 'break-word', whiteSpace: 'pre-wrap', w: '100px' }}>{original.location}</Text>,
       },
       {
         Header: 'Creat la',
         accessor: 'createdAt',
-        Cell: ({ row: { original } }: CellValue) =>
-          new Date(original.createdAt).toLocaleDateString('ro-RO', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' }),
+        Cell: ({ row: { original } }: CellValue) => (
+          <Text {...{ wordBreak: 'break-all', overflowWrap: 'break-word' }}>{new Date(original.createdAt).toLocaleDateString('ro-RO', { day: 'numeric', month: 'short', year: 'numeric' })}</Text>
+        ),
       },
       {
         Header: 'Actiuni',
@@ -145,7 +198,7 @@ const MatchesTable: React.FC = () => {
           ),
       },
     ],
-    [deleteModal, cuModal]
+    [deleteModal, cuModal, isCopied]
   );
 
   return (

@@ -31,21 +31,21 @@ const Navigation = () => {
           {urls.slice(0, urls.length - 2).map(({ title, url, key }, index) => (
             <Link key={key} {...{ href: url }}>
               <Flex {...{ alignItems: 'center', gap: 'var(--gap-xs)', className: 'n-link-container' }}>
-                {(pathname.localeCompare(url) === 0 || (index !== 0 && pathname.localeCompare(url) === 0)) && (
+                {((pathname.localeCompare(url) === 0 && index === 0) || (index !== 0 && pathname.includes(url))) && (
                   <Box
                     {...{
                       w: '10px',
                       h: '10px',
                       borderRadius: '50px',
-                      bg: pathname.localeCompare(url) === 0 || (index !== 0 && pathname.localeCompare(url) === 0) ? 'var(--blue-400)' : 'var(--blue-600)',
+                      bg: (pathname.localeCompare(url) === 0 && index === 0) || (index !== 0 && pathname.includes(url)) ? 'var(--blue-400)' : 'var(--blue-600)',
                       transition: '0.2s all ease-in-out',
                     }}
                   />
                 )}
                 <Text
                   {...{
-                    color: pathname.localeCompare(url) === 0 || (index !== 0 && pathname.localeCompare(url) === 0) ? 'var(--blue-400)' : 'var(--blue-600)',
-                    fontWeight: pathname.localeCompare(url) === 0 || (index !== 0 && pathname.localeCompare(url) === 0) ? 'bold' : 'normal',
+                    color: (pathname.localeCompare(url) === 0 && index === 0) || (index !== 0 && pathname.includes(url)) ? 'var(--blue-400)' : 'var(--blue-600)',
+                    fontWeight: (pathname.localeCompare(url) === 0 && index === 0) || (index !== 0 && pathname.includes(url)) ? 'bold' : 'normal',
                     fontSize: 'var(--text-l)',
                     transition: '0.2s all ease-in-out',
                     textTransform: 'uppercase',

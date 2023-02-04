@@ -17,7 +17,14 @@ const FutureMatchesPage: NextPage<IFutureMatchesPage> = ({ data }) => {
 
   useEffect(() => {
     if (search?.championship || search?.edition) {
-      //to-do
+      setMatches(
+        data.filter(
+          ({ championshipId, editionId }) =>
+            (search?.championship && Number(search?.championship) === championshipId && !search?.edition) ||
+            (search?.edition && Number(search?.edition) === editionId && !search?.championship) ||
+            (search?.edition && search?.championship && Number(search?.edition) === editionId && Number(search?.championship) === championshipId)
+        )
+      );
     } else {
       setMatches(data);
     }
@@ -29,7 +36,7 @@ const FutureMatchesPage: NextPage<IFutureMatchesPage> = ({ data }) => {
 
   return (
     <Layout {...{ bgColor: 'var(--blue-500)' }}>
-      <MatchesHeader {...{ setSearch }} />
+      <MatchesHeader {...{ setSearch, isUsedInMatchPage: true }} />
       <MatchesList />
     </Layout>
   );
@@ -43,7 +50,10 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     return {
       props: {
         session,
-        data: data.map(({ club_firstId, club_secondId, ...rest }: TBEMatch) => ({ ...rest, clubOneId: club_firstId, clubTwoId: club_secondId } as TMatch)),
+        data: data.map(
+          ({ club_firstId, club_secondId, score_first, score_second, ...rest }: TBEMatch) =>
+            ({ ...rest, clubOneId: club_firstId, clubTwoId: club_secondId, scoreClubFirst: score_first, scoreClubTwo: score_second } as TMatch)
+        ),
       },
     };
   } catch (e) {

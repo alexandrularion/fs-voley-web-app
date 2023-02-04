@@ -23,6 +23,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           score_second: score_second,
           location: location,
         },
+        include: {
+          clubFirst: true,
+          clubSecond: true,
+        },
       });
 
       return res.status(200).json(match);
