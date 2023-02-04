@@ -92,7 +92,7 @@ const MatchesHeader: React.FC<IMatchesHeader> = ({
         const { championshipId } = values as TMatchClub;
         const { data } = await createClub({ ...values, championshipId: Number(championshipId) } as TMatchClub);
         const { id } = data as TMatchClub;
-        setClubs([...clubs, { ...values, createdAt: new Date().toString(), championshipId: Number(championshipId), id } as TMatchClub]);
+        setClubs([...clubs, { ...values, createdAt: new Date().toString(), championshipId: Number(championshipId), championship: data?.championship, id } as TMatchClub]);
         toast('Felicitari! Clubul a fost adaugata cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
         onClose();
         form.reset();

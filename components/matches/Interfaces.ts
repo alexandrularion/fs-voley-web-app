@@ -67,6 +67,7 @@ export type TMatchClub = {
   title: string;
   image: string;
   championshipId: number;
+  championship?: TMatchChampionship;
   createdAt?: string;
   key?: string;
 };

@@ -32,7 +32,7 @@ const MatchesMatchCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isL
               {...{
                 initialValues,
                 onSubmit: (values: any, form: FormApi) => onSubmitHandler(values, form),
-                render: ({ handleSubmit }) => (
+                render: ({ handleSubmit, values }) => (
                   <Flex {...{ as: 'form', onSubmit: handleSubmit, id: 'common-cu-modal', display: 'flex', flexDirection: 'column', gap: 'var(--gap-md)' }}>
                     <Field
                       {...{
@@ -66,7 +66,7 @@ const MatchesMatchCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isL
                               <Input
                                 {...{
                                   ...input,
-                                  type: 'date',
+                                  type: 'datetime-local',
                                   isInvalid: touched && error,
                                   placeholder: 'Introduceti data si ora ',
                                 }}
@@ -83,42 +83,7 @@ const MatchesMatchCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isL
                           render: ({ input, meta: { touched, error } }) => (
                             <Tooltip {...{ label: touched && error ? error : '' }}>
                               <InputGroup>
-                                <InputLeftAddon {...{ children: 'Primul Club', w: '140px' }} />
-                                <Select
-                                  {...{
-                                    isInvalid: touched && error,
-                                    placeholder: 'Alegeti club',
-                                    ...input,
-                                    value: '1',
-                                    defaultValue: '1',
-                                    borderTopLeftRadius: 0,
-                                    borderBottomLeftRadius: 0,
-                                    disabled: true,
-                                    _placeholder: {
-                                      color: 'var(--grey-alpha-3)',
-                                    },
-                                  }}
-                                >
-                                  {clubOptions?.map(({ title, key, id }) => (
-                                    <option key={key} {...{ value: id }}>
-                                      {title}
-                                    </option>
-                                  ))}
-                                </Select>
-                              </InputGroup>
-                            </Tooltip>
-                          ),
-                        }}
-                      />
-                      <Text>{'VS'}</Text>
-                      <Field
-                        {...{
-                          name: 'clubTwoId',
-                          validate: (value: string) => CustomValidation(value, 'Al doilea club'),
-                          render: ({ input, meta: { touched, error } }) => (
-                            <Tooltip {...{ label: touched && error ? error : '' }}>
-                              <InputGroup>
-                                <InputLeftAddon {...{ children: 'Al Doilea Club', w: '140px' }} />
+                                <InputLeftAddon {...{ children: 'Acasa', w: '140px' }} />
                                 <Select
                                   {...{
                                     isInvalid: touched && error,
@@ -133,7 +98,42 @@ const MatchesMatchCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isL
                                 >
                                   {clubOptions?.map(
                                     ({ title, key, id }) =>
-                                      id !== 1 && (
+                                      id !== Number(values.clubTwoId) && (
+                                        <option key={key} {...{ value: id }}>
+                                          {title}
+                                        </option>
+                                      )
+                                  )}
+                                </Select>
+                              </InputGroup>
+                            </Tooltip>
+                          ),
+                        }}
+                      />
+                      <Text>{'VS'}</Text>
+                      <Field
+                        {...{
+                          name: 'clubTwoId',
+                          validate: (value: string) => CustomValidation(value, 'Deplasare'),
+                          render: ({ input, meta: { touched, error } }) => (
+                            <Tooltip {...{ label: touched && error ? error : '' }}>
+                              <InputGroup>
+                                <InputLeftAddon {...{ children: 'Deplasare', w: '140px' }} />
+                                <Select
+                                  {...{
+                                    isInvalid: touched && error,
+                                    placeholder: 'Alegeti club',
+                                    ...input,
+                                    borderTopLeftRadius: 0,
+                                    borderBottomLeftRadius: 0,
+                                    _placeholder: {
+                                      color: 'var(--grey-alpha-3)',
+                                    },
+                                  }}
+                                >
+                                  {clubOptions?.map(
+                                    ({ title, key, id }) =>
+                                      id !== Number(values.clubOneId) && (
                                         <option key={key} {...{ value: id }}>
                                           {title}
                                         </option>

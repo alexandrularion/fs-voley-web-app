@@ -50,7 +50,11 @@ const MatchesClubCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLo
                                   type: 'file',
                                   title: '',
                                   _after: {
-                                    content: initialValues?.title && !touched ? `"${values?.title?.toLowerCase()}.png"` : touched && !error ? '"Fisier adaugat ✓"' : '"Selecteaza imaginea de profile"',
+                                    content: initialValues?.title
+                                      ? `"${initialValues?.title?.toLowerCase()}.png"`
+                                      : touched && !error && initialValues?.image !== values?.image
+                                      ? '"Fisier adaugat ✓"'
+                                      : '"Selecteaza imaginea de profile"',
                                     width: '100%',
                                     height: '100%',
                                     top: '0',

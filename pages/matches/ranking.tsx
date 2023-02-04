@@ -22,24 +22,26 @@ const RankingMatchesPage = () => {
     try {
       const list: TMatchesRanking[] = [];
       const accessors = ['position', 'image', 'points', 'played', 'wins', 'losings', 'winnedSets', 'losedSets', 'winnedPoints', 'losedPoints'];
+      const res = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent('https://www.sportexclusiv.ro/clasament-volei-masculin')}`);
 
-      const res = await fetch('https://proxy.cors.sh/https://www.sportexclusiv.ro/clasament-volei-masculin');
       const htmlString = await res.text();
       const $ = cheerio.load(htmlString);
       const body = $('tr');
 
-      body.each((_: any, td: any) => {
+      [...body].forEach((td: any, index: number) => {
         let obj = {};
-        (td.children as any).forEach((elem: any, index: number) => {
-          if (elem.attribs.class.includes('has-logo')) {
-            obj = { ...obj, [accessors[index]]: elem.children[0].children[0].children[0].attribs.src };
+
+        (td.children as any).forEach((elem: any, key: number) => {
+          if (elem?.attribs?.class?.includes('has-logo')) {
+            obj = { ...obj, [accessors[key]]: elem.children[0].children[0]?.attribs?.src };
           } else {
-            obj = { ...obj, [accessors[index]]: elem.children[0].data };
+            obj = { ...obj, [accessors[key]]: elem.children[0].data };
           }
         });
-        list.push(obj as TMatchesRanking);
+        if (index !== 0) {
+          list.push(obj as TMatchesRanking);
+        }
       });
-      list.shift();
       setParsedData(list);
       setHasRanking(true);
     } catch (e) {

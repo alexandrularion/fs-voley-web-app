@@ -14,6 +14,7 @@ import { toast } from 'react-toastify';
 import EmptyState from '../shared/EmptyState';
 import MatchesMatchCUModal from './MatchesMatchCUModal';
 import Image from 'next/image';
+import { getCurrentDateTimeLocal } from '../../utils';
 
 const MatchesTable: React.FC = () => {
   const { matches, setMatches } = useMatches();
@@ -172,7 +173,7 @@ const MatchesTable: React.FC = () => {
           isLoading,
           initialValues: {
             ...match!,
-            dateTime: match?.dateTime! ? new Date(match?.dateTime!)?.toISOString().slice(0, 10) : match?.dateTime!,
+            dateTime: match?.dateTime! ? getCurrentDateTimeLocal(match?.dateTime!) : match?.dateTime!,
           },
         }}
       />

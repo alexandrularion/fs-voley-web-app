@@ -23,6 +23,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           image: image,
           championshipId: championshipId,
         },
+        include: {
+          championship: true,
+        },
       });
 
       return res.status(200).json(club);

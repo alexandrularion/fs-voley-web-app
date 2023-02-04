@@ -26,8 +26,8 @@ const MatchesClubsTable: React.FC = () => {
     const { title, image, championshipId } = values as TMatchClub;
     setIsLoading(true);
     try {
-      await updateClub(club?.id!, { id: club?.id!, title, image, championshipId } as TMatchClub);
-      setClubs(clubs.map(({ id, ...obj }) => (id === club?.id ? { id: club?.id!, title, image, championshipId, createdAt: new Date().toString() } : { ...obj, id })));
+      const { data } = await updateClub(club?.id!, { id: club?.id!, title, image, championshipId: Number(championshipId) } as TMatchClub);
+      setClubs(clubs.map(({ id, ...obj }) => (id === club?.id ? { id: club?.id!, title, image, championshipId, championship: data?.championship, createdAt: new Date().toString() } : { ...obj, id })));
       toast('Felicitari! Clubul a fost actualizat cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
       cuModal.onClose();
       form.reset();
@@ -55,7 +55,7 @@ const MatchesClubsTable: React.FC = () => {
       {
         Header: 'Id',
         accessor: 'id',
-        Cell: ({ row: { original } }: CellValue) => <> {original.id ? `#${original.id}` : ''}</>,
+        Cell: ({ row: { original } }: CellValue) => original.id,
       },
       {
         Header: 'Logo',
@@ -78,6 +78,11 @@ const MatchesClubsTable: React.FC = () => {
         Cell: ({ row: { original } }: CellValue) => original.title,
       },
       {
+        Header: 'Campionat',
+        accessor: 'championship',
+        Cell: ({ row: { original } }: CellValue) => original.championship.title,
+      },
+      {
         Header: 'Creat la',
         accessor: 'createdAt',
         Cell: ({ row: { original } }: CellValue) =>
@@ -86,39 +91,38 @@ const MatchesClubsTable: React.FC = () => {
       {
         Header: 'Actiuni',
         accessor: 'actions',
-        Cell: ({ row: { original } }: CellValue) =>
-          original?.id && (
-            <Flex {...{ gap: 'var(--gap-md)' }}>
-              <Box {...{ cursor: 'pointer ' }}>
-                <PenIcon
-                  {...{
-                    size: '22px',
-                    color: 'var(--grey-alpha-600)',
-                    onClick: async () => {
-                      setClub({
-                        ...original,
-                      });
-                      cuModal.onOpen();
-                    },
-                  }}
-                />
-              </Box>
-              <Box {...{ cursor: 'pointer ' }}>
-                <TrashIcon
-                  {...{
-                    size: '22px',
-                    color: 'var(--red-color)',
-                    onClick: () => {
-                      setClub({
-                        ...original,
-                      });
-                      deleteModal.onOpen();
-                    },
-                  }}
-                />
-              </Box>
-            </Flex>
-          ),
+        Cell: ({ row: { original } }: CellValue) => (
+          <Flex {...{ gap: 'var(--gap-md)' }}>
+            <Box {...{ cursor: 'pointer ' }}>
+              <PenIcon
+                {...{
+                  size: '22px',
+                  color: 'var(--grey-alpha-600)',
+                  onClick: async () => {
+                    setClub({
+                      ...original,
+                    });
+                    cuModal.onOpen();
+                  },
+                }}
+              />
+            </Box>
+            <Box {...{ cursor: 'pointer ' }}>
+              <TrashIcon
+                {...{
+                  size: '22px',
+                  color: 'var(--red-color)',
+                  onClick: () => {
+                    setClub({
+                      ...original,
+                    });
+                    deleteModal.onOpen();
+                  },
+                }}
+              />
+            </Box>
+          </Flex>
+        ),
       },
     ],
     [deleteModal, cuModal]

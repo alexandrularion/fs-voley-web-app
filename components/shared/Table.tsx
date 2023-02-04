@@ -10,7 +10,7 @@ const CommonTable: React.FC<ICommonTable> = ({ columns, data, filter }) => {
     getTableProps,
     getTableBodyProps,
     headerGroups,
-    rows,
+    page,
     prepareRow,
     canPreviousPage,
     canNextPage,
@@ -24,7 +24,7 @@ const CommonTable: React.FC<ICommonTable> = ({ columns, data, filter }) => {
     {
       columns,
       data: memoizedData,
-      initialState: { pageIndex: 0 },
+      initialState: { pageIndex: 0, pageSize: 5 },
     },
     useFilters,
     usePagination
@@ -52,8 +52,8 @@ const CommonTable: React.FC<ICommonTable> = ({ columns, data, filter }) => {
           ))}
         </Thead>
         <Tbody {...getTableBodyProps()}>
-          {rows?.length > 0 ? (
-            rows.map((row, index: number) => {
+          {page?.length > 0 ? (
+            page.map((row, index: number) => {
               prepareRow(row);
               return (
                 <Tr {...row.getRowProps()} key={`${index}_row`}>
@@ -99,7 +99,7 @@ const CommonTable: React.FC<ICommonTable> = ({ columns, data, filter }) => {
               w: '130px',
             }}
           >
-            {[10, 20, 30, 40, 50].map((pageSize) => (
+            {[5, 10, 20, 30, 40, 50].map((pageSize) => (
               <option key={pageSize} value={pageSize}>
                 Arata {pageSize}/pg
               </option>

@@ -169,3 +169,11 @@ export const getHumanDate = (date: Date) => {
   }
   return 'Chiar Acum';
 };
+
+export const getCurrentDateTimeLocal = (currentDate: string) => {
+  const t: Date = new Date(currentDate);
+  return `${t.getFullYear()}-${(t.getMonth() + 1).toString().padStart(2, '0')}-${t.getDate().toString().padStart(2, '0')}T${t.getHours().toString().padStart(2, '0')}:${t
+    .getMinutes()
+    .toString()
+    .padStart(2, '0')}`;
+};

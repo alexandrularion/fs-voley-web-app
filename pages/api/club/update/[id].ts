@@ -17,15 +17,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
       const { id } = req.query;
       const { title, image, championshipId } = req.body;
-      await prisma.club.update({
+      const data = await prisma.club.update({
         where: { id: Number(id) },
         data: {
           title: title,
           image: image,
           championshipId: championshipId,
         },
+        include: {
+          championship: true,
+        },
       });
-      return res.status(200).json({ message: 'The club was updated!' });
+      return res.status(200).json(data);
     } else {
       res.status(405).json({ message: 'Method Not Allowed' });
     }
