@@ -207,6 +207,15 @@ model Rank {
     @@map("ranks")
 }
 
+model Tag {
+    id                         Int               @id @default(autoincrement())
+    title                      String
+    createdAt                  DateTime          @default(now())
+
+    @@map("tags")
+}
+
+
 // o entittate editie, cand adaugi un jucator trebuei sa poti sa il atribui la o anumita editie.
 //editie: id , titlu (2023-20224).
 // campionat
