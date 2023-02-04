@@ -10,7 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(401).json({ message: 'Unauthorized' });
       }
       const { id } = req.query;
-      const { dateTime, link, editionId, championshipId, club_firstId, club_secondId, score_first, score_second } = req.body;
+      const { dateTime, link, editionId, championshipId, club_firstId, club_secondId, score_first, score_second, location } = req.body;
       await prisma.match.update({
         where: { id: Number(id) },
         data: {
@@ -22,6 +22,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           club_secondId: club_secondId,
           score_first: score_first,
           score_second: score_second,
+          location: location,
         },
       });
       return res.status(200).json({ message: 'The match was updated!' });

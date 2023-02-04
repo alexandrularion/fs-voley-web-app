@@ -186,6 +186,7 @@ model Match {
     createdAt                  DateTime          @default(now())
     score_first                Int?
     score_second               Int?
+    location                   String?           @db.LongText
 
     @@map("matchs")
 }
