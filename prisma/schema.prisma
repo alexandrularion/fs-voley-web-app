@@ -75,12 +75,21 @@ model Post {
     user      User             @relation(fields: [userId], references: [id])
     image                      String
     type                       String
-    description                String
+    description                String            @db.LongText
     status                     Int?              @default(0)
     createdAt                  DateTime          @default(now())
     updatedAt                  DateTime          @updatedAt
+    tags  PostTags[]
 
     @@map("posts")
+}
+
+model PostTags {
+  id     Int   @id @default(autoincrement())
+  post   Post? @relation(fields: [postId], references: [id])
+  tag    Tag?  @relation(fields: [tagId], references: [id])
+  postId Int?
+  tagId  Int?
 }
 
 model Keyword {
@@ -120,7 +129,7 @@ model Club {
     id                         Int               @id @default(autoincrement())
     title                      String
     image                      String?           @db.LongText
-    championship               Championship          @relation(fields: [championshipId], references: [id])
+    championship               Championship      @relation(fields: [championshipId], references: [id])
     championshipId             Int
     firstMatches               Match[]            @relation(name: "first_opponent")
     secondMatches              Match[]            @relation(name: "second_opponent")
@@ -211,6 +220,7 @@ model Tag {
     id                         Int               @id @default(autoincrement())
     title                      String
     createdAt                  DateTime          @default(now())
+    posts PostTags[]
 
     @@map("tags")
 }
