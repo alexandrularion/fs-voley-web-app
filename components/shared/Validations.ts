@@ -153,3 +153,11 @@ export const CodeValidation = (value: string) => {
 
 export const UrlValidation = (value: string | undefined) =>
   value ? (ValidateUrl(value) ? undefined : 'Link-ul website-ul nu este in formatul corect.') : 'Link-ul companiei este necesar pentru a continua.';
+
+export const CustomDateValidation = (value: string | undefined, isScorePresent: boolean) => {
+  if (value && isScorePresent) {
+    return new Date(value).getTime() <= new Date().getTime() ? undefined : 'Data si ora trebuie sa fie mai mica sau cel mult egala cu ziua de azi.';
+  } else {
+    return value ? undefined : `Data si ora este necesara pentru a continua.`;
+  }
+};

@@ -1,3 +1,5 @@
+import { TTeamEdition } from '../team/Interfaces';
+
 export type TSearchMatches = {
   championship?: string;
   edition?: string;
@@ -13,10 +15,12 @@ export interface IMatchesHeader {
 
 export interface IMatchesCard extends TSearchMatches {
   match: TMatch;
+  isUsedOnHomePage?: boolean;
 }
 
 export type TMatchesRanking = {
   position: number;
+  club: string;
   image: string;
   points: number;
   played: number;
@@ -38,8 +42,12 @@ export type TMatch = {
   clubTwoId: number;
   createdAt: string;
   championship?: TMatchChampionship;
+  edition?: TTeamEdition;
   clubFirst?: TMatchClub;
   clubSecond?: TMatchClub;
+  scoreClubTwo?: number;
+  scoreClubOne?: number;
+  location: string;
   key?: string;
 };
 
@@ -51,6 +59,9 @@ export type TBEMatch = {
   championshipId: number;
   club_firstId: number;
   club_secondId: number;
+  score_first: number;
+  score_second: number;
+  location: string;
   createdAt?: string;
 };
 
@@ -86,4 +97,8 @@ export interface IClubsPage {
 
 export interface IFutureMatchesPage {
   data: TMatch[];
+}
+
+export interface IRankingMatchesPage {
+  data: TMatchesRanking[];
 }

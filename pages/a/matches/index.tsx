@@ -16,7 +16,14 @@ const MatchesPage: NextPage<IMatchesPage> = ({ data }) => {
 
   useEffect(() => {
     if (search?.championship || search?.edition) {
-      //todo
+      setMatches(
+        data.filter(
+          ({ championshipId, editionId }) =>
+            (search?.championship && Number(search?.championship) === championshipId && !search?.edition) ||
+            (search?.edition && Number(search?.edition) === editionId && !search?.championship) ||
+            (search?.edition && search?.championship && Number(search?.edition) === editionId && Number(search?.championship) === championshipId)
+        )
+      );
     } else {
       setMatches(data);
     }
@@ -42,7 +49,10 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     return {
       props: {
         session,
-        data: data.map(({ club_firstId, club_secondId, ...rest }: TBEMatch) => ({ ...rest, clubOneId: club_firstId, clubTwoId: club_secondId } as TMatch)),
+        data: data.map(
+          ({ club_firstId, club_secondId, score_first, score_second, ...rest }: TBEMatch) =>
+            ({ ...rest, clubOneId: club_firstId, clubTwoId: club_secondId, scoreClubOne: score_first, scoreClubTwo: score_second } as TMatch)
+        ),
       },
     };
   } catch (e) {

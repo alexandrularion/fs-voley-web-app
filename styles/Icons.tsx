@@ -5,8 +5,6 @@ import {
   IoEyeOutline,
   IoCloudUploadOutline,
   IoReorderFourSharp,
-  IoChevronBackOutline,
-  IoChevronForwardOutline,
   IoArrowBackCircleOutline,
   IoDocumentTextOutline,
   IoBriefcaseOutline,
@@ -78,6 +76,8 @@ import {
   IoRocket,
   IoCloseCircle,
   IoArrowUp,
+  IoArrowForwardOutline,
+  IoArrowBackOutline,
 } from 'react-icons/io5';
 import { device } from '../components/shared/DevicesBreakpoints';
 import { FaTelegram, FaFacebookSquare } from 'react-icons/fa';
@@ -207,10 +207,10 @@ export const SearchIcon = styled(IoSearchOutline)<IIconProps>`
   ${defaultIconStyle}
 `;
 
-export const ArrowLeftIcon = styled(IoChevronBackOutline)<IIconProps>`
+export const ArrowLeftIcon = styled(IoArrowBackOutline)<IIconProps>`
   ${defaultIconStyle}
 `;
-export const ArrowRightIcon = styled(IoChevronForwardOutline)<IIconProps>`
+export const ArrowRightIcon = styled(IoArrowForwardOutline)<IIconProps>`
   ${defaultIconStyle}
 `;
 

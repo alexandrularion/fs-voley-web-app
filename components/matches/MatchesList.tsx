@@ -1,8 +1,10 @@
+import { Box } from '@chakra-ui/react';
 import { nanoid } from 'nanoid';
 import { useMemo } from 'react';
 import styled from 'styled-components';
 import { useMatches } from '../../context/ContextMatch';
 import { device } from '../shared/DevicesBreakpoints';
+import EmptyState from '../shared/EmptyState';
 import { LayoutContainer } from '../shared/Layout';
 import { TMatch } from './Interfaces';
 import MatchesCard from './MatchesCard';
@@ -13,9 +15,22 @@ const MatchesList: React.FC = () => {
   return (
     <Container>
       <LayoutContainer {...{ className: 'sl-layout-container' }}>
-        {data?.map(({ key, ...obj }) => (
-          <MatchesCard key={key} {...{ match: obj }} />
-        ))}
+        {data && data.length > 0 ? (
+          <Box
+            {...{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2,1fr)',
+              w: '100%',
+              gap: 'var(--gap-md)',
+            }}
+          >
+            {data.map(({ key, ...obj }) => (
+              <MatchesCard key={key} {...{ match: obj }} />
+            ))}
+          </Box>
+        ) : (
+          <EmptyState />
+        )}
       </LayoutContainer>
     </Container>
   );
@@ -29,9 +44,6 @@ const Container = styled.div`
   width: 100%;
 
   .sl-layout-container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    place-content: start;
     position: relative;
     top: -120px;
     gap: var(--gap-md);

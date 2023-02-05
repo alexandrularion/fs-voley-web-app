@@ -1,46 +1,54 @@
-import { Box, Flex, Heading, Text } from '@chakra-ui/react';
+import { Flex, Heading } from '@chakra-ui/react';
+import Link from 'next/link';
 import styled from 'styled-components';
+import { navigationRoutes } from '../../constants/Navigation';
+import { ArrowRightIcon } from '../../styles/Icons';
+import MatchesCard from '../matches/MatchesCard';
+import { LayoutContainer } from '../shared/Layout';
+import { IHomeMatches } from './Interfaces';
 
-const HomeHero = () => {
+const HomeMatches: React.FC<IHomeMatches> = ({ futureMatch, latestMatch }) => {
   return (
     <Container>
-      <Box {...{ w: '100%', h: 'calc(100vh - 90px)' }}>
-        <Flex {...{ zIndex: 'var(--z-index-5)', position: 'relative' }}>
-          <Heading {...{ color: 'var(--white-color)' }}>{'Some heading'}</Heading>
-          <Text {...{ color: 'var(--grey-alpha-100)' }}> {'text'}</Text>
+      <LayoutContainer {...{ className: 'hm-layout-container' }}>
+        <Flex {...{ flexDirection: 'column', gap: 'var(--gap-md)' }}>
+          <Flex {...{ justifyContent: 'space-between', w: '100%', alignItems: 'center' }}>
+            <Heading {...{ fontSize: 'var(--heading-xs)', color: 'var(--blue-600)' }}>{'Ultimul meci'}</Heading>
+            <Link {...{ href: `${navigationRoutes.matches.url}/results` }}>
+              <Flex {...{ color: 'var(--blue-400)', gap: 'var(--gap-sm)', as: 'button', alignItems: 'center', marginRight: '25px' }}>
+                {'Vezi rezultate'} <ArrowRightIcon {...{ color: 'var(--blue-400)', size: '22px' }} />
+              </Flex>
+            </Link>
+          </Flex>
+          <MatchesCard {...{ match: latestMatch, isUsedOnHomePage: true }} />
         </Flex>
-        <video {...{ controls: false, autoPlay: true, loop: true, preload: 'auto', muted: true }}>
-          <source {...{ src: '/assets/hero-video.mp4', type: 'video/mp4' }} />
-          {'Your browser does not support the video tag.'}
-        </video>
-      </Box>
+        <Flex {...{ flexDirection: 'column', gap: 'var(--gap-md)' }}>
+          <Flex {...{ justifyContent: 'space-between', w: '100%', alignItems: 'center' }}>
+            <Heading {...{ fontSize: 'var(--heading-xs)', color: 'var(--blue-600)' }}>{'Următorul meci'}</Heading>
+            <Link {...{ href: navigationRoutes.matches.url }}>
+              <Flex {...{ color: 'var(--blue-400)', gap: 'var(--gap-sm)', as: 'button', alignItems: 'center', marginRight: '25px' }}>
+                {'Vezi meciurile viitoare'} <ArrowRightIcon {...{ color: 'var(--blue-400)', size: '22px' }} />
+              </Flex>
+            </Link>
+          </Flex>
+          <MatchesCard {...{ match: futureMatch, isUsedOnHomePage: true }} />
+        </Flex>
+      </LayoutContainer>
     </Container>
   );
 };
-export default HomeHero;
+export default HomeMatches;
 
 const Container = styled.div`
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   position: relative;
+  padding: 75px 0;
 
-  video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    z-index: var(--z-index-1);
-    object-fit: cover;
-  }
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(180deg, rgba(22, 77, 229, 0.5) 0%, rgba(2, 24, 123, 0.5) 100%);
-    z-index: var(--z-index-2);
+  .hm-layout-container {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    gap: var(--gap-md);
+    position: relative;
   }
 `;

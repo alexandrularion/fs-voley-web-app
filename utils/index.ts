@@ -177,3 +177,11 @@ export const getCurrentDateTimeLocal = (currentDate: string) => {
     .toString()
     .padStart(2, '0')}`;
 };
+
+/**
+ * Copy text to clipboard
+ * @param {String} text
+ */
+export const copyTextToClipboard = async (text: string) => {
+  await navigator.clipboard.writeText(text).catch(() => console.log("[LOGGER] Can't copy text to clipboard!"));
+};

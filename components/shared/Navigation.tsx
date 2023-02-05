@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Logo from '../../assets/Logo.png';
 import Image from 'next/image';
 import { authRoutes, navigationRoutes, userRoutes, adminRoutes } from '../../constants/Navigation';
-import { IUrl } from './Interfaces';
+import { INavigation, IUrl } from './Interfaces';
 import Link from 'next/link';
 import { nanoid } from 'nanoid';
 import { Avatar, Box, Button, Flex, Heading, IconButton, Menu, Text } from '@chakra-ui/react';
@@ -14,38 +14,52 @@ import { device } from './DevicesBreakpoints';
 import { signOut, useSession } from 'next-auth/react';
 import { getRoleNameByRoleId } from '../../utils';
 
-const Navigation = () => {
+const Navigation: React.FC<INavigation> = ({ isUsedOnOverlay = false }) => {
   const urls: IUrl[] = useMemo(() => Object.values(navigationRoutes).map((link) => ({ ...link, key: nanoid() })), []);
   const menuRoutes: IUrl[] = useMemo(() => Object.values(adminRoutes).map((link) => ({ ...link, key: nanoid() })), []);
   const { pathname } = useRouter();
   const { data, status } = useSession();
 
   return (
-    <Container {...{ id: 'nav' }}>
+    <Container {...{ id: 'nav', isUsedOnOverlay }}>
       <div {...{ className: 'n-container' }}>
         <Flex {...{ alignItems: 'center', gap: 'var(--gap-lg)' }}>
           <Image src={Logo} alt={'C.S.M Suceava'} />
-          <Heading {...{ fontSize: 'var(--heading-xs)', color: 'var(--blue-600)' }}>{'C.S.M Suceava'}</Heading>
+          <Heading {...{ fontSize: 'var(--heading-xs)', color: isUsedOnOverlay ? 'var(--white-color)' : 'var(--blue-600)' }}>{'C.S.M Suceava'}</Heading>
         </Flex>
         <div {...{ className: 'n-urls-container' }}>
           {urls.slice(0, urls.length - 2).map(({ title, url, key }, index) => (
             <Link key={key} {...{ href: url }}>
               <Flex {...{ alignItems: 'center', gap: 'var(--gap-xs)', className: 'n-link-container' }}>
-                {(pathname.localeCompare(url) === 0 || (index !== 0 && pathname.localeCompare(url) === 0)) && (
+                {((pathname.localeCompare(url) === 0 && index === 0) || (index !== 0 && pathname.includes(url))) && (
                   <Box
                     {...{
-                      w: '10px',
-                      h: '10px',
-                      borderRadius: '50px',
-                      bg: pathname.localeCompare(url) === 0 || (index !== 0 && pathname.localeCompare(url) === 0) ? 'var(--blue-400)' : 'var(--blue-600)',
+                      w: '14px',
+                      h: '8px',
+                      borderRadius: '3px',
+                      bg:
+                        (pathname.localeCompare(url) === 0 && index === 0) || (index !== 0 && pathname.includes(url))
+                          ? isUsedOnOverlay
+                            ? 'var(--white-color)'
+                            : 'var(--blue-400)'
+                          : isUsedOnOverlay
+                          ? 'var(--grey-alpha-50)'
+                          : 'var(--blue-600)',
                       transition: '0.2s all ease-in-out',
                     }}
                   />
                 )}
                 <Text
                   {...{
-                    color: pathname.localeCompare(url) === 0 || (index !== 0 && pathname.localeCompare(url) === 0) ? 'var(--blue-400)' : 'var(--blue-600)',
-                    fontWeight: pathname.localeCompare(url) === 0 || (index !== 0 && pathname.localeCompare(url) === 0) ? 'bold' : 'normal',
+                    color:
+                      (pathname.localeCompare(url) === 0 && index === 0) || (index !== 0 && pathname.includes(url))
+                        ? isUsedOnOverlay
+                          ? 'var(--white-color)'
+                          : 'var(--blue-400)'
+                        : isUsedOnOverlay
+                        ? 'var(--grey-alpha-50)'
+                        : 'var(--blue-600)',
+                    fontWeight: (pathname.localeCompare(url) === 0 && index === 0) || (index !== 0 && pathname.includes(url)) ? 'bold' : 'normal',
                     fontSize: 'var(--text-l)',
                     transition: '0.2s all ease-in-out',
                     textTransform: 'uppercase',
@@ -61,11 +75,11 @@ const Navigation = () => {
               <MenuButton
                 {...{
                   as: Button,
-                  rightIcon: <ArrowDownIcon {...{ color: 'var(--blue-600)' }} />,
+                  rightIcon: <ArrowDownIcon {...{ color: isUsedOnOverlay ? 'var(--grey-alpha-50)' : 'var(--blue-600)' }} />,
                   bg: 'none',
                   _hover: { background: 'none' },
                   _active: { background: 'none' },
-                  textColor: 'var(--blue-600)',
+                  textColor: isUsedOnOverlay ? 'var(--grey-alpha-50)' : 'var(--blue-600)',
                   fontSize: 'var(--text-l)',
                   fontWeight: pathname.localeCompare(urls[urls.length - 2].url) === 0 || pathname.localeCompare(urls[urls.length - 1].url) === 0 ? 'bold' : 'normal',
                   padding: 0,
@@ -116,13 +130,13 @@ const Navigation = () => {
                 </MenuItem>
               </MenuList>
             </Menu>
-            <Box {...{ borderLeft: '2px solid var(--blue-600)', h: '30px', borderRadius: '5px', m: '0 15px' }} />
+            <Box {...{ borderLeft: isUsedOnOverlay ? '2px solid var(--grey-alpha-300)' : '2px solid var(--blue-600)', h: '30px', borderRadius: '5px', m: '0 15px' }} />
             {status === 'authenticated' ? (
               <Menu>
                 <MenuButton
                   {...{
                     as: Button,
-                    rightIcon: <ArrowDownIcon {...{ color: 'var(--blue-600)' }} />,
+                    rightIcon: <ArrowDownIcon {...{ color: isUsedOnOverlay ? 'var(--grey-alpha-50)' : 'var(--blue-600)' }} />,
                     bg: 'none',
                     _hover: { background: 'none' },
                     _active: { background: 'none' },
@@ -133,10 +147,10 @@ const Navigation = () => {
                   }}
                 >
                   <Flex {...{ alignItems: 'center', gap: 'var(--gap-sm)' }}>
-                    <Avatar {...{ name: data?.name || 'Alex', size: 'md', mb: '3px' }} />
+                    <Avatar {...{ name: data?.name || 'Alex', size: 'md', mb: '3px', background: 'var(--blue-400)' }} />
                     <Flex {...{ flexDirection: 'column', alignItems: 'flex-start' }}>
-                      <Text {...{ fontWeight: 'bold', color: 'var(--blue-500)' }}>{data?.name}</Text>
-                      <Text {...{ fontSize: 'var(--text-xs)', color: 'var(--grey-alpha-600)', fontWeight: '400' }}>{getRoleNameByRoleId(data?.role)}</Text>
+                      <Text {...{ fontWeight: 'bold', color: isUsedOnOverlay ? 'var(--grey-alpha-50)' : 'var(--blue-500)' }}>{data?.name}</Text>
+                      <Text {...{ fontSize: 'var(--text-xs)', color: isUsedOnOverlay ? 'var(--grey-alpha-200)' : 'var(--blue-500)', fontWeight: '400' }}>{getRoleNameByRoleId(data?.role)}</Text>
                     </Flex>
                   </Flex>
                 </MenuButton>
@@ -209,15 +223,15 @@ const Navigation = () => {
                   </MenuGroup>
                 </MenuList>
               </Menu>
-            ) : status === 'unauthenticated' ? (
-              <Link {...{ href: authRoutes.signIn.url }}>
-                <Flex {...{ alignItems: 'center', gap: 'var(--gap-xs)', className: 'n-link-container' }}>
-                  {pathname.includes(authRoutes.signIn.url) && <Box {...{ w: '10px', h: '10px', borderRadius: '50px', bg: 'var(--blue-600)', transition: '0.2s all ease-in-out' }} />}
-                  <Text {...{ color: 'var(--blue-600)', fontSize: 'var(--text-l)', transition: '0.2s all ease-in-out', textTransform: 'uppercase' }}>{authRoutes.signIn.title}</Text>
-                </Flex>
-              </Link>
             ) : (
-              <></>
+              status === 'unauthenticated' && (
+                <Link {...{ href: authRoutes.signIn.url }}>
+                  <Flex {...{ alignItems: 'center', gap: 'var(--gap-xs)', className: 'n-link-container' }}>
+                    {pathname.includes(authRoutes.signIn.url) && <Box {...{ w: '10px', h: '10px', borderRadius: '50px', bg: 'var(--blue-600)', transition: '0.2s all ease-in-out' }} />}
+                    <Text {...{ color: 'var(--blue-600)', fontSize: 'var(--text-l)', transition: '0.2s all ease-in-out', textTransform: 'uppercase' }}>{authRoutes.signIn.title}</Text>
+                  </Flex>
+                </Link>
+              )
             )}
           </Flex>
         </div>
@@ -262,12 +276,14 @@ const Navigation = () => {
 };
 export default Navigation;
 
-const Container = styled.section`
+const Container = styled.section<{ isUsedOnOverlay: boolean }>`
   display: flex;
   justify-content: center;
   position: relative;
   z-index: var(--z-index-6);
-  background-color: var(--white-color);
+  background-color: ${({ isUsedOnOverlay }) => (isUsedOnOverlay ? 'unset' : 'var(--white-color) ')};
+  width: 100%;
+  position: ${({ isUsedOnOverlay }) => (isUsedOnOverlay ? 'absolute' : 'relative')};
 
   .n-container {
     display: flex;
@@ -284,10 +300,10 @@ const Container = styled.section`
 
       .n-link-container:hover {
         p {
-          color: var(--blue-400);
+          color: ${({ isUsedOnOverlay }) => (isUsedOnOverlay ? 'var(--white-color)' : 'var(--blue-400)')};
         }
         div {
-          background: var(--blue-400);
+          background: ${({ isUsedOnOverlay }) => (isUsedOnOverlay ? 'var(--white-color)' : 'var(--blue-400)')};
         }
       }
 

@@ -4,10 +4,10 @@ import Footer from './Footer';
 import { ILayout } from './Interfaces';
 import Navigation from './Navigation';
 
-const Layout: React.FC<ILayout> = ({ children, bgColor = 'var(--white-color)' }) => {
+const Layout: React.FC<ILayout> = ({ children, bgColor = 'var(--white-color)', isUsedOnOverlay = false }) => {
   return (
     <Container {...{ bgColor }}>
-      <Navigation />
+      <Navigation {...{ isUsedOnOverlay }} />
       {children}
       <Footer />
     </Container>

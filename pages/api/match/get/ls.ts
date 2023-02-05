@@ -5,7 +5,7 @@ import prisma from '../../../../lib/prisma';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     if (req.method == 'GET') {
-      const matches = await prisma.match.findMany({
+      const matches = await prisma.match.findFirst({
         where: {
           OR: [
             {

@@ -3,7 +3,7 @@ import { Table, Thead, Tbody, Tr, Th, Td, TableContainer, Flex, Select, Button, 
 import { ICommonTable } from './Interfaces';
 import { useEffect, useMemo } from 'react';
 
-const CommonTable: React.FC<ICommonTable> = ({ columns, data, filter }) => {
+const CommonTable: React.FC<ICommonTable> = ({ columns, data, filter, isFooterVisible = true, className }) => {
   const memoizedData = useMemo(() => data, [data]);
 
   const {
@@ -38,7 +38,7 @@ const CommonTable: React.FC<ICommonTable> = ({ columns, data, filter }) => {
   }, [filter, setFilter]);
 
   return (
-    <TableContainer {...{ width: '100%', background: 'var(--white-color)', borderRadius: '15px' }}>
+    <TableContainer {...{ width: '100%', background: 'var(--white-color)', borderRadius: '15px', className }}>
       <Table {...{ variant: 'simple', size: 'lg', w: '100%', ...getTableProps() }}>
         <Thead>
           {headerGroups.map((headerGroup: any, index: number) => (
@@ -76,37 +76,39 @@ const CommonTable: React.FC<ICommonTable> = ({ columns, data, filter }) => {
           )}
         </Tbody>
       </Table>
-      <Flex {...{ padding: '10px 30px', gap: 'var(--gap-md)', justifyContent: 'space-between' }}>
-        <Flex {...{ gap: 'var(--gap-md)' }}>
-          <Button onClick={() => previousPage()} disabled={!canPreviousPage} {...{ variant: 'outline', color: 'var(--black-color)' }}>
-            {'< Inapoi'}
-          </Button>
-          <Button onClick={() => nextPage()} disabled={!canNextPage} {...{ variant: 'outline', color: 'var(--black-color)' }}>
-            {'Inainte >'}
-          </Button>
-        </Flex>
-        <Flex {...{ gap: 'var(--gap-md)', alignItems: 'center' }}>
-          <Flex {...{ alignItems: 'center', gap: 'var(--gap-sm)' }}>
-            <Text> {'Page'}</Text>
-            <Text {...{ fontWeight: 'bold' }}>{` ${pageIndex + 1} of ${pageOptions.length}`}</Text>
+      {isFooterVisible && (
+        <Flex {...{ padding: '10px 30px', gap: 'var(--gap-md)', justifyContent: 'space-between' }}>
+          <Flex {...{ gap: 'var(--gap-md)' }}>
+            <Button onClick={() => previousPage()} disabled={!canPreviousPage} {...{ variant: 'outline', color: 'var(--black-color)' }}>
+              {'< Inapoi'}
+            </Button>
+            <Button onClick={() => nextPage()} disabled={!canNextPage} {...{ variant: 'outline', color: 'var(--black-color)' }}>
+              {'Inainte >'}
+            </Button>
           </Flex>
-          <Select
-            {...{
-              value: pageSize,
-              onChange: (e) => setPageSize(Number(e.target.value)),
-              variant: 'outline',
-              size: 'sm',
-              w: '130px',
-            }}
-          >
-            {[5, 10, 20, 30, 40, 50].map((pageSize) => (
-              <option key={pageSize} value={pageSize}>
-                Arata {pageSize}/pg
-              </option>
-            ))}
-          </Select>
+          <Flex {...{ gap: 'var(--gap-md)', alignItems: 'center' }}>
+            <Flex {...{ alignItems: 'center', gap: 'var(--gap-sm)' }}>
+              <Text> {'Page'}</Text>
+              <Text {...{ fontWeight: 'bold' }}>{` ${pageIndex + 1} of ${pageOptions.length}`}</Text>
+            </Flex>
+            <Select
+              {...{
+                value: pageSize,
+                onChange: (e) => setPageSize(Number(e.target.value)),
+                variant: 'outline',
+                size: 'sm',
+                w: '130px',
+              }}
+            >
+              {[5, 10, 20, 30, 40, 50].map((pageSize) => (
+                <option key={pageSize} value={pageSize}>
+                  Arata {pageSize}/pg
+                </option>
+              ))}
+            </Select>
+          </Flex>
         </Flex>
-      </Flex>
+      )}
     </TableContainer>
   );
 };

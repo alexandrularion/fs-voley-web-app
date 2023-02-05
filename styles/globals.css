@@ -8,6 +8,7 @@ a {
   color: inherit;
   text-decoration: none;
   border: none;
+  scroll-behavior: smooth !important;
 }
 
 * {
@@ -15,54 +16,54 @@ a {
   font-family: 'Play', sans-serif !important;
 }
 
-input:-webkit-autofill { 
+input:-webkit-autofill {
   -webkit-background-clip: text;
   -webkit-text-fill-color: var(--grey-alpha-50) !important;
 }
 
 :root {
-    --black-color: #1c1c1b;
-    --white-color: #fff;
-    --green-color: #38A169;
-    --red-color: #B72F04;
-    --grey-alpha-50: #fafafa;
-    --grey-alpha-100: #ededed;
-    --grey-alpha-200: #eaeaea;
-    --grey-alpha-300: #d6d6d6;
-    --grey-alpha-400: #c2c2c2;
-    --grey-alpha-500: #a3a3a3;
-    --grey-alpha-600: #858585;
-    --grey-alpha-700: #5c5c5c;
-    --grey-alpha-800: #333333;
-    --blue-100: #becbff;
-    --blue-200: #88a0ff;
-    --blue-300: #5678ff;
-    --blue-400: #3937F9;
-    --blue-500: #0604b7;
-    --blue-600: #0022ac;
-    --blue-700: #00135e;
-    --blue-800: #2a4365;
+  --black-color: #1c1c1b;
+  --white-color: #fff;
+  --green-color: #38a169;
+  --red-color: #b72f04;
+  --grey-alpha-50: #fafafa;
+  --grey-alpha-100: #ededed;
+  --grey-alpha-200: #eaeaea;
+  --grey-alpha-300: #d6d6d6;
+  --grey-alpha-400: #c2c2c2;
+  --grey-alpha-500: #a3a3a3;
+  --grey-alpha-600: #858585;
+  --grey-alpha-700: #5c5c5c;
+  --grey-alpha-800: #333333;
+  --blue-100: #becbff;
+  --blue-200: #88a0ff;
+  --blue-300: #5678ff;
+  --blue-400: #3937f9;
+  --blue-500: #0604b7;
+  --blue-600: #0022ac;
+  --blue-700: #00135e;
+  --blue-800: #2a4365;
 
-    --text-lg: 24px;
-    --text-md: 18px;
-    --text-sm: 16px;
-    --text-xs: 14px;
+  --text-lg: 24px;
+  --text-md: 18px;
+  --text-sm: 16px;
+  --text-xs: 14px;
 
-    --heading-md: 48px;
-    --heading-sm: 36px;
-    --heading-xs: 28px;
+  --heading-md: 48px;
+  --heading-sm: 36px;
+  --heading-xs: 28px;
 
-    --gap-xl: 45px;
-    --gap-lg: 35px;
-    --gap-md: 20px;
-    --gap-sm: 10px;
-    --gap-xs: 5px;
-    --z-index-1: 100;
-    --z-index-2: 110;
-    --z-index-3: 120;
-    --z-index-4: 140;
-    --z-index-5: 160;
-    --z-index-6: 160;
+  --gap-xl: 45px;
+  --gap-lg: 35px;
+  --gap-md: 20px;
+  --gap-sm: 10px;
+  --gap-xs: 5px;
+  --z-index-1: 100;
+  --z-index-2: 110;
+  --z-index-3: 120;
+  --z-index-4: 140;
+  --z-index-5: 160;
+  --z-index-6: 160;
 }
 
 @media (max-width: 1050px) {
@@ -75,7 +76,6 @@ input:-webkit-autofill {
 
 @media (max-width: 550px) {
   :root {
-
     --heading-md: 30px;
     --heading-sm: 22px;
     --heading-xs: 18px;

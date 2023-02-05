@@ -66,11 +66,11 @@ const MatchesHeader: React.FC<IMatchesHeader> = ({
   const editionOptions: TTeamEdition[] = useMemo(() => editions?.map((obj: TTeamEdition) => ({ ...obj, key: nanoid() })) || [], [editions]);
 
   useEffect(() => {
-    edition && setSearch && setSearch((prevState) => ({ ...prevState, edition }));
+    setSearch && setSearch((prevState) => ({ ...prevState, edition }));
   }, [edition, setSearch]);
 
   useEffect(() => {
-    championship && setSearch && setSearch((prevState) => ({ ...prevState, championship }));
+    setSearch && setSearch((prevState) => ({ ...prevState, championship }));
   }, [championship, setSearch]);
 
   const onSubmitHandler = async (values: object, form: FormApi) => {
@@ -97,7 +97,7 @@ const MatchesHeader: React.FC<IMatchesHeader> = ({
         onClose();
         form.reset();
       } else {
-        const { dateTime, link, editionId, championshipId, clubTwoId } = values as TMatch;
+        const { dateTime, link, editionId, championshipId, clubTwoId, scoreClubOne, scoreClubTwo } = values as TMatch;
         const { data } = await createMatch({
           dateTime: new Date(dateTime).toISOString(),
           link,
@@ -105,9 +105,11 @@ const MatchesHeader: React.FC<IMatchesHeader> = ({
           championshipId: Number(championshipId),
           club_firstId: Number(1),
           club_secondId: Number(clubTwoId),
+          score_first: Number(scoreClubOne),
+          score_second: Number(scoreClubTwo),
         } as TBEMatch);
-        const { id } = data as TMatch;
-        setMatches([...matches, { ...values, createdAt: new Date().toString(), id } as TMatch]);
+        const { id, clubFirst, clubSecond } = data as TMatch;
+        setMatches([...matches, { ...values, createdAt: new Date().toString(), id, clubFirst, clubSecond } as TMatch]);
         toast('Felicitari! Meciul a fost adaugata cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
         onClose();
         form.reset();

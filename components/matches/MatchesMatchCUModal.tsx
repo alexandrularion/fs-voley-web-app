@@ -8,7 +8,7 @@ import { getAllChampionshipsSWRKey, getAllClubsSWRKey } from '../../services/Mat
 import { getAllEditionsSWRKey } from '../../services/Team.service';
 import { fetcher } from '../../utils';
 import { IFormModal } from '../shared/Interfaces';
-import { CustomValidation, UrlValidation } from '../shared/Validations';
+import { CustomDateValidation, CustomValidation, UrlValidation } from '../shared/Validations';
 import { TTeamEdition } from '../team/Interfaces';
 import { TMatchChampionship, TMatchClub } from './Interfaces';
 
@@ -20,6 +20,14 @@ const MatchesMatchCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isL
 
   const { data: clubs } = useSWR(getAllClubsSWRKey, fetcher);
   const clubOptions: TMatchClub[] = useMemo(() => clubs?.map((obj: TMatchClub) => ({ ...obj, key: nanoid() })) || [], [clubs]);
+
+  const scoreOptions = useMemo(
+    () =>
+      Array(30)
+        .fill(1)
+        .map((_, index: number) => ({ key: nanoid(), value: index })),
+    []
+  );
 
   return (
     <Modal {...{ isOpen, onClose, blockScrollOnMount: true, isCentered: true, closeOnOverlayClick: !isLoading, size: '4xl' }}>
@@ -55,35 +63,125 @@ const MatchesMatchCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isL
                         ),
                       }}
                     />
-                    <Field
-                      {...{
-                        name: 'dateTime',
-                        validate: (value: string) => CustomValidation(value, 'Data si Ora'),
-                        render: ({ input, meta: { touched, error } }) => (
-                          <Tooltip {...{ label: touched && error ? error : '' }}>
-                            <InputGroup>
-                              <InputLeftAddon {...{ children: 'Data si Ora' }} />
-                              <Input
-                                {...{
-                                  ...input,
-                                  type: 'datetime-local',
-                                  isInvalid: touched && error,
-                                  placeholder: 'Introduceti data si ora ',
-                                }}
-                              />
-                            </InputGroup>
-                          </Tooltip>
-                        ),
-                      }}
-                    />
+
                     <Flex {...{ w: '100%', gap: 'var(--gap-md)', alignItems: 'center' }}>
                       <Field
                         {...{
-                          name: 'clubOneId',
+                          name: 'dateTime',
+                          validate: (value: string) => CustomDateValidation(value, Boolean(String(values.scoreClubOne) || String(values.scoreClubTwo))),
                           render: ({ input, meta: { touched, error } }) => (
                             <Tooltip {...{ label: touched && error ? error : '' }}>
                               <InputGroup>
-                                <InputLeftAddon {...{ children: 'Acasa', w: '140px' }} />
+                                <InputLeftAddon {...{ children: 'Data si Ora', w: '160px' }} />
+                                <Input
+                                  {...{
+                                    ...input,
+                                    type: 'datetime-local',
+                                    isInvalid: touched && error,
+                                    placeholder: 'Introduceti data si ora ',
+                                  }}
+                                />
+                              </InputGroup>
+                            </Tooltip>
+                          ),
+                        }}
+                      />
+                      <Field
+                        {...{
+                          name: 'location',
+                          validate: (value: string) => CustomValidation(value, 'Locatia'),
+                          render: ({ input, meta: { touched, error } }) => (
+                            <Tooltip {...{ label: touched && error ? error : '' }}>
+                              <InputGroup>
+                                <InputLeftAddon {...{ children: 'Locatia', w: '190px' }} />
+                                <Input
+                                  {...{
+                                    ...input,
+                                    type: 'text',
+                                    isInvalid: touched && error,
+                                    placeholder: 'Introduceti locatia unde se desfasoara meciul',
+                                  }}
+                                />
+                              </InputGroup>
+                            </Tooltip>
+                          ),
+                        }}
+                      />
+                    </Flex>
+
+                    <Flex {...{ w: '100%', gap: 'var(--gap-md)', alignItems: 'center' }}>
+                      <Field
+                        {...{
+                          name: 'championshipId',
+                          validate: (value: string) => CustomValidation(value, 'Campionatul'),
+                          render: ({ input, meta: { touched, error } }) => (
+                            <Tooltip {...{ label: touched && error ? error : '' }}>
+                              <InputGroup>
+                                <InputLeftAddon {...{ children: 'Campionat', w: '160px' }} />
+                                <Select
+                                  {...{
+                                    isInvalid: touched && error,
+                                    placeholder: 'Alegeti campionatul',
+                                    ...input,
+                                    borderTopLeftRadius: 0,
+                                    borderBottomLeftRadius: 0,
+                                    _placeholder: {
+                                      color: 'var(--grey-alpha-3)',
+                                    },
+                                  }}
+                                >
+                                  {championshipOptions?.map(({ title, key, id }) => (
+                                    <option key={key} {...{ value: id }}>
+                                      {title}
+                                    </option>
+                                  ))}
+                                </Select>
+                              </InputGroup>
+                            </Tooltip>
+                          ),
+                        }}
+                      />
+                      <Field
+                        {...{
+                          name: 'editionId',
+                          validate: (value: string) => CustomValidation(value, 'Editia'),
+                          render: ({ input, meta: { touched, error } }) => (
+                            <Tooltip {...{ label: touched && error ? error : '' }}>
+                              <InputGroup>
+                                <InputLeftAddon {...{ children: 'Editia', w: '190px' }} />
+                                <Select
+                                  {...{
+                                    isInvalid: touched && error,
+                                    placeholder: 'Alegeti editia',
+                                    ...input,
+                                    borderTopLeftRadius: 0,
+                                    borderBottomLeftRadius: 0,
+                                    _placeholder: {
+                                      color: 'var(--grey-alpha-3)',
+                                    },
+                                  }}
+                                >
+                                  {editionOptions?.map(({ title, key, id }) => (
+                                    <option key={key} {...{ value: id }}>
+                                      {title}
+                                    </option>
+                                  ))}
+                                </Select>
+                              </InputGroup>
+                            </Tooltip>
+                          ),
+                        }}
+                      />
+                    </Flex>
+                    <Flex {...{ w: '100%', gap: 'var(--gap-md)', alignItems: 'center', padding: '10px', border: '1px solid var(--blue-600)', borderRadius: '16px' }}>
+                      <Field
+                        {...{
+                          name: 'clubOneId',
+                          validate: (value: string) => CustomValidation(value, 'Acasă'),
+                          render: ({ input, meta: { touched, error } }) => (
+                            <Tooltip {...{ label: touched && error ? error : '' }}>
+                              <InputGroup>
+                                <InputLeftAddon {...{ children: 'Echipă Acasă', w: '160px' }} />
                                 <Select
                                   {...{
                                     isInvalid: touched && error,
@@ -114,11 +212,11 @@ const MatchesMatchCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isL
                       <Field
                         {...{
                           name: 'clubTwoId',
-                          validate: (value: string) => CustomValidation(value, 'Deplasare'),
+                          validate: (value: string) => CustomValidation(value, 'Echipă Deplasare'),
                           render: ({ input, meta: { touched, error } }) => (
                             <Tooltip {...{ label: touched && error ? error : '' }}>
                               <InputGroup>
-                                <InputLeftAddon {...{ children: 'Deplasare', w: '140px' }} />
+                                <InputLeftAddon {...{ children: 'Echipă Deplasare', w: '190px' }} />
                                 <Select
                                   {...{
                                     isInvalid: touched && error,
@@ -146,68 +244,68 @@ const MatchesMatchCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isL
                         }}
                       />
                     </Flex>
-                    <Field
-                      {...{
-                        name: 'championshipId',
-                        validate: (value: string) => CustomValidation(value, 'Campionatul'),
-                        render: ({ input, meta: { touched, error } }) => (
-                          <Tooltip {...{ label: touched && error ? error : '' }}>
-                            <InputGroup>
-                              <InputLeftAddon {...{ children: 'Campionat', w: '140px' }} />
-                              <Select
-                                {...{
-                                  isInvalid: touched && error,
-                                  placeholder: 'Alegeti campionatul',
-                                  ...input,
-                                  borderTopLeftRadius: 0,
-                                  borderBottomLeftRadius: 0,
-                                  _placeholder: {
-                                    color: 'var(--grey-alpha-3)',
-                                  },
-                                }}
-                              >
-                                {championshipOptions?.map(({ title, key, id }) => (
-                                  <option key={key} {...{ value: id }}>
-                                    {title}
-                                  </option>
-                                ))}
-                              </Select>
-                            </InputGroup>
-                          </Tooltip>
-                        ),
-                      }}
-                    />
-                    <Field
-                      {...{
-                        name: 'editionId',
-                        validate: (value: string) => CustomValidation(value, 'Editia'),
-                        render: ({ input, meta: { touched, error } }) => (
-                          <Tooltip {...{ label: touched && error ? error : '' }}>
-                            <InputGroup>
-                              <InputLeftAddon {...{ children: 'Editia', w: '140px' }} />
-                              <Select
-                                {...{
-                                  isInvalid: touched && error,
-                                  placeholder: 'Alegeti editia',
-                                  ...input,
-                                  borderTopLeftRadius: 0,
-                                  borderBottomLeftRadius: 0,
-                                  _placeholder: {
-                                    color: 'var(--grey-alpha-3)',
-                                  },
-                                }}
-                              >
-                                {editionOptions?.map(({ title, key, id }) => (
-                                  <option key={key} {...{ value: id }}>
-                                    {title}
-                                  </option>
-                                ))}
-                              </Select>
-                            </InputGroup>
-                          </Tooltip>
-                        ),
-                      }}
-                    />
+                    <Flex {...{ w: '100%', gap: 'var(--gap-md)', alignItems: 'center' }}>
+                      <Field
+                        {...{
+                          name: 'scoreClubOne',
+                          render: ({ input, meta: { touched, error } }) => (
+                            <Tooltip {...{ label: touched && error ? error : '' }}>
+                              <InputGroup>
+                                <InputLeftAddon {...{ children: 'Scor Echipă Acasă', w: '160px' }} />
+                                <Select
+                                  {...{
+                                    isInvalid: touched && error,
+                                    placeholder: 'Alegeti scor',
+                                    ...input,
+                                    borderTopLeftRadius: 0,
+                                    borderBottomLeftRadius: 0,
+                                    _placeholder: {
+                                      color: 'var(--grey-alpha-3)',
+                                    },
+                                  }}
+                                >
+                                  {scoreOptions?.map(({ key, value }) => (
+                                    <option key={key} {...{ value }}>
+                                      {value}
+                                    </option>
+                                  ))}
+                                </Select>
+                              </InputGroup>
+                            </Tooltip>
+                          ),
+                        }}
+                      />
+                      <Field
+                        {...{
+                          name: 'scoreClubTwo',
+                          render: ({ input, meta: { touched, error } }) => (
+                            <Tooltip {...{ label: touched && error ? error : '' }}>
+                              <InputGroup>
+                                <InputLeftAddon {...{ children: 'Scor Echipă Deplasare', w: '190px' }} />
+                                <Select
+                                  {...{
+                                    isInvalid: touched && error,
+                                    placeholder: 'Alegeti scor',
+                                    ...input,
+                                    borderTopLeftRadius: 0,
+                                    borderBottomLeftRadius: 0,
+                                    _placeholder: {
+                                      color: 'var(--grey-alpha-3)',
+                                    },
+                                  }}
+                                >
+                                  {scoreOptions?.map(({ key, value }) => (
+                                    <option key={key} {...{ value }}>
+                                      {value}
+                                    </option>
+                                  ))}
+                                </Select>
+                              </InputGroup>
+                            </Tooltip>
+                          ),
+                        }}
+                      />
+                    </Flex>
                   </Flex>
                 ),
               }}
