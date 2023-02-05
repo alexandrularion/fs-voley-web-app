@@ -11,98 +11,99 @@ datasource db {
 }
 
 model User {
-  id                         Int               @id @default(autoincrement())
-  email                      String            @unique
-  name                       String?
-  first_name                 String?
-  last_name                  String?
-  password                   String?
-  status                     Int?     @default(0)
-  role                       Int?     @default(0)
-  createdAt                  DateTime          @default(now())
-  updatedAt                  DateTime          @updatedAt
-  posts Post[]
+  id         Int      @id @default(autoincrement())
+  email      String   @unique
+  name       String?
+  first_name String?
+  last_name  String?
+  password   String?
+  status     Int?     @default(0)
+  role       Int?     @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  posts      Post[]
 
   @@map("users")
 }
 
 // Antrenori (fara vizualizare de antrenor)
-model Trainers{
-  id                         Int            @id @default(autoincrement())
-  first_name                 String
-  last_name                  String
-  description                String?
-  image                      String?        @db.LongText
+model Trainers {
+  id          Int     @id @default(autoincrement())
+  first_name  String
+  last_name   String
+  description String?
+  image       String? @db.LongText
+
   @@map("trainers")
 }
 
 model Player {
-  id                         Int            @id @default(autoincrement())
-  first_name                 String
-  last_name                  String
-  description                String?        @db.LongText
-  height                     Float
-  position                   String?
-  shirtNumber                Int?
-  birthday                   DateTime
-  nationality                String?
-  category                   Category @relation(fields: [categoryId], references: [id])
-  categoryId                 Int
-  edition                    Edition @relation(fields: [editionId], references: [id])
-  editionId                  Int
-  slug                       String?
-  image                      String?        @db.LongText
-  createdAt                  DateTime       @default(now())
-  timelines                  Timeline[]
+  id          Int        @id @default(autoincrement())
+  first_name  String
+  last_name   String
+  description String?    @db.LongText
+  height      Float
+  position    String?
+  shirtNumber Int?
+  birthday    DateTime
+  nationality String?
+  category    Category   @relation(fields: [categoryId], references: [id])
+  categoryId  Int
+  edition     Edition    @relation(fields: [editionId], references: [id])
+  editionId   Int
+  slug        String?
+  image       String?    @db.LongText
+  createdAt   DateTime   @default(now())
+  timelines   Timeline[]
 
   @@map("players")
 }
 
 model Timeline {
-    id                         Int               @id @default(autoincrement())
-    description                String
-    player                     Player @relation(fields: [playerId], references: [id])
-    playerId                   Int
-    createdAt                  DateTime          @default(now())
-    prizes                     Prize[]
+  id          Int      @id @default(autoincrement())
+  description String
+  player      Player   @relation(fields: [playerId], references: [id])
+  playerId    Int
+  createdAt   DateTime @default(now())
+  prizes      Prize[]
 
-    @@map("teamlines")
+  @@map("teamlines")
 }
 
 model Prize {
-    id                         Int               @id @default(autoincrement())
-    title                      String
-    timeline                   Timeline          @relation(fields: [timelineId], references: [id])
-    timelineId                 Int
-    createdAt                  DateTime          @default(now())
+  id         Int      @id @default(autoincrement())
+  title      String
+  timeline   Timeline @relation(fields: [timelineId], references: [id])
+  timelineId Int
+  createdAt  DateTime @default(now())
 
-    @@map("prizes")
+  @@map("prizes")
 }
 
 model File {
-    id                         Int               @id @default(autoincrement())
-    image_url                  String
-    type                       String
-    createdAt                  DateTime          @default(now())
-    updatedAt                  DateTime          @updatedAt
+  id        Int      @id @default(autoincrement())
+  image_url String
+  type      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-    @@map("files")
+  @@map("files")
 }
 
 model Post {
-    id                         Int               @id @default(autoincrement())
-    userId    Int
-    user      User             @relation(fields: [userId], references: [id])
-    image                      String
-    type                       String
-    description                String            @db.LongText
-    status                     Int?              @default(0)
-    createdAt                  DateTime          @default(now())
-    updatedAt                  DateTime          @updatedAt
-    tags  PostTags[]
-    images PostImages[]
+  id          Int          @id @default(autoincrement())
+  userId      Int
+  user        User         @relation(fields: [userId], references: [id])
+  image       String
+  type        String
+  description String       @db.LongText
+  status      Int?         @default(0)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  tags        PostTags[]
+  images      PostImages[]
 
-    @@map("posts")
+  @@map("posts")
 }
 
 model PostTags {
@@ -114,156 +115,156 @@ model PostTags {
 }
 
 model PostImages {
-  id     Int   @id @default(autoincrement())
-  post   Post? @relation(fields: [postId], references: [id])
-  image  Image?  @relation(fields: [imageId], references: [id])
-  postId Int?
+  id      Int    @id @default(autoincrement())
+  post    Post?  @relation(fields: [postId], references: [id])
+  image   Image? @relation(fields: [imageId], references: [id])
+  postId  Int?
   imageId Int?
 }
 
 model Image {
-    id                         Int               @id @default(autoincrement())
-    title                      String
-    createdAt                  DateTime          @default(now())
-    posts PostImages[]
+  id        Int          @id @default(autoincrement())
+  title     String
+  createdAt DateTime     @default(now())
+  posts     PostImages[]
 
-    @@map("images")
+  @@map("images")
 }
 
 model Keyword {
-    id                         Int               @id @default(autoincrement())
-    name                       String
-    status                     Int?     @default(0)
-    createdAt                  DateTime          @default(now())
-    updatedAt                  DateTime          @updatedAt
+  id        Int      @id @default(autoincrement())
+  name      String
+  status    Int?     @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-    @@map("keywords")
+  @@map("keywords")
 }
 
 model Sponsor {
-    id                         Int               @id @default(autoincrement())
-    title                      String
-    website                    String
-    date_start                 String
-    date_end                   String?
-    image_url                  String?        @db.LongText
-    status                     Int?     @default(0)
-    createdAt                  DateTime          @default(now())
-    updatedAt                  DateTime          @updatedAt
+  id         Int      @id @default(autoincrement())
+  title      String
+  website    String
+  date_start String
+  date_end   String?
+  image_url  String?  @db.LongText
+  status     Int?     @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
-    @@map("sponsors")
+  @@map("sponsors")
 }
 
 model Category {
-    id                         Int               @id @default(autoincrement())
-    title                      String
-    createdAt                  DateTime          @default(now())
-    updatedAt                  DateTime          @updatedAt
-    players Player[]
-    @@map("categories")
+  id        Int      @id @default(autoincrement())
+  title     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  players   Player[]
+
+  @@map("categories")
 }
 
 model Club {
-    id                         Int               @id @default(autoincrement())
-    title                      String
-    image                      String?           @db.LongText
-    championship               Championship      @relation(fields: [championshipId], references: [id])
-    championshipId             Int
-    firstMatches               Match[]            @relation(name: "first_opponent")
-    secondMatches              Match[]            @relation(name: "second_opponent")
-    createdAt                  DateTime          @default(now())
+  id             Int          @id @default(autoincrement())
+  title          String
+  image          String?      @db.LongText
+  championship   Championship @relation(fields: [championshipId], references: [id])
+  championshipId Int
+  firstMatches   Match[]      @relation(name: "first_opponent")
+  secondMatches  Match[]      @relation(name: "second_opponent")
+  createdAt      DateTime     @default(now())
 
-    @@map("clubs")
+  @@map("clubs")
 }
 
 model Championship {
-    id                         Int               @id @default(autoincrement())
-    title                      String
-    createdAt                  DateTime          @default(now())
-    updatedAt                  DateTime          @updatedAt
-    matches                    Match[]
-    clubs Club[]
+  id        Int      @id @default(autoincrement())
+  title     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  matches   Match[]
+  clubs     Club[]
 
-    @@map("championships")
+  @@map("championships")
 }
 
 model Team {
-    id                         Int               @id @default(autoincrement())
-    title                      String
-    createdAt                  DateTime          @default(now())
-    updatedAt                  DateTime          @updatedAt
+  id        Int      @id @default(autoincrement())
+  title     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-    @@map("teams")
+  @@map("teams")
 }
 
 model Edition {
-    id                         Int               @id @default(autoincrement())
-    title                      String
-    createdAt                  DateTime          @default(now())
-    updatedAt                  DateTime?          @updatedAt
-    players Player[]
-    matches Match[]
+  id        Int       @id @default(autoincrement())
+  title     String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  players   Player[]
+  matches   Match[]
 
-    @@map("editions")
+  @@map("editions")
 }
 
 model History {
-    id                         Int               @id @default(autoincrement())
-    title                      String
-    image                      String?           @db.LongText
-    description                String?           @db.LongText
-    aligned                    String?           @db.LongText
-    createdAt                  DateTime          @default(now())
-    updatedAt                  DateTime          @updatedAt
+  id          Int      @id @default(autoincrement())
+  title       String
+  image       String?  @db.LongText
+  description String?  @db.LongText
+  aligned     String?  @db.LongText
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-    @@map("histories")
+  @@map("histories")
 }
 
 model Match {
-    id                         Int               @id @default(autoincrement())
-    dateTime                   DateTime?
-    link                       String?           @db.LongText
-    edition                    Edition           @relation(fields: [editionId], references: [id])
-    editionId                  Int
-    championship               Championship      @relation(fields: [championshipId], references: [id])
-    championshipId             Int
-    club_firstId               Int
-    club_secondId              Int
-    clubFirst                  Club              @relation(fields: [club_firstId], references: [id], name: "first_opponent")
-    clubSecond                 Club              @relation(fields: [club_secondId], references: [id], name: "second_opponent")
-    createdAt                  DateTime          @default(now())
-    score_first                Int?
-    score_second               Int?
-    location                   String?           @db.LongText
+  id             Int          @id @default(autoincrement())
+  dateTime       DateTime?
+  link           String?      @db.LongText
+  edition        Edition      @relation(fields: [editionId], references: [id])
+  editionId      Int
+  championship   Championship @relation(fields: [championshipId], references: [id])
+  championshipId Int
+  club_firstId   Int
+  club_secondId  Int
+  clubFirst      Club         @relation(fields: [club_firstId], references: [id], name: "first_opponent")
+  clubSecond     Club         @relation(fields: [club_secondId], references: [id], name: "second_opponent")
+  createdAt      DateTime     @default(now())
+  score_first    Int?
+  score_second   Int?
+  location       String?      @db.LongText
 
-    @@map("matchs")
+  @@map("matchs")
 }
 
 model Rank {
-    id                         Int               @id @default(autoincrement())
-    position                   Int
-    image                      String?        @db.LongText
-    points                     Int
-    played                     Int
-    wins                       Int
-    losings                    Int
-    winnedSets                 Int
-    losedSets                  Int
-    winnedPoints               Int
-    losedPoints                Int
+  id           Int     @id @default(autoincrement())
+  position     Int
+  image        String? @db.LongText
+  points       Int
+  played       Int
+  wins         Int
+  losings      Int
+  winnedSets   Int
+  losedSets    Int
+  winnedPoints Int
+  losedPoints  Int
 
-    @@map("ranks")
+  @@map("ranks")
 }
 
 model Tag {
-    id                         Int               @id @default(autoincrement())
-    title                      String
-    createdAt                  DateTime          @default(now())
-    posts PostTags[]
+  id        Int        @id @default(autoincrement())
+  title     String
+  createdAt DateTime   @default(now())
+  posts     PostTags[]
 
-    @@map("tags")
+  @@map("tags")
 }
-
 
 // o entittate editie, cand adaugi un jucator trebuei sa poti sa il atribui la o anumita editie.
 //editie: id , titlu (2023-20224).
