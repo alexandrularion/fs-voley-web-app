@@ -6,6 +6,7 @@ export type THistory = {
   description: string;
   createdAt: string;
   updatedAt: string;
+  order: number;
   key?: string;
 };
 

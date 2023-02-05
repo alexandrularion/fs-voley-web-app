@@ -5,7 +5,13 @@ import prisma from '../../../../lib/prisma';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     if (req.method == 'GET') {
-      const histories = await prisma.history.findMany();
+      const histories = await prisma.history.findMany({
+        orderBy: [
+          {
+            order: 'asc',
+          },
+        ],
+      });
 
       return res.status(200).json(histories);
     } else {

@@ -1,11 +1,21 @@
 import { Button, Flex, Input, InputGroup, InputLeftAddon, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Textarea, Tooltip } from '@chakra-ui/react';
 import { FormApi } from 'final-form';
+import { nanoid } from 'nanoid';
+import { useMemo } from 'react';
 import { Field, Form } from 'react-final-form';
 import { convertFileToBase64URL } from '../../utils';
 import { IFormModal } from '../shared/Interfaces';
 import { CustomValidation } from '../shared/Validations';
 
 const HistoryCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLoading, onSubmitHandler, initialValues }) => {
+  const orderOptions = useMemo(
+    () =>
+      Array(30)
+        .fill(1)
+        .map((_, index: number) => ({ key: nanoid(), value: index })),
+    []
+  );
+
   return (
     <Modal {...{ isOpen, onClose, blockScrollOnMount: true, isCentered: true, closeOnOverlayClick: !isLoading, size: '4xl' }}>
       <ModalOverlay />
@@ -130,6 +140,36 @@ const HistoryCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLoadin
                                 {<option {...{ value: 'left' }}>{'La stânga'}</option>}
                                 {<option {...{ value: 'center' }}>{'În centru'}</option>}
                                 {<option {...{ value: 'right' }}>{'La dreapta'}</option>}
+                              </Select>
+                            </InputGroup>
+                          </Tooltip>
+                        ),
+                      }}
+                    />
+                    <Field
+                      {...{
+                        name: 'order',
+                        render: ({ input, meta: { touched, error } }) => (
+                          <Tooltip {...{ label: touched && error ? error : '' }}>
+                            <InputGroup>
+                              <InputLeftAddon {...{ children: 'Ordinea', w: '140px' }} />
+                              <Select
+                                {...{
+                                  isInvalid: touched && error,
+                                  placeholder: 'Alegeti numarul de ordine',
+                                  ...input,
+                                  borderTopLeftRadius: 0,
+                                  borderBottomLeftRadius: 0,
+                                  _placeholder: {
+                                    color: 'var(--grey-alpha-3)',
+                                  },
+                                }}
+                              >
+                                {orderOptions?.map(({ key, value }) => (
+                                  <option key={key} {...{ value }}>
+                                    {value}
+                                  </option>
+                                ))}
                               </Select>
                             </InputGroup>
                           </Tooltip>

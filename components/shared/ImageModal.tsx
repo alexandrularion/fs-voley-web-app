@@ -33,7 +33,7 @@ const Container = styled.div`
 
   .im-image {
     width: 100%;
-    height: max-content;
+    height: 60vh;
     object-fit: cover;
   }
 `;

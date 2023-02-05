@@ -20,9 +20,10 @@ const HistoryHeader: React.FC = () => {
   const { onClose, isOpen, onOpen } = useDisclosure();
 
   const onSubmitHandler = async (values: object, form: FormApi) => {
+    const { order } = values as THistory;
     setIsLoading(true);
     try {
-      const { data } = await createHistory(values as THistory);
+      const { data } = await createHistory({ ...values, order: Number(order) } as THistory);
       const { id, updatedAt } = data as THistory;
       setHistories([...histories, { ...values, updatedAt: new Date(updatedAt).toISOString(), id } as THistory]);
       toast('Felicitari! Continutul a fost adaugat cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });

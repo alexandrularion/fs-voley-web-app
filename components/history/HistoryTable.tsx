@@ -27,9 +27,11 @@ const HistoryTable: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const onSubmitHandler = async (values: object, form: FormApi) => {
+    const { order } = values as THistory;
+
     setIsLoading(true);
     try {
-      await updateHistory(history?.id!, values as THistory);
+      await updateHistory(history?.id!, { ...values, order: Number(order) } as THistory);
       setHistories(histories.map(({ id, ...obj }) => (id === history?.id ? { ...(values as THistory), id } : { ...obj, id })));
       toast('Felicitari! Continutul a fost actualizat cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
       cuModal.onClose();
@@ -67,9 +69,9 @@ const HistoryTable: React.FC = () => {
           <Flex
             {...{
               cursor: 'pointer',
-              justifyContent: 'center',
+              justifyContent: 'flex-start',
               gap: 'var(--gap-xs)',
-              alignItems: 'center',
+              alignItems: 'flex-start',
               onClick: async () => {
                 setHistory(original);
                 iModal.onOpen();
@@ -107,9 +109,19 @@ const HistoryTable: React.FC = () => {
         ),
       },
       {
+        Header: 'Titlul',
+        accessor: 'title',
+        Cell: ({ row: { original } }: CellValue) => <Flex {...{ maxW: '100px', whiteSpace: 'pre-line' }}>{original.title}</Flex>,
+      },
+      {
         Header: 'Aliniat',
         accessor: 'aligned',
         Cell: ({ row: { original } }: CellValue) => <Flex>{original.aligned === 'left' ? 'La stânga' : original.aligned === 'right' ? 'La dreapta' : 'În centru'}</Flex>,
+      },
+      {
+        Header: 'Numar ordine',
+        accessor: 'order',
+        Cell: ({ row: { original } }: CellValue) => original.order,
       },
       {
         Header: 'Actualizat la',
