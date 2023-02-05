@@ -84,7 +84,7 @@ const SponsorsHeader: React.FC<ISponsorsHeader> = ({ isUsedInAdminPage = false }
               )}
               {!isUsedInAdminPage && (
                 <Link {...{ href: adminRoutes.sponsors.url }}>
-                  <Button {...{ variant: 'solid', colorScheme: 'whiteAlpha', color: 'var(--black-color)', background: 'var(--white-color)' }}>{'Gestioneaza sponsori'}</Button>
+                  <Button {...{ variant: 'solid', colorScheme: 'whiteAlpha', color: 'var(--black-color)', background: 'var(--white-color)' }}>{'Gestionează sponsori'}</Button>
                 </Link>
               )}
             </>

@@ -1,11 +1,12 @@
 import { GetServerSidePropsContext, NextPage } from 'next';
-import { getSession } from 'next-auth/react';
+import Layout from '../../components/shared/Layout';
 import { useEffect } from 'react';
-import HistoryList from '../components/history/HistoryList';
-import { IHistoryPage } from '../components/history/Interfaces';
-import Layout from '../components/shared/Layout';
-import { useHistories } from '../context/ContextHistory';
-import { getAllHistory } from '../services/History.service';
+import { getSession } from 'next-auth/react';
+import { getAllHistory } from '../../services/History.service';
+import HistoryHeader from '../../components/history/HistoryHeader';
+import { useHistories } from '../../context/ContextHistory';
+import { IHistoryPage } from '../../components/history/Interfaces';
+import HistoryTable from '../../components/history/HistoryTable';
 
 const HistoryPage: NextPage<IHistoryPage> = ({ data }) => {
   const { setHistories } = useHistories();
@@ -15,8 +16,9 @@ const HistoryPage: NextPage<IHistoryPage> = ({ data }) => {
   }, [data, setHistories]);
 
   return (
-    <Layout>
-      <HistoryList />
+    <Layout {...{ bgColor: 'var(--grey-alpha-100)' }}>
+      <HistoryHeader />
+      <HistoryTable />
     </Layout>
   );
 };

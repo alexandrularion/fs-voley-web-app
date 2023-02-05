@@ -16,7 +16,7 @@ export const navigationRoutes = {
     url: '/team',
   },
   history: {
-    title: 'Istoric',
+    title: 'Istoric Club',
     url: '/history',
   },
   sponsors: {
@@ -59,5 +59,9 @@ export const adminRoutes = {
   blog: {
     title: 'Noutăti',
     url: '/a/blog',
+  },
+  history: {
+    title: 'Istoric Club',
+    url: '/a/history',
   },
 };
