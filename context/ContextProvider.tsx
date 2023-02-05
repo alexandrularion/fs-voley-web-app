@@ -1,3 +1,4 @@
+import { BlogArticleProvider } from './ContextBlogArticle';
 import { ChampionshipsProvider } from './ContextChampionship';
 import { ClubsProvider } from './ContextClub';
 import { combineComponents } from './ContextCombiner';
@@ -23,6 +24,7 @@ const providers = [
   TeamEditionsProvider,
   TeamCoachesProvider,
   HistoriesProvider,
+  BlogArticleProvider,
 ];
 
 export const AppContextProvider = combineComponents(...providers);

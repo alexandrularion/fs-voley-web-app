@@ -85,12 +85,12 @@ export const getStaticPaths = async () => {
     const { data } = await getAllPlayersIds();
     return {
       paths: data.map(({ id }: { id: number }) => ({ params: { id: String(id) } })),
-      fallback: false,
+      fallback: 'blocking',
     };
   } catch (e) {
     return {
       paths: [],
-      fallback: false,
+      fallback: 'blocking',
     };
   }
 };
