@@ -9,13 +9,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (session == null) {
         return res.status(401).json({ message: 'Unauthorized' });
       }
-      const { title, image, description, aligned } = req.body;
+      const { title, image, description, aligned, order } = req.body;
       const history = await prisma.history.create({
         data: {
           title: title,
           image: image,
           description: description,
           aligned: aligned,
+          order: order,
         },
       });
 

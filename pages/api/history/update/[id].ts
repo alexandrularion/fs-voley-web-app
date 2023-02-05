@@ -10,7 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(401).json({ message: 'Unauthorized' });
       }
       const { id } = req.query;
-      const { title, image, description, aligned } = req.body;
+      const { title, image, description, aligned, order } = req.body;
       await prisma.history.update({
         where: { id: Number(id) },
         data: {
@@ -18,6 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           image: image,
           description: description,
           aligned: aligned,
+          order: order,
         },
       });
       return res.status(200).json({ message: 'The team was updated!' });

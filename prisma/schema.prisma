@@ -215,6 +215,7 @@ model History {
   image       String?  @db.LongText
   description String?  @db.LongText
   aligned     String?  @db.LongText
+  order       Int?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
