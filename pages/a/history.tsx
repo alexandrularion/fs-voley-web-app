@@ -28,8 +28,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   try {
     const session = await getSession(ctx);
     const { data } = await getAllHistory();
-
-    console.log(data);
     return {
       props: {
         session,

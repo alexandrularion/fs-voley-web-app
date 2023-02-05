@@ -5,16 +5,18 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { ToastContainer } from 'react-toastify';
 import { SessionProvider } from 'next-auth/react';
 import { AppContextProvider } from '../context/ContextProvider';
+import NextNProgress from 'nextjs-progressbar';
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
-    <AppContextProvider>
-      <SessionProvider {...{ session, refetchOnWindowFocus: true, refetchInterval: 3000 }}>
+    <SessionProvider {...{ session, refetchOnWindowFocus: true, refetchInterval: 3000 }}>
+      <AppContextProvider>
+        <NextNProgress {...{ showOnShallow: true, color: 'var(--blue-600)', height: 3 }} />
         <ChakraProvider>
           <Component {...pageProps} />
           <ToastContainer />
         </ChakraProvider>
-      </SessionProvider>
-    </AppContextProvider>
+      </AppContextProvider>
+    </SessionProvider>
   );
 }
