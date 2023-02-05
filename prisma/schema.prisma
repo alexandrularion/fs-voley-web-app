@@ -38,28 +38,47 @@ model Trainers {
 }
 
 model Player {
-  id          Int      @id @default(autoincrement())
+  id          Int        @id @default(autoincrement())
   first_name  String
   last_name   String
-  description String?  @db.LongText
+  description String?    @db.LongText
   height      Float
   position    String?
   shirtNumber Int?
   birthday    DateTime
   nationality String?
-  category    Category @relation(fields: [categoryId], references: [id])
+  category    Category   @relation(fields: [categoryId], references: [id])
   categoryId  Int
-  edition     Edition  @relation(fields: [editionId], references: [id])
+  edition     Edition    @relation(fields: [editionId], references: [id])
   editionId   Int
   slug        String?
-  image       String?  @db.LongText
-  createdAt   DateTime @default(now())
+  image       String?    @db.LongText
+  createdAt   DateTime   @default(now())
+  timelines   Timeline[]
 
   @@map("players")
 }
 
-// timeline
-// prizes
+model Timeline {
+  id          Int      @id @default(autoincrement())
+  description String
+  player      Player   @relation(fields: [playerId], references: [id])
+  playerId    Int
+  createdAt   DateTime @default(now())
+  prizes      Prize[]
+
+  @@map("teamlines")
+}
+
+model Prize {
+  id         Int      @id @default(autoincrement())
+  title      String
+  timeline   Timeline @relation(fields: [timelineId], references: [id])
+  timelineId Int
+  createdAt  DateTime @default(now())
+
+  @@map("prizes")
+}
 
 model File {
   id        Int      @id @default(autoincrement())
@@ -195,6 +214,7 @@ model History {
   title       String
   image       String?  @db.LongText
   description String?  @db.LongText
+  aligned     String?  @db.LongText
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
