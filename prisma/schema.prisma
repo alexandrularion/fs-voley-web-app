@@ -53,11 +53,31 @@ model Player {
   slug                       String?
   image                      String?        @db.LongText
   createdAt                  DateTime       @default(now())
+  timelines                  Timeline[]
+
   @@map("players")
 }
 
-// timeline
-// prizes
+model Timeline {
+    id                         Int               @id @default(autoincrement())
+    description                String
+    player                     Player @relation(fields: [playerId], references: [id])
+    playerId                   Int
+    createdAt                  DateTime          @default(now())
+    prizes                     Prize[]
+
+    @@map("teamlines")
+}
+
+model Prize {
+    id                         Int               @id @default(autoincrement())
+    title                      String
+    timeline                   Timeline          @relation(fields: [timelineId], references: [id])
+    timelineId                 Int
+    createdAt                  DateTime          @default(now())
+
+    @@map("prizes")
+}
 
 model File {
     id                         Int               @id @default(autoincrement())
@@ -191,7 +211,8 @@ model History {
     id                         Int               @id @default(autoincrement())
     title                      String
     image                      String?           @db.LongText
-    description                String?             @db.LongText
+    description                String?           @db.LongText
+    aligned                    String?           @db.LongText
     createdAt                  DateTime          @default(now())
     updatedAt                  DateTime          @updatedAt
 
