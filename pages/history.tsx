@@ -2,6 +2,7 @@ import { GetServerSidePropsContext, NextPage } from 'next';
 import { getSession } from 'next-auth/react';
 import { useEffect } from 'react';
 import HistoryList from '../components/history/HistoryList';
+import HistoryShortHeader from '../components/history/HistoryShortHeader';
 import { IHistoryPage } from '../components/history/Interfaces';
 import Layout from '../components/shared/Layout';
 import { useHistories } from '../context/ContextHistory';
@@ -16,6 +17,7 @@ const HistoryPage: NextPage<IHistoryPage> = ({ data }) => {
 
   return (
     <Layout>
+      <HistoryShortHeader />
       <HistoryList />
     </Layout>
   );

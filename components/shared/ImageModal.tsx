@@ -7,14 +7,14 @@ import { IImageModal } from './Interfaces';
 const ImageModal: React.FC<IImageModal> = ({ isOpen, onClose, title, image, createdAt }) => {
   const memoizedCreatedAt: string = useMemo(() => getHumanDate(new Date(createdAt)), [createdAt]);
   return (
-    <Modal {...{ isOpen, onClose, blockScrollOnMount: true, isCentered: true }}>
+    <Modal {...{ isOpen, onClose, blockScrollOnMount: true, isCentered: true, size: '3xl' }}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{title}</ModalHeader>
         <ModalBody {...{ textAlign: 'center' }}>
           <Container>
-            <Image {...{ src: image, alt: title, height: 450 }} />
-            <Text>{`Actualizat ${memoizedCreatedAt}`}</Text>
+            <Image {...{ src: image, alt: title, width: 500, height: 500, className: 'im-image' }} />
+            <Text {...{ textAlign: 'left' }}>{`Actualizat ${memoizedCreatedAt}`}</Text>
           </Container>
         </ModalBody>
         <ModalFooter>
@@ -29,11 +29,11 @@ export default ImageModal;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: var(--gap-sm);
+  gap: var(--gap-xl);
 
-  img {
-    width: max-content;
+  .im-image {
+    width: 100%;
+    height: max-content;
+    object-fit: cover;
   }
 `;

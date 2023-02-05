@@ -4,8 +4,8 @@ import { useMemo, useState } from 'react';
 import { CellValue } from 'react-table';
 import Image from 'next/image';
 import CommonTable from '../shared/Table';
-import { Box, Flex, useDisclosure } from '@chakra-ui/react';
-import { PenIcon, TrashIcon } from '../../styles/Icons';
+import { Box, Flex, Text, useDisclosure } from '@chakra-ui/react';
+import { EyeIcon, PenIcon, TrashIcon } from '../../styles/Icons';
 import DeleteModal from '../shared/DeleteModal';
 import { toast } from 'react-toastify';
 import { FormApi } from 'final-form';
@@ -14,11 +14,15 @@ import { useHistories } from '../../context/ContextHistory';
 import { deleteHistory, updateHistory } from '../../services/History.service';
 import EmptyState from '../shared/EmptyState';
 import HistoryCUModal from './HistoryCUModal';
+import ImageModal from '../shared/ImageModal';
+import TeamCommonDModal from '../team/TeamCommonDModal';
 
 const HistoryTable: React.FC = () => {
   const { histories, setHistories } = useHistories();
   const deleteModal = useDisclosure();
   const cuModal = useDisclosure();
+  const iModal = useDisclosure();
+  const dModal = useDisclosure();
   const [history, setHistory] = useState<THistory>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -54,33 +58,65 @@ const HistoryTable: React.FC = () => {
       {
         Header: 'Id',
         accessor: 'id',
-        Cell: ({ row: { original } }: CellValue) => <> {original.id ? `#${original.id}` : ''}</>,
+        Cell: ({ row: { original } }: CellValue) => <> {original.id ? `#${original.id}` : '-'}</>,
       },
       {
         Header: 'Imagine',
         accessor: 'image',
-        Cell: ({ row: { original } }: CellValue) => <Image {...{ src: original.image, width: 200, height: 100, alt: 'Continut', style: { height: 'max-content', width: '200px' } }} />,
+        Cell: ({ row: { original } }: CellValue) => (
+          <Flex
+            {...{
+              cursor: 'pointer',
+              justifyContent: 'center',
+              gap: 'var(--gap-xs)',
+              alignItems: 'center',
+              onClick: async () => {
+                setHistory(original);
+                iModal.onOpen();
+              },
+            }}
+          >
+            <Image {...{ src: original.image, width: 200, height: 100, alt: 'Continut', style: { width: 'max-content', height: '100px' } }} />
+          </Flex>
+        ),
       },
       {
         Header: 'Descriere',
         accessor: 'description',
-        Cell: ({ row: { original } }: CellValue) => original.description,
+        Cell: ({ row: { original } }: CellValue) => (
+          <Flex
+            {...{
+              cursor: 'pointer',
+              justifyContent: 'flex-start',
+              gap: 'var(--gap-xs)',
+              alignItems: 'center',
+              onClick: async () => {
+                setHistory(original);
+                dModal.onOpen();
+              },
+            }}
+          >
+            <EyeIcon
+              {...{
+                size: '20px',
+                color: 'var(--grey-alpha-600)',
+              }}
+            />
+            Vezi descrierea
+          </Flex>
+        ),
       },
       {
         Header: 'Aliniat',
         accessor: 'aligned',
-        Cell: ({ row: { original } }: CellValue) => original.aligned,
+        Cell: ({ row: { original } }: CellValue) => <Flex>{original.aligned === 'left' ? 'La stânga' : original.aligned === 'right' ? 'La dreapta' : 'În centru'}</Flex>,
       },
       {
-        Header: 'Campionat',
-        accessor: 'championship',
-        Cell: ({ row: { original } }: CellValue) => original.championship.title,
-      },
-      {
-        Header: 'Creat la',
-        accessor: 'createdAt',
-        Cell: ({ row: { original } }: CellValue) =>
-          new Date(original.createdAt).toLocaleDateString('ro-RO', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' }),
+        Header: 'Actualizat la',
+        accessor: 'updatedAt',
+        Cell: ({ row: { original } }: CellValue) => (
+          <Text>{new Date(original.updatedAt).toLocaleDateString('ro-RO', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })}</Text>
+        ),
       },
       {
         Header: 'Actiuni',
@@ -119,7 +155,7 @@ const HistoryTable: React.FC = () => {
         ),
       },
     ],
-    [deleteModal, cuModal]
+    [deleteModal, cuModal, iModal, dModal]
   );
 
   return (
@@ -146,6 +182,23 @@ const HistoryTable: React.FC = () => {
           initialValues: {
             ...history!,
           },
+        }}
+      />
+      <TeamCommonDModal
+        {...{
+          isOpen: dModal.isOpen,
+          onClose: dModal.onClose,
+          title: `Descriere - ${history?.title}`,
+          description: history?.description!,
+        }}
+      />
+      <ImageModal
+        {...{
+          isOpen: iModal.isOpen,
+          onClose: iModal.onClose,
+          title: `Vizualiare Continut Imagine - ${history?.title}`,
+          image: history?.image!,
+          createdAt: history?.createdAt!,
         }}
       />
     </Container>

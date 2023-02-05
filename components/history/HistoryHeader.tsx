@@ -23,8 +23,8 @@ const HistoryHeader: React.FC = () => {
     setIsLoading(true);
     try {
       const { data } = await createHistory(values as THistory);
-      const { id } = data as THistory;
-      setHistories([...histories, { ...values, id } as THistory]);
+      const { id, updatedAt } = data as THistory;
+      setHistories([...histories, { ...values, updatedAt: new Date(updatedAt).toISOString(), id } as THistory]);
       toast('Felicitari! Continutul a fost adaugat cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
       onClose();
       form.reset();

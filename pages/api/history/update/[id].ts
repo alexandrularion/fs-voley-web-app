@@ -11,7 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
       const { id } = req.query;
       const { title, image, description, aligned } = req.body;
-      await prisma.history.update({
+      const data = await prisma.history.update({
         where: { id: Number(id) },
         data: {
           title: title,
@@ -20,7 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           aligned: aligned,
         },
       });
-      return res.status(200).json({ message: 'The team was updated!' });
+      return res.status(200).json(data);
     } else {
       res.status(405).json({ message: 'Method Not Allowed' });
     }
@@ -29,3 +29,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.status(500).json({ message: e });
   }
 }
+
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '6mb', // Set desired value here
+    },
+  },
+};

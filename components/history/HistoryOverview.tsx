@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Text } from '@chakra-ui/react';
+import { Flex, Heading, Text } from '@chakra-ui/react';
 import Image from 'next/dist/client/image';
 import styled from 'styled-components';
 import { LayoutContainer } from '../shared/Layout';
@@ -6,23 +6,23 @@ import { IHistoryOverview } from './Interfaces';
 
 const HistoryOverview: React.FC<IHistoryOverview> = ({ data: { image, description, title, aligned } }) => {
   return (
-    <Container>
+    <Container {...{ aligned }}>
       <LayoutContainer {...{ className: 'ho-layout-container' }}>
         {aligned === 'left' || aligned === 'right' ? (
-          <Box {...{ display: 'grid', gridTemplateColumns: 'repeat(2,auto)', gap: 'var(--gap-md)' }}>
-            <Image {...{ src: image, alt: title, width: 1000, height: 1000 }} />
+          <Flex {...{ gap: 'var(--gap-xl)', flexDirection: aligned === 'right' ? 'row-reverse' : 'row', justifyContent: 'center', alignItems: 'center' }}>
+            <Image {...{ src: image, alt: title, width: 1000, height: 1000, className: 'ho-img-lr' }} />
             <Flex {...{ flexDirection: 'column', gap: 'var(--gap-md)' }}>
-              <Heading>{title}</Heading>
-              <Text>{description}</Text>
+              <Heading {...{ fontSize: 'var(--heading-sm)', color: 'var(--black-color)' }}>{title}</Heading>
+              <Text {...{ whiteSpace: 'pre-line', fontSize: 'var(--text-sm)', color: 'var(--grey-alpha-600)' }}>{description}</Text>
             </Flex>
-          </Box>
+          </Flex>
         ) : (
-          <Flex {...{ flexDirection: 'column', gap: '50px' }}>
+          <Flex {...{ flexDirection: 'column', gap: '50px', justifyContent: 'center', alignItems: 'center' }}>
             <Flex {...{ flexDirection: 'column', gap: 'var(--gap-md)', justifyContent: 'center', alignItems: ' center' }}>
               <Heading>{title}</Heading>
-              <Text>{description}</Text>
+              <Text {...{ whiteSpace: 'pre-line', textAlign: 'center' }}>{description}</Text>
             </Flex>
-            <Image {...{ src: image, alt: title, width: 1000, height: 1000 }} />
+            <Image {...{ src: image, alt: title, width: 1000, height: 1000, className: 'ho-img-c' }} />
           </Flex>
         )}
       </LayoutContainer>
@@ -32,10 +32,21 @@ const HistoryOverview: React.FC<IHistoryOverview> = ({ data: { image, descriptio
 
 export default HistoryOverview;
 
-const Container = styled.div`
+const Container = styled.div<{ aligned: 'left' | 'center' | 'right' }>`
   display: flex;
   justify-content: center;
+  padding: 75px 0;
+  background: ${({ aligned }) => (aligned === 'left' ? 'var(--blue-600)' : aligned === 'right' ? 'var(--grey-alpha-100)' : 'var(--white-color)')};
+  width: 100%;
 
   .ho-layout-container {
+    .ho-img-lr {
+      width: 45vw;
+      height: max-content;
+    }
+    .ho-img-c {
+      width: 70vw;
+      height: max-content;
+    }
   }
 `;

@@ -50,7 +50,7 @@ const HistoryCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLoadin
                                     padding: '7px',
                                     position: 'absolute',
                                     background: 'var(--white-color)',
-                                    color: values?.logo ? 'var(--black-color)' : 'var(--grey-alpha-600)',
+                                    color: values?.image ? 'var(--black-color)' : 'var(--grey-alpha-600)',
                                   },
                                   sx: {
                                     '::file-selector-button': {
@@ -80,7 +80,7 @@ const HistoryCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLoadin
                                   ...input,
                                   type: 'text',
                                   isInvalid: touched && error,
-                                  placeholder: 'Introduceti numele companiei',
+                                  placeholder: 'Introduceti un titlu',
                                 }}
                               />
                             </InputGroup>
@@ -91,7 +91,7 @@ const HistoryCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLoadin
                     <Field
                       {...{
                         name: 'description',
-                        validate: (value: string) => CustomValidation(value, 'Continutul'),
+                        validate: (value: string) => CustomValidation(value, 'Descrierea continutului'),
                         render: ({ input, meta: { touched, error } }) => (
                           <Tooltip {...{ label: touched && error ? error : '' }}>
                             <InputGroup>
@@ -113,7 +113,7 @@ const HistoryCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLoadin
                     <Field
                       {...{
                         name: 'aligned',
-                        validate: (value: string) => CustomValidation(value, 'Pozitia'),
+                        validate: (value: string) => CustomValidation(value, 'Alinatul'),
                         render: ({ input, meta: { touched, error } }) => (
                           <Tooltip {...{ label: touched && error ? error : '' }}>
                             <InputGroup>
@@ -144,7 +144,7 @@ const HistoryCUModal: React.FC<IFormModal> = ({ isOpen, onClose, title, isLoadin
         </ModalBody>
         <ModalFooter>
           <Button {...{ onClick: onClose, mr: 3, variant: 'outline', disabled: isLoading }}>Inchide</Button>
-          <Button {...{ variant: 'solid', background: 'var(--blue-600)', color: 'var(--white-color)', colorScheme: 'blue', type: 'submit', form: 'sponsors-cu-modal', disabled: isLoading, isLoading }}>
+          <Button {...{ variant: 'solid', background: 'var(--blue-600)', color: 'var(--white-color)', colorScheme: 'blue', type: 'submit', form: 'history-cu-modal', disabled: isLoading, isLoading }}>
             {'Salveaza'}
           </Button>
         </ModalFooter>

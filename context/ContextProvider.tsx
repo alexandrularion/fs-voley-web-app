@@ -1,6 +1,7 @@
 import { ChampionshipsProvider } from './ContextChampionship';
 import { ClubsProvider } from './ContextClub';
 import { combineComponents } from './ContextCombiner';
+import { HistoriesProvider } from './ContextHistory';
 import { MatchesProvider } from './ContextMatch';
 import { SponsorsProvider } from './ContextSponsors';
 import { TabProvider } from './ContextTab';
@@ -21,6 +22,7 @@ const providers = [
   TeamCategoriesProvider,
   TeamEditionsProvider,
   TeamCoachesProvider,
+  HistoriesProvider,
 ];
 
 export const AppContextProvider = combineComponents(...providers);

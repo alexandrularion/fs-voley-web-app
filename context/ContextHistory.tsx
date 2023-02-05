@@ -17,7 +17,7 @@ export const HistoriesProvider: React.FC<ICommonCtx> = ({ children }) => {
 export const useHistories = () => {
   const context = useContext(HistoriesContext);
   if (context === undefined) {
-    throw new Error('useSponsors must be used within a SponsorsProvider');
+    throw new Error('useHistories must be used within a HistoriesProvider');
   }
   return context;
 };
