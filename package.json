@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.264.0",
     "@chakra-ui/react": "^2.4.0",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
@@ -23,6 +24,7 @@
     "cookies-next": "^2.1.1",
     "final-form": "^4.20.7",
     "formidable": "^2.1.1",
+    "formidable-serverless": "^1.1.1",
     "framer-motion": "^7.6.6",
     "jsonwebtoken": "^9.0.0",
     "micro": "^10.0.1",
