@@ -10,6 +10,7 @@ export type IUrl = {
 export interface ILayout {
   children: any;
   bgColor?: string;
+  isUsedOnOverlay?: boolean;
 }
 
 export type ITab = { tabId: number; title: string; key?: string; href?: string; value: number | string };
@@ -26,6 +27,8 @@ export interface ICommonTable {
   columns: Column<object>[];
   data: object[];
   filter?: TTableFilter;
+  isFooterVisible?: boolean;
+  className?: string;
 }
 
 export interface IModal {
@@ -61,3 +64,7 @@ export type TDisplayData = {
   description: string;
   key: string;
 };
+
+export interface INavigation {
+  isUsedOnOverlay?: boolean;
+}

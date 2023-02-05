@@ -1,46 +1,55 @@
-import { Box, Flex, Heading, Text } from '@chakra-ui/react';
+import { Flex, Heading } from '@chakra-ui/react';
 import styled from 'styled-components';
+import { navigationRoutes } from '../../constants/Navigation';
+import { ArrowRightIcon } from '../../styles/Icons';
+import { LayoutContainer } from '../shared/Layout';
+import { IHomeSponsors } from './Interfaces';
+import Link from 'next/link';
+import Image from 'next/image';
+import { useMemo } from 'react';
+import { nanoid } from 'nanoid';
 
-const HomeHero = () => {
+const HomeSponsors: React.FC<IHomeSponsors> = ({ sponsors }) => {
+  const data = useMemo(() => sponsors?.map((obj) => ({ ...obj, key: nanoid() })), [sponsors]);
+
   return (
     <Container>
-      <Box {...{ w: '100%', h: 'calc(100vh - 90px)' }}>
-        <Flex {...{ zIndex: 'var(--z-index-5)', position: 'relative' }}>
-          <Heading {...{ color: 'var(--white-color)' }}>{'Some heading'}</Heading>
-          <Text {...{ color: 'var(--grey-alpha-100)' }}> {'text'}</Text>
+      <LayoutContainer {...{ className: 'ht-layout-container' }}>
+        <Flex {...{ justifyContent: 'space-between', w: '100%', alignItems: 'center' }}>
+          <Heading {...{ fontSize: 'var(--heading-xs)', color: 'var(--blue-600)' }}>{'Sponsorii noștrii'}</Heading>
+          <Link {...{ href: navigationRoutes.sponsors.url }}>
+            <Flex {...{ color: 'var(--blue-400)', gap: 'var(--gap-sm)', as: 'button', alignItems: 'center' }}>
+              {'Vezi mai mult'} <ArrowRightIcon {...{ color: 'var(--blue-400)', size: '22px' }} />
+            </Flex>
+          </Link>
         </Flex>
-        <video {...{ controls: false, autoPlay: true, loop: true, preload: 'auto', muted: true }}>
-          <source {...{ src: '/assets/hero-video.mp4', type: 'video/mp4' }} />
-          {'Your browser does not support the video tag.'}
-        </video>
-      </Box>
+        <Flex {...{ gap: 'var(--gap-xl)', alignItems: 'center', wrap: 'wrap' }}>
+          {data?.map(({ logo, title, key, site }) => (
+            <Link key={key} {...{ href: site, target: '_blank' }}>
+              <Image {...{ src: logo, width: 200, height: 200, alt: title }} />
+            </Link>
+          ))}
+        </Flex>
+      </LayoutContainer>
     </Container>
   );
 };
-export default HomeHero;
+export default HomeSponsors;
 
 const Container = styled.div`
   display: flex;
-  flex-direction: column;
-  position: relative;
+  justify-content: center;
+  background-color: var(--grey-alpha-50);
+  padding: 75px 0;
 
-  video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    z-index: var(--z-index-1);
-    object-fit: cover;
-  }
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(180deg, rgba(22, 77, 229, 0.5) 0%, rgba(2, 24, 123, 0.5) 100%);
-    z-index: var(--z-index-2);
+  .ht-layout-container {
+    flex-direction: column;
+    gap: var(--gap-xl);
+    align-items: flex-start;
+
+    img {
+      height: 100px;
+      width: auto;
+    }
   }
 `;

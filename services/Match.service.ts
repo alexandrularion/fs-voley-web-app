@@ -12,6 +12,12 @@ const getAllFeatureMatches = () => {
   return axiosConfigJSON.get('/match/get/feature');
 };
 
+const getFirstFutureMatch = () => {
+  return axiosConfigJSON.get('/match/get/fs');
+};
+const getFirstLatestMatch = () => {
+  return axiosConfigJSON.get('/match/get/ls');
+};
 const getAllLatestMatches = () => {
   return axiosConfigJSON.get('/match/get/latest');
 };
@@ -70,6 +76,8 @@ export {
   getAllMatches,
   getAllFeatureMatches,
   getAllLatestMatches,
+  getFirstFutureMatch,
+  getFirstLatestMatch,
   deleteMatch,
   createMatch,
   updateMatch,

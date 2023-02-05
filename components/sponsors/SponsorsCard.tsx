@@ -12,8 +12,8 @@ const SponsorsCard: React.FC<ISponsorsCard> = ({ title, logo, site, startDate, e
       </Flex>
       <Box {...{ display: 'grid', gridTemplateRows: '80px max-content max-content', padding: '40px 25px', gap: 'var(--gap-xs)' }}>
         <Heading {...{ fontSize: 'var(--heading-sm)', color: 'var(--blue-600)', w: '100%' }}>{title}</Heading>
-        <Link {...{ href: `https://${site}` }}>
-          <Text {...{ fontSize: 'var(--text-lg)', color: 'var(--blue-700)' }}>{site}</Text>
+        <Link {...{ href: site, target: '_blank' }}>
+          <Text {...{ fontSize: 'var(--text-lg)', color: 'var(--blue-700)' }}>{site.includes('https://') ? site.slice(8, site.length) : site.includes('http://') && site.slice(7, site.length)}</Text>
         </Link>
         <Text {...{ fontSize: 'var(--text-md)', color: 'var(--blue-700)' }}>{`${startDate} - ${Number(endDate) || 'Prezent'}`}</Text>
       </Box>

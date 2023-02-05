@@ -15,10 +15,12 @@ export interface IMatchesHeader {
 
 export interface IMatchesCard extends TSearchMatches {
   match: TMatch;
+  isUsedOnHomePage?: boolean;
 }
 
 export type TMatchesRanking = {
   position: number;
+  club: string;
   image: string;
   points: number;
   played: number;
@@ -95,4 +97,8 @@ export interface IClubsPage {
 
 export interface IFutureMatchesPage {
   data: TMatch[];
+}
+
+export interface IRankingMatchesPage {
+  data: TMatchesRanking[];
 }

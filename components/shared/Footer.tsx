@@ -109,6 +109,7 @@ const Container = styled.section`
   justify-content: center;
   width: 100%;
   background-color: var(--white-color);
+  border-top: 1px solid var(--grey-alpha-200);
 
   .f-container {
     display: grid;

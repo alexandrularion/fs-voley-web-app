@@ -59,11 +59,7 @@ const SponsorsTable: React.FC<ISponsorsList> = ({ filter }) => {
       {
         Header: 'Logo',
         accessor: 'logo',
-        Cell: ({ row: { original } }: CellValue) => (
-          <Flex>
-            <Image {...{ src: original.logo, width: 100, height: 100, alt: 'Logo Companie' }} />
-          </Flex>
-        ),
+        Cell: ({ row: { original } }: CellValue) => <Image {...{ src: original.logo, width: 100, height: 100, alt: 'Logo Companie', style: { height: '50px', width: 'max-content' } }} />,
       },
       {
         Header: 'Companie',

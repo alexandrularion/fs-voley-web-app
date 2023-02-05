@@ -4,14 +4,20 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import { IMatchesCard } from './Interfaces';
 
-const MatchesCard: React.FC<IMatchesCard> = ({ match: { dateTime, championship, clubFirst, clubSecond, link, location, edition, scoreClubOne, scoreClubTwo } }) => {
+const MatchesCard: React.FC<IMatchesCard> = ({ match: { dateTime, championship, clubFirst, clubSecond, link, location, edition, scoreClubOne, scoreClubTwo }, isUsedOnHomePage = false }) => {
   return (
-    <Container>
+    <Container {...{ isUsedOnHomePage }}>
       <Box {...{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 'var(--gap-lg)' }}>
-        <Heading {...{ color: 'var(--grey-alpha-500)', fontSize: 'var(--text-xs)', fontWeight: 'bold' }}>
+        <Heading {...{ color: 'var(--grey-alpha-500)', fontSize: 'var(--text-xs)', fontWeight: '400' }}>
           {new Date(dateTime).toLocaleDateString('ro-Ro', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).toUpperCase()}
         </Heading>
-        <Text {...{ color: 'var(--grey-alpha-500)', fontSize: 'var(--text-xs)' }}>{`${championship?.title} x ${location} x Editia ${edition?.title}`}</Text>
+        <Flex {...{ gap: '5px', color: 'var(--grey-alpha-500)', fontSize: 'var(--text-xs)' }}>
+          <Text {...{ fontWeight: 'bold' }}>{championship?.title}</Text>
+          {'x'}
+          <Text {...{ fontWeight: 'bold' }}>{location}</Text>
+          {'x'}
+          <Text {...{ fontWeight: 'bold' }}>{`Editia ${edition?.title}`}</Text>
+        </Flex>
       </Box>
       <Flex {...{ gap: 'var(--gap-md)', padding: '0 var(--gap-xl)' }}>
         <Flex {...{ gap: 'var(--gap-md)', alignItems: 'center' }}>
@@ -36,7 +42,7 @@ const MatchesCard: React.FC<IMatchesCard> = ({ match: { dateTime, championship, 
 };
 export default MatchesCard;
 
-const Container = styled.div`
+const Container = styled.div<{ isUsedOnHomePage: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -45,6 +51,7 @@ const Container = styled.div`
   position: relative;
   overflow: hidden;
   gap: var(--gap-xl);
+  border: ${({ isUsedOnHomePage }) => (isUsedOnHomePage ? '1px solid var(--grey-alpha-100)' : '')};
 
   img {
     width: 60px;

@@ -10,14 +10,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(401).json({ message: 'Unauthorized' });
       }
       const { id } = req.query;
-      const { title, image_url, date_end, date_start } = req.body;
+      const { title, image_url, date_end, date_start, website } = req.body;
       await prisma.sponsor.update({
         where: { id: Number(id) },
         data: {
-          title: title,
-          image_url: image_url,
-          date_end: date_end,
-          date_start: date_start,
+          title,
+          image_url,
+          date_end,
+          website,
+          date_start,
         },
       });
       return res.status(200).json({ message: 'The user was updated!' });
