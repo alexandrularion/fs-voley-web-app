@@ -27,7 +27,7 @@ export type TBlogArticle = {
 };
 
 export interface IBlogCard {
-  id:number;
+  id: number;
   title: string;
   image: string;
   tags: TBlogTag[];

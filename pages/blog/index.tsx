@@ -11,7 +11,7 @@ import { getAllArticles } from '../../services/Blog.service';
 import { getDaysAgoData } from '../../utils';
 
 const BlogPage: NextPage<IBlogPage> = ({ data }) => {
-  const { setTab, tab} = useTab();
+  const { setTab, tab } = useTab();
   const { setBlogArticles } = useBlogArticles();
 
   useEffect(() => {
@@ -19,10 +19,10 @@ const BlogPage: NextPage<IBlogPage> = ({ data }) => {
   }, [setTab]);
 
   useEffect(() => {
-    if(tab){
-      setBlogArticles( tab?.value ? getDaysAgoData(data,tab.value as number) : data);
+    if (tab) {
+      setBlogArticles(tab?.value ? getDaysAgoData(data, tab.value as number) : data);
     }
-  },[tab]);
+  }, [tab, data, setBlogArticles]);
 
   useEffect(() => {
     setBlogArticles(data);
@@ -42,7 +42,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   try {
     const session = await getSession(ctx);
     const { data } = await getAllArticles();
-    
+
     return {
       props: {
         session,

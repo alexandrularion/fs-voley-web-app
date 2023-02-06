@@ -8,6 +8,8 @@ import { IHomeHero } from './Interfaces';
 import { ArrowRightIcon } from '../../styles/Icons';
 import { navigationRoutes } from '../../constants/Navigation';
 import Link from 'next/link';
+import AliceCarousel from 'react-alice-carousel';
+import 'react-alice-carousel/lib/alice-carousel.css';
 
 const HomeHero: React.FC<IHomeHero> = ({ ranking }) => {
   const columns = useMemo(
@@ -76,10 +78,20 @@ const HomeHero: React.FC<IHomeHero> = ({ ranking }) => {
         >
           <CommonTable {...{ data: ranking, columns, isFooterVisible: false, className: 'hh-table' }} />
         </Flex>
-        <video {...{ controls: false, autoPlay: true, loop: true, preload: 'auto', muted: true }}>
-          <source {...{ src: '/assets/hero-video.mp4', type: 'video/mp4' }} />
-          {'Your browser does not support the video tag.'}
-        </video>
+        <AliceCarousel
+          {...{
+            disableDotsControls: true,
+            autoPlay: true,
+            infinite: true,
+            autoPlayInterval: 2000,
+            keyboardNavigation: true,
+            swipeDelta: 10,
+          }}
+        >
+          {['/assets/home-hero-1.png', '/assets/home-hero-2.png', '/assets/home-hero-3.png']?.map((src, index: number) => (
+            <Image key={`img_${index}`} {...{ src, alt: 'img', width: 1400, height: 600 }} />
+          ))}
+        </AliceCarousel>
       </Flex>
     </Container>
   );
@@ -98,8 +110,6 @@ const Container = styled.div`
     overflow: hidden;
     border-top: 1px solid var(--grey-alpha-300);
     border-bottom: 1px solid var(--grey-alpha-300);
-    /* position: absolute; */
-    /* bottom: 0; */
     width: 700px;
     z-index: var(--z-index-5);
 
@@ -115,14 +125,20 @@ const Container = styled.div`
     }
   }
 
-  video {
+  .alice-carousel {
     position: absolute;
     top: 0;
     left: 0;
     height: 100%;
     width: 100%;
     z-index: var(--z-index-1);
-    object-fit: cover;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   }
   &::after {
     content: '';
@@ -131,7 +147,7 @@ const Container = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(180deg, rgba(22, 77, 229, 0.7) 0%, rgba(2, 24, 123, 0.7) 100%);
+    background: linear-gradient(180deg, rgba(22, 77, 229, 0.8) 20%, rgba(2, 24, 123, 1) 100%);
     z-index: var(--z-index-2);
   }
 `;

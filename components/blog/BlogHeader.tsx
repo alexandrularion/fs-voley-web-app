@@ -1,22 +1,22 @@
 import styled from 'styled-components';
-import { IBlogHeader, TBlogArticle } from './Interfaces';
+import { IBlogHeader } from './Interfaces';
 import Background from '../../assets/Background.png';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { nanoid } from 'nanoid';
 import { LayoutContainer } from '../shared/Layout';
 import Tabs from '../shared/Tabs';
 import { ITab } from '../shared/Interfaces';
-import { Box, Button, Flex, Heading, Text, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/dist/client/link';
 import { adminRoutes } from '../../constants/Navigation';
 import { getRoleNameByRoleId } from '../../utils';
-import { toast } from 'react-toastify';
-import { FormApi } from 'final-form';
+// import { toast } from 'react-toastify';
+// import { FormApi } from 'final-form';
 import { PlusIcon } from '../../styles/Icons';
 import { USER_ROLE } from '../../constants/Enums';
-import { createArticle } from '../../services/Blog.service';
-import { useBlogArticles } from '../../context/ContextBlogArticle';
+// import { createArticle } from '../../services/Blog.service';
+// import { useBlogArticles } from '../../context/ContextBlogArticle';
 
 const BlogHeader: React.FC<IBlogHeader> = ({ isUsedInAdminPage = false }) => {
   const tabs: ITab[] = useMemo(
@@ -29,27 +29,27 @@ const BlogHeader: React.FC<IBlogHeader> = ({ isUsedInAdminPage = false }) => {
       ].map((obj) => ({ ...obj, key: nanoid() })),
     []
   );
-
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { setBlogArticles, blogArticles } = useBlogArticles();
   const { data } = useSession();
-  const { onClose, isOpen, onOpen } = useDisclosure();
 
-  const onSubmitHandler = async (values: object, form: FormApi) => {
-    setIsLoading(true);
-    try {
-      const { data } = await createArticle(values as TBlogArticle);
-      const { id } = data as TBlogArticle;
-      setBlogArticles([...blogArticles, { ...values, id } as TBlogArticle]);
-      toast('Felicitari! Articolul a fost adaugat cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
-      onClose();
-      form.reset();
-    } catch (err) {
-      toast('Ooops. Ceva nu a mers bine, te rugam incearca din nou.', { hideProgressBar: true, autoClose: 5000, type: 'error', position: 'bottom-right' });
-    }
+  // const [isLoading, setIsLoading] = useState<boolean>(false);
+  // const { setBlogArticles, blogArticles } = useBlogArticles();
+  // const { onClose, isOpen, onOpen } = useDisclosure();
 
-    setIsLoading(false);
-  };
+  // const onSubmitHandler = async (values: object, form: FormApi) => {
+  //   setIsLoading(true);
+  //   try {
+  //     const { data } = await createArticle(values as TBlogArticle);
+  //     const { id } = data as TBlogArticle;
+  //     setBlogArticles([...blogArticles, { ...values, id } as TBlogArticle]);
+  //     toast('Felicitari! Articolul a fost adaugat cu success.', { hideProgressBar: true, autoClose: 5000, type: 'success', position: 'bottom-right' });
+  //     onClose();
+  //     form.reset();
+  //   } catch (err) {
+  //     toast('Ooops. Ceva nu a mers bine, te rugam incearca din nou.', { hideProgressBar: true, autoClose: 5000, type: 'error', position: 'bottom-right' });
+  //   }
+
+  //   setIsLoading(false);
+  // };
 
   return (
     <Container {...{ src: Background.src, isUsedInAdminPage }}>
@@ -70,7 +70,7 @@ const BlogHeader: React.FC<IBlogHeader> = ({ isUsedInAdminPage = false }) => {
                     variant: 'outline',
                     colorScheme: 'whiteAlpha',
                     color: 'var(--white-color)',
-                    onClick: () => onOpen(),
+                    // onClick: () => onOpen(),
                     leftIcon: <PlusIcon {...{ color: 'var(--white-color)', size: '22px' }} />,
                   }}
                 >
