@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['assist-software.net', 'i.imgur.com', 'www.drupal.org', 'www.sportexclusiv.ro'],
+    domains: ['assist-software.net', 'i.imgur.com', 'www.drupal.org', 'www.sportexclusiv.ro', 'larstra.ams3.digitaloceanspaces.com'],
   },
   env: {
     JWT_SECRET_TOKEN: process.env.JWT_SECRET_TOKEN,

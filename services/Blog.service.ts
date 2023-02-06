@@ -1,8 +1,12 @@
 import { TBlogArticle } from '../components/blog/Interfaces';
 import { axiosConfigJSON } from './AxiosConfig';
 
-const getAllArticle = () => {
+const getAllArticles = () => {
   return axiosConfigJSON.get('/blog/get/all');
+};
+
+const getAllArticlesIds = () => {
+  return axiosConfigJSON.get('/blog/get/ids');
 };
 
 const getArticle = (articleId: number) => {
@@ -21,4 +25,4 @@ const updateArticle = (articleId: number, article: TBlogArticle) => {
   return axiosConfigJSON.post(`/blog/update/${articleId}`, JSON.stringify(article));
 };
 
-export { getAllArticle, getArticle, deleteArticle, createArticle, updateArticle };
+export { getAllArticles, getAllArticlesIds, getArticle, deleteArticle, createArticle, updateArticle };

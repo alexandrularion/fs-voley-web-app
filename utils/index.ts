@@ -185,3 +185,17 @@ export const getCurrentDateTimeLocal = (currentDate: string) => {
 export const copyTextToClipboard = async (text: string) => {
   await navigator.clipboard.writeText(text).catch(() => console.log("[LOGGER] Can't copy text to clipboard!"));
 };
+
+/**
+ * 
+ * @param data 
+ * @param daysAgo 
+ * @returns data any[]
+ */
+
+export const getDaysAgoData = (data: any[], daysAgo: number) => {
+  let t = new Date();
+  let d = new Date(Date.UTC(t.getFullYear(), t.getMonth(), t.getDate() - daysAgo));
+  return data.filter((item: any) => new Date(item.createdAt) >= d)
+             .sort((a: any, b: any) => a.createdAt.localeCompare(b.createdAt));
+}

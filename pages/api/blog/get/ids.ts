@@ -5,9 +5,8 @@ import prisma from '../../../../lib/prisma';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     if (req.method == 'GET') {
-      const posts = await prisma.post.findMany({ include: { tags: { select: { tag: true } } } });
-
-      return res.status(200).json(posts.map(({ tags, ...obj }) => ({ ...obj, tags: tags.map(({ tag }) => tag) })));
+      const data = await prisma.post.findMany({ select: { id: true } });
+      return res.status(200).json(data);
     } else {
       res.status(405).json({ message: 'Method Not Allowed' });
     }

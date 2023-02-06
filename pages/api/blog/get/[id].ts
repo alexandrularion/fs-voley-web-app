@@ -7,13 +7,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (req.method == 'GET') {
       const { id } = req.query;
       try {
-        const post = await prisma.post.findFirst({
+        const data = await prisma.post.findFirst({
           where: { id: Number(id) },
           include: {
             tags: { select: { tag: true } },
           },
         });
-        return res.status(200).json(post);
+        return res.status(200).json({ ...data, tags: data!.tags.map(({ tag }) => tag) });
       } catch (e) {
         return res.status(404).json({ message: 'This post cannot be accessed or does not exist.' });
       }

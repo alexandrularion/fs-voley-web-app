@@ -15,7 +15,7 @@ export type TBlogImage = {
 };
 
 export type TBlogArticle = {
-  id: string;
+  id: number;
   title: string;
   image: string;
   images: TBlogImage[];
@@ -27,6 +27,7 @@ export type TBlogArticle = {
 };
 
 export interface IBlogCard {
+  id:number;
   title: string;
   image: string;
   tags: TBlogTag[];
@@ -35,4 +36,12 @@ export interface IBlogCard {
 
 export interface IBlogHeader {
   isUsedInAdminPage?: boolean;
+}
+
+export interface IBlogPage {
+  data: TBlogArticle[];
+}
+
+export interface IBlogArticlePage {
+  data: TBlogArticle;
 }

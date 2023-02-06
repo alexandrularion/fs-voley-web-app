@@ -24,8 +24,8 @@ const BlogList: React.FC = () => {
               gap: 'var(--gap-md)',
             }}
           >
-            {data?.map(({ key, title, image, tags, createdAt }) => (
-              <BlogCard key={key} {...{ title, image, tags: tags!, createdAt }} />
+            {data?.map(({ key, title, image, tags, createdAt, id }) => (
+              <BlogCard key={key} {...{ title, image, tags: tags!, createdAt, id }} />
             ))}
           </Box>
         ) : (
@@ -46,7 +46,7 @@ const Container = styled.section`
   .bl-layout-container {
     place-content: start;
     position: relative;
-    top: -110px;
+    top: -90px;
     gap: var(--gap-md);
   }
 `;

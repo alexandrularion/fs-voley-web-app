@@ -78,9 +78,10 @@ import {
   IoArrowUp,
   IoArrowForwardOutline,
   IoArrowBackOutline,
+  IoLogoFacebook,
 } from 'react-icons/io5';
 import { device } from '../components/shared/DevicesBreakpoints';
-import { FaTelegram, FaFacebookSquare } from 'react-icons/fa';
+import { FaTelegram } from 'react-icons/fa';
 import { RiMoneyDollarBoxFill, RiMoneyDollarCircleLine } from 'react-icons/ri';
 import { Desktop, Laptop, Mobile, SmallMobile, SmallTablet, Tablet } from './Interfaces';
 import { BiLoaderCircle } from 'react-icons/bi';
@@ -277,7 +278,7 @@ export const SimpleCheckedIcon = styled(IoCheckmarkDone)<IIconProps>`
 export const WarningIcon = styled(IoAlertCircleOutline)<IIconProps>`
   ${defaultIconStyle}
 `;
-export const FacebookIcon = styled(FaFacebookSquare)<IIconProps>`
+export const FacebookIcon = styled(IoLogoFacebook)<IIconProps>`
   ${defaultIconStyle}
 `;
 export const LinkedinIcon = styled(IoLogoLinkedin)<IIconProps>`
