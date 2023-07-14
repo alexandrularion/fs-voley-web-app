@@ -27,6 +27,7 @@ const SignIn = () => {
       const res: SignInResponse | undefined = await signIn('credentials', { email, password, redirect: false });
       if (res?.status !== 200) {
         toast('Email-ul sau parola sunt incorecte.', { hideProgressBar: true, autoClose: 5000, type: 'error', position: 'bottom-right' });
+        setIsLoading(false);
       } else {
         push(settings.url);
       }

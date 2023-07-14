@@ -34,7 +34,7 @@ const MatchesCard: React.FC<IMatchesCard> = ({ match: { dateTime, championship, 
           <Heading {...{ as: 'h2', fontSize: 'var(--text-md)', color: 'var(--blue-500)' }}> {clubSecond?.title}</Heading>
         </Flex>
       </Flex>
-      <Link {...{ href: link, target: '_blank' }}>
+      <Link {...{ href: link ? link : '', target: '_blank' }}>
         <Button {...{ borderRadius: 'none', background: 'var(--blue-400)', color: 'var(--white-color)', w: '100%', _hover: { background: 'var(--blue-300)' } }}>{'Vezi meciul live'}</Button>
       </Link>
     </Container>
