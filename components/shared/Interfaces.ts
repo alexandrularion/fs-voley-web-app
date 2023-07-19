@@ -11,6 +11,7 @@ export interface ILayout {
   children: any;
   bgColor?: string;
   isUsedOnOverlay?: boolean;
+  seoHeadProps?: ISEOHead;
 }
 
 export type ITab = { tabId: number; title: string; key?: string; href?: string; value: number | string };
@@ -67,4 +68,11 @@ export type TDisplayData = {
 
 export interface INavigation {
   isUsedOnOverlay?: boolean;
+}
+
+export interface ISEOHead {
+  metaTitle: string;
+  metaDescription: string;
+  metaImage?: string;
+  metaURL?: string;
 }
