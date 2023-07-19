@@ -1,9 +1,9 @@
 // lib/prisma.ts
-import { PrismaClient } from '@prisma/client';
+const { PrismaClient } = require('../node_modules/.prisma/client');
 
-let prisma: PrismaClient;
+let prisma: typeof PrismaClient;
 declare global {
-  let prisma: PrismaClient | undefined;
+  let prisma: typeof PrismaClient | undefined;
 }
 if (process.env.NODE_ENV === 'production') {
   prisma = new PrismaClient();
