@@ -10,6 +10,7 @@ import { navigationRoutes } from '../../constants/Navigation';
 import Link from 'next/link';
 import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
+import { device } from '../shared/DevicesBreakpoints';
 
 const HomeHero: React.FC<IHomeHero> = ({ ranking }) => {
   const columns = useMemo(
@@ -55,12 +56,16 @@ const HomeHero: React.FC<IHomeHero> = ({ ranking }) => {
 
   return (
     <Container>
-      <Flex {...{ w: '100%', h: '100%', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
-        <Flex {...{ zIndex: 'var(--z-index-5)', position: 'relative', flexDirection: 'column', height: '45vh', gap: 'var(--gap-md)', alignItems: 'center' }}>
-          <Heading {...{ color: 'var(--white-color)' }}>{'Echipa CSM Volei Suceava'}</Heading>
-          <Text {...{ color: 'var(--grey-alpha-100)' }}> {'Website-ul oficial a echipei de volei masculin Club Sportiv Municipal Suceava.'}</Text>
+      <Flex {...{ w: '100%', h: '100%', alignItems: 'center', justifyContent: 'flex-end', flexDirection: 'column' }}>
+        <Flex {...{ zIndex: 'var(--z-index-5)', position: 'relative', flexDirection: 'column', marginBottom: 'calc(100vh / 3)', gap: 'var(--gap-lg)', alignItems: 'center' }}>
+          <Flex direction={'column'} alignItems={'center'} gap={'var(--gap-xs)'}>
+            <Heading {...{ color: 'var(--white-color)', size: ['lg', 'xl'] }}>{'Echipa CSM Volei Suceava'}</Heading>
+            <Text {...{ color: 'var(--grey-alpha-100)', textAlign: 'center', width: ['90%', '100%'], fontSize: ['md', 'xl'], fontWeight: 'bold' }}>
+              {'Website-ul oficial a echipei de volei masculin Club Sportiv Municipal Suceava.'}
+            </Text>
+          </Flex>
           <Link {...{ href: `${navigationRoutes.matches.url}/ranking` }}>
-            <Button {...{ color: 'var(--white-color)', gap: 'var(--gap-sm)', variant: 'outline', fontWeight: '400' }}>
+            <Button {...{ color: 'var(--white-color)', gap: 'var(--gap-sm)', variant: 'outline', size: ['md', 'lg'], fontWeight: '400', borderRadius: '25px' }}>
               {'Vezi clasamentul complet'} <ArrowRightIcon {...{ color: 'var(--white-color)', size: '20px' }} />
             </Button>
           </Link>
@@ -70,10 +75,9 @@ const HomeHero: React.FC<IHomeHero> = ({ ranking }) => {
             flexDirection: 'column',
             gap: '30px',
             zIndex: 'var(--z-index-5)',
-            position: 'absolute',
-            bottom: '30px',
             alignItems: 'center',
-            justifyContent: 'center',
+            justifyContent: 'flex-end',
+            marginBottom: '30px',
           }}
         >
           <CommonTable {...{ data: ranking, columns, isFooterVisible: false, className: 'hh-table' }} />
@@ -123,6 +127,12 @@ const Container = styled.div`
     td {
       padding: 10px;
     }
+
+    @media ${device.tablet} {
+      width: 100%;
+      max-width: 90vw;
+      overflow-x: visible;
+    }
   }
 
   .alice-carousel {
@@ -134,9 +144,15 @@ const Container = styled.div`
     z-index: var(--z-index-1);
     overflow: hidden;
 
+    @media ${device.tablet} {
+      .alice-carousel__wrapper {
+        height: 100vh;
+        width: auto;
+      }
+    }
     img {
-      width: 100%;
       height: 100%;
+      width: 100%;
       object-fit: cover;
     }
   }
@@ -149,5 +165,8 @@ const Container = styled.div`
     height: 100%;
     background: linear-gradient(180deg, rgba(22, 77, 229, 0.8) 20%, rgba(2, 24, 123, 1) 100%);
     z-index: var(--z-index-2);
+  }
+
+  @media ${device.mobile} {
   }
 `;

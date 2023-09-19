@@ -40,6 +40,6 @@ export const LayoutContainer = styled.div`
     width: 90vw;
   }
   @media ${device.mobile} {
-    width: 85vw;
+    width: 90vw;
   }
 `;

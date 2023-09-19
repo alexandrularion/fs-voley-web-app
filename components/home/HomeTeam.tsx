@@ -9,6 +9,7 @@ import { IHomeTeam } from './Interfaces';
 import Link from 'next/link';
 import { ArrowRightIcon } from '../../styles/Icons';
 import { navigationRoutes } from '../../constants/Navigation';
+import { device } from '../shared/DevicesBreakpoints';
 
 const HomeTeam: React.FC<IHomeTeam> = ({ team }) => {
   const data = useMemo(() => team?.slice(0, 5).map((obj) => ({ ...obj, key: nanoid() })), [team]);
@@ -28,7 +29,7 @@ const HomeTeam: React.FC<IHomeTeam> = ({ team }) => {
           <Box
             {...{
               display: 'grid',
-              gridTemplateColumns: 'repeat(3,1fr)',
+              gridTemplateColumns: ['100%', 'repeat(3,1fr)'],
               w: '100%',
               gap: 'var(--gap-md)',
             }}
@@ -58,5 +59,13 @@ const Container = styled.div`
     flex-direction: column;
     gap: var(--gap-xl);
     align-items: flex-start;
+  }
+  @media ${device.tablet} {
+    padding: 50px 0;
+
+    .hm-layout-container {
+      gap: var(--gap-lg);
+      grid-template-columns: 100%;
+    }
   }
 `;
