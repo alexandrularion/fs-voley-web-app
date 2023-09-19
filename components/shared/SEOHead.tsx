@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import Head from 'next/head';
 import { ISEOHead } from './Interfaces';
-import favicon from '../../public/favicon.ico';
+import favicon from '../../public/favicon.png';
 import favicon32 from '../../public/favicon-32x32.png';
 import favicon96 from '../../public/favicon-96x96.png';
 import favicon16 from '../../public/favicon-16x16.png';
