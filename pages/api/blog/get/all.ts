@@ -7,7 +7,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (req.method == 'GET') {
       const posts = await prisma.post.findMany({ include: { tags: { select: { tag: true } } } });
 
-      return res.status(200).json(posts.map(({ tags, ...obj }) => ({ ...obj, tags: tags.map(({ tag }) => tag) })));
+      return res.status(200).json(posts.map(({ tags, ...obj }: any) => ({ ...obj, tags: tags.map(({ tag }: any) => tag) })));
     } else {
       res.status(405).json({ message: 'Method Not Allowed' });
     }
