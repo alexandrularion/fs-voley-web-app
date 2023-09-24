@@ -9,6 +9,7 @@ const nextConfig = {
     JWT_SECRET_TOKEN: process.env.JWT_SECRET_TOKEN,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     NEXT_AUTH_SECRET: process.env.NEXT_AUTH_SECRET,
+    DATABASE_URL: process.env.DATABASE_URL,
   },
 };
 

@@ -70,7 +70,7 @@ const CommonTable: React.FC<ICommonTable> = ({ columns, data, filter, isFooterVi
           ) : (
             <Tr>
               <Text as="td" {...{ padding: '20px', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
-                {'Nu exista nici o inregistrare.'}
+                {'Nu exista inregistrari.'}
               </Text>
             </Tr>
           )}

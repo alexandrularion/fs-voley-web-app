@@ -8,10 +8,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useMemo } from 'react';
 import { nanoid } from 'nanoid';
+import EmptyState from '../shared/EmptyState';
+import { device } from '../shared/DevicesBreakpoints';
 
 const HomeSponsors: React.FC<IHomeSponsors> = ({ sponsors }) => {
   const data = useMemo(() => sponsors?.map((obj) => ({ ...obj, key: nanoid() })), [sponsors]);
-
   return (
     <Container>
       <LayoutContainer {...{ className: 'ht-layout-container' }}>
@@ -23,12 +24,16 @@ const HomeSponsors: React.FC<IHomeSponsors> = ({ sponsors }) => {
             </Flex>
           </Link>
         </Flex>
-        <Flex {...{ gap: 'var(--gap-xl)', alignItems: 'center', wrap: 'wrap' }}>
-          {data?.map(({ logo, title, key, site }) => (
-            <Link key={key} {...{ href: site, target: '_blank' }}>
-              <Image {...{ src: logo, width: 200, height: 200, alt: title }} />
-            </Link>
-          ))}
+        <Flex {...{ gap: 'var(--gap-xl)', alignItems: 'center', justifyContent: ['center', 'unset'], wrap: 'wrap', width: '100%' }}>
+          {data && data.length ? (
+            data.map(({ logo, title, key, site }) => (
+              <Link key={key} {...{ href: site, target: '_blank' }}>
+                <Image {...{ src: logo, width: 200, height: 200, alt: title, className: 'img__sponsor' }} />
+              </Link>
+            ))
+          ) : (
+            <EmptyState />
+          )}
         </Flex>
       </LayoutContainer>
     </Container>
@@ -47,9 +52,20 @@ const Container = styled.div`
     gap: var(--gap-xl);
     align-items: flex-start;
 
-    img {
+    .img__sponsor {
       height: 100px;
       width: auto;
+    }
+  }
+  @media ${device.tablet} {
+    padding: 50px 0;
+
+    .ht-layout-container {
+      gap: var(--gap-lg);
+
+      .img__sponsor {
+        height: 80px;
+      }
     }
   }
 `;

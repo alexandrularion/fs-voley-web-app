@@ -236,38 +236,54 @@ const Navigation: React.FC<INavigation> = ({ isUsedOnOverlay = false }) => {
           </Flex>
         </div>
         <Menu>
-          <MenuButton {...{ as: IconButton, ['aria-label']: 'Options', icon: <MenuIcon size={'24px'} />, variant: 'outline', className: 'n-mobile-container' }} />
+          <MenuButton
+            {...{
+              as: IconButton,
+              ['aria-label']: 'Options',
+              icon: <MenuIcon size={'26px'} color={'var(--chakra-colors-gray-200)'} />,
+              variant: 'outline',
+              className: 'n-mobile-container',
+              _active: { background: 'unset' },
+              _focus: { background: 'unset' },
+              borderRadius: '12px',
+            }}
+          />
           <MenuList {...{ padding: '0' }}>
-            {urls.map(({ title, url, key }, index) => (
-              <Link key={key} {...{ href: url }}>
+            <MenuGroup>
+              {urls.map(({ title, url, key }, index) => (
+                <Link key={key} {...{ href: url }}>
+                  <MenuItem>
+                    <Flex {...{ alignItems: 'center', gap: 'var(--gap-xs)', className: 'n-link-container' }}>
+                      {(pathname.localeCompare(url) === 0 || (index !== 0 && pathname.includes(url))) && (
+                        <Box {...{ w: '10px', h: '10px', borderRadius: '50px', bg: 'var(--blue-600)', transition: '0.2s all ease-in-out' }} />
+                      )}
+                      <Text
+                        {...{
+                          color: 'var(--blue-600)',
+                          fontWeight: pathname.localeCompare(url) === 0 || (index !== 0 && pathname.includes(url)) ? 'bold' : 'normal',
+                          fontSize: 'var(--text-m)',
+                          transition: '0.2s all ease-in-out',
+                          textTransform: 'uppercase',
+                        }}
+                      >
+                        {title}
+                      </Text>
+                    </Flex>
+                  </MenuItem>
+                  <MenuDivider color={'var(--chakra-colors-gray-300)'} />
+                </Link>
+              ))}
+            </MenuGroup>
+            <MenuGroup>
+              <Link {...{ href: authRoutes.signIn.url }}>
                 <MenuItem>
                   <Flex {...{ alignItems: 'center', gap: 'var(--gap-xs)', className: 'n-link-container' }}>
-                    {(pathname.localeCompare(url) === 0 || (index !== 0 && pathname.includes(url))) && (
-                      <Box {...{ w: '10px', h: '10px', borderRadius: '50px', bg: 'var(--blue-600)', transition: '0.2s all ease-in-out' }} />
-                    )}
-                    <Text
-                      {...{
-                        color: 'var(--blue-600)',
-                        fontWeight: pathname.localeCompare(url) === 0 || (index !== 0 && pathname.includes(url)) ? 'bold' : 'normal',
-                        fontSize: 'var(--text-s)',
-                        transition: '0.2s all ease-in-out',
-                        textTransform: 'uppercase',
-                      }}
-                    >
-                      {title}
-                    </Text>
+                    {pathname.includes(authRoutes.signIn.url) && <Box {...{ w: '10px', h: '10px', borderRadius: '50px', bg: 'var(--blue-600)', transition: '0.2s all ease-in-out' }} />}
+                    <Text {...{ color: 'var(--blue-600)', fontSize: 'var(--text-m)', transition: '0.2s all ease-in-out', textTransform: 'uppercase' }}>{authRoutes.signIn.title}</Text>
                   </Flex>
                 </MenuItem>
               </Link>
-            ))}
-            <Link {...{ href: authRoutes.signIn.url }}>
-              <MenuItem>
-                <Flex {...{ alignItems: 'center', gap: 'var(--gap-xs)', className: 'n-link-container' }}>
-                  {pathname.includes(authRoutes.signIn.url) && <Box {...{ w: '10px', h: '10px', borderRadius: '50px', bg: 'var(--blue-600)', transition: '0.2s all ease-in-out' }} />}
-                  <Text {...{ color: 'var(--blue-600)', fontSize: 'var(--text-l)', transition: '0.2s all ease-in-out', textTransform: 'uppercase' }}>{authRoutes.signIn.title}</Text>
-                </Flex>
-              </MenuItem>
-            </Link>
+            </MenuGroup>
           </MenuList>
         </Menu>
       </div>
@@ -280,7 +296,7 @@ const Container = styled.section<{ isUsedOnOverlay: boolean }>`
   display: flex;
   justify-content: center;
   position: relative;
-  z-index: var(--z-index-6);
+  z-index: 900;
   background-color: ${({ isUsedOnOverlay }) => (isUsedOnOverlay ? 'unset' : 'var(--white-color) ')};
   width: 100%;
   position: ${({ isUsedOnOverlay }) => (isUsedOnOverlay ? 'absolute' : 'relative')};

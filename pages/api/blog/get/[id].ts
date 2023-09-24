@@ -13,7 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             tags: { select: { tag: true } },
           },
         });
-        return res.status(200).json({ ...data, tags: data!.tags.map(({ tag }) => tag) });
+        return res.status(200).json({ ...data, tags: data!.tags.map(({ tag }: any) => tag) });
       } catch (e) {
         return res.status(404).json({ message: 'This post cannot be accessed or does not exist.' });
       }

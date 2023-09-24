@@ -3,14 +3,23 @@ import { device } from './DevicesBreakpoints';
 import Footer from './Footer';
 import { ILayout } from './Interfaces';
 import Navigation from './Navigation';
+import SEOHead from './SEOHead';
 
-const Layout: React.FC<ILayout> = ({ children, bgColor = 'var(--white-color)', isUsedOnOverlay = false }) => {
+const Layout: React.FC<ILayout> = ({
+  children,
+  bgColor = 'var(--white-color)',
+  isUsedOnOverlay = false,
+  seoHeadProps: { metaTitle = 'CSM Suceava Volei', metaDescription = '', metaImage = '', metaURL = '' } = {},
+}) => {
   return (
-    <Container {...{ bgColor }}>
-      <Navigation {...{ isUsedOnOverlay }} />
-      {children}
-      <Footer />
-    </Container>
+    <>
+      <SEOHead {...{ metaTitle, metaDescription, metaImage, metaURL }} />
+      <Container {...{ bgColor }}>
+        <Navigation {...{ isUsedOnOverlay }} />
+        {children}
+        <Footer />
+      </Container>
+    </>
   );
 };
 export default Layout;
@@ -31,6 +40,6 @@ export const LayoutContainer = styled.div`
     width: 90vw;
   }
   @media ${device.mobile} {
-    width: 85vw;
+    width: 90vw;
   }
 `;
